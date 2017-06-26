@@ -21,5 +21,5 @@ Desktop application for hardware weather station
 * Nlog;
 
 ![GitHub Logo](https://habrastorage.org/web/328/e3c/e48/328e3ce4873544ac8ac13994e84b6335.jpeg)
-Format: ![Alt Text](url)
+
 
