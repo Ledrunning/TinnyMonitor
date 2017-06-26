@@ -1,7 +1,7 @@
 # TinnyMonitor
 Desktop application for hardware weather station
 
-##Application Capabilities
+## Application Capabilities
 
 * Getting data from hardware device using USB (Virtual com port); 
   * Indoor/Outdoor temperature;
