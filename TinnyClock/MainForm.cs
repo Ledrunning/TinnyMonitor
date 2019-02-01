@@ -1,43 +1,33 @@
 using System;
 using System.IO;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using TinnyClock;
 
 namespace TinnyClock
 {
-    public partial class frmMain : Form
+    public partial class MainForm : Form
     {
-        private SerialPortManager comm = new SerialPortManager();
-        private string transType = string.Empty;
-        private int firstTempToChart;
-        private int secondTempToChart;
-        private int humidityToChart;
-        private int lightLevelToChart;
+        private SerialPortManager _serialPort = new SerialPortManager();
+        private string _transType = string.Empty;
+        private int _firstTempToChart;
+        private int _secondTempToChart;
+        private int _humidityToChart;
+        private int _lightLevelToChart;
 
-        private void frmMain_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
             LoadValues();
             SetDefaults();
             SetControlState();
         }
 
-
-        public frmMain()
+        public MainForm()
         {
             InitializeComponent();
 
-            comm.OnDataReceived += Comm_OnDataReceived;
-
+            _serialPort.OnDataReceived += SerialPortOnDataReceived;
         }
 
-        
-
-        private void Comm_OnDataReceived(TinnyClock.ReceivedDataDTO obj)
+        private void SerialPortOnDataReceived(TinnyClock.ReceivedDataDTO obj)
         {
             this.Invoke((MethodInvoker)delegate ()
             {
@@ -46,45 +36,22 @@ namespace TinnyClock
                 huMidity.Text = obj.Humidity;
                 lightLevel.Text = obj.LightLevel;
                 rtbDisplay.AppendText(obj.RawText + Environment.NewLine);
-            try
+                try
                 {
-                  if (obj.IndorTemperature != "NONE" && obj.OutdoorTemperature != "NONE" && obj.Humidity
-                  != "NONE" && obj.LightLevel != "NONE")
+                    if (obj.IndorTemperature != "NONE" && obj.OutdoorTemperature != "NONE" && obj.Humidity
+                    != "NONE" && obj.LightLevel != "NONE")
                     {
-                        firstTempToChart = Convert.ToInt32(obj.IndorTemperature);
-                        secondTempToChart = Convert.ToInt32(obj.OutdoorTemperature);
-                        humidityToChart = Convert.ToInt32(obj.Humidity);
-                        lightLevelToChart = Convert.ToInt32(obj.LightLevel);
+                        _firstTempToChart = Convert.ToInt32(obj.IndorTemperature);
+                        _secondTempToChart = Convert.ToInt32(obj.OutdoorTemperature);
+                        _humidityToChart = Convert.ToInt32(obj.Humidity);
+                        _lightLevelToChart = Convert.ToInt32(obj.LightLevel);
                     }
                 }
                 catch (Exception e)
                 {
                     MessageBox.Show("Error", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-              
             });
-        }
-
-        
-        private void cmdOpen_Click(object sender, EventArgs e)
-        {
-            comm.Parity = cboParity.Text;
-            comm.StopBits = cboStop.Text;
-            comm.DataBits = cboData.Text;
-            comm.BaudRatesRate = cboBaud.Text;
-            comm.PortName = cboPort.Text;
-            comm.OpenPort();
-            cmdOpen.Enabled = false;
-            cmdClose.Enabled = true;
-            cmdSend.Enabled = true;
-        }
-        // Close Com port;
-        private void cmdClose_Click(object sender, EventArgs e)
-        {
-            cmdOpen.Enabled = true;
-            cmdClose.Enabled = false;
-            cmdSend.Enabled = false;
-            comm.ClosePort();
         }
 
         /// <summary>
@@ -106,9 +73,9 @@ namespace TinnyClock
         /// </summary>
         private void LoadValues()
         {
-            cboPort.DataSource = comm.PortNameValues;
-            cboParity.DataSource = comm.ParityValues;
-            cboStop.DataSource = comm.StopBitValues;
+            cboPort.DataSource = _serialPort.PortNameValues;
+            cboParity.DataSource = _serialPort.ParityValues;
+            cboStop.DataSource = _serialPort.StopBitValues;
         }
 
         /// <summary>
@@ -122,100 +89,57 @@ namespace TinnyClock
             cmdClose.Enabled = false;
         }
 
+        private void cmdOpen_Click(object sender, EventArgs e)
+        {
+            _serialPort.Parity = cboParity.Text;
+            _serialPort.StopBits = cboStop.Text;
+            _serialPort.DataBits = cboData.Text;
+            _serialPort.BaudRatesRate = cboBaud.Text;
+            _serialPort.PortName = cboPort.Text;
+            _serialPort.OpenPort();
+            cmdOpen.Enabled = false;
+            cmdClose.Enabled = true;
+            cmdSend.Enabled = true;
+        }
+
+        // Close Com port;
+        private void cmdClose_Click(object sender, EventArgs e)
+        {
+            cmdOpen.Enabled = true;
+            cmdClose.Enabled = false;
+            cmdSend.Enabled = false;
+            _serialPort.ClosePort();
+        }
+
         private void cmdSend_Click(object sender, EventArgs e)
         {
-            comm.WriteData(txtSend.Text);
+            _serialPort.WriteData(txtSend.Text);
         }
 
         private void rdoHex_CheckedChanged(object sender, EventArgs e)
         {
             if (rdoHex.Checked == true)
             {
-                comm.CurrentTransmissionType = SerialPortManager.TransmissionType.Hex;
+                _serialPort.CurrentTransmissionType = SerialPortManager.TransmissionType.Hex;
             }
             else
             {
-                comm.CurrentTransmissionType = SerialPortManager.TransmissionType.Text;
+                _serialPort.CurrentTransmissionType = SerialPortManager.TransmissionType.Text;
             }
         }
+
         // Clear Console;
         private void ConsoleClear_Click(object sender, EventArgs e)
         {
             rtbDisplay.Clear();
         }
-        
+
         // Time and date;
-        private void timer1_Tick(object sender, EventArgs e)
+        private void OnTimerTick(object sender, EventArgs e)
         {
-            int h = DateTime.Now.Hour;
-            int m = DateTime.Now.Minute;
-            int s = DateTime.Now.Second;
-
-            string time = "";
-
-            if (h < 10)
-            {
-                time += "0" + h;
-            }
-                else
-                {
-                    time += h;
-                }
-
-                   time += ":";
-
-            if (m < 10)
-            {
-                time += "0" + m;
-            }
-                else
-                {
-                    time += m;
-                }
-
-                    time += ":";
-
-                if (s < 10)
-                {
-                    time += "0" + s;
-                }
-                    else
-                    {
-                        time += s;
-                    }
-
-                           this.TimeLabel.Text = time;
-
-            string data = "";
-
-            int day = DateTime.Now.Day;
-            int month = DateTime.Now.Month;
-            int year = DateTime.Now.Year;
-
-            if (day < 10)
-            {
-                data += "0" + day;
-            }
-                else
-                {
-                    data += day;
-                }
-
-                    data += ".";
-
-            if (month < 10)
-            {
-                data += "0" + month;
-            }
-                else
-                {
-                    data += month;
-                }
-
-                data += ".";
-                data += year;
-            this.DateLabel.Text = data;
-      }
+            DateLabel.Text = DateTime.Now.ToString("MM/dd/yyyy");
+            TimeLabel.Text = DateTime.Now.ToString("HH:mm:ss");
+        }
 
         private void OpenFrmw_Click(object sender, EventArgs e)
         {
@@ -241,16 +165,14 @@ namespace TinnyClock
                             System.IO.StreamReader(oFile.FileName);
                             FirmwBuffer.Text = (sr.ReadToEnd());
                             sr.Close();
-                           
-                         }
+                        }
                     }
                 }
-
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
                 }
-           }
+            }
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -262,7 +184,7 @@ namespace TinnyClock
             {
                 //ассоциируем поток с именем файла - если фйла нет создаем
                 fileStream = sFile.OpenFile();
-         //       memorystream.Position = 0;
+                //       memorystream.Position = 0;
                 //сохраняем в поток содержимое richTextBox1
                 FirmwBuffer.SaveFile(memorystream,
                       RichTextBoxStreamType.PlainText);
@@ -294,7 +216,6 @@ namespace TinnyClock
             {
                 MessageBox.Show("Error", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
         }
 
         private void clearBuffer_Click(object sender, EventArgs e)
@@ -312,19 +233,16 @@ namespace TinnyClock
             tellemetry.Add(humidityToChart);
             tellemetry.Add(lightLevelToChart);
             */
-            telemetryGraph.Series[0].Points.AddY(firstTempToChart);
-            telemetryGraph.Series[1].Points.AddY(secondTempToChart);
-            telemetryGraph.Series[2].Points.AddY(humidityToChart);
-            telemetryGraph.Series[3].Points.AddY(lightLevelToChart);
+            telemetryGraph.Series[0].Points.AddY(_firstTempToChart);
+            telemetryGraph.Series[1].Points.AddY(_secondTempToChart);
+            telemetryGraph.Series[2].Points.AddY(_humidityToChart);
+            telemetryGraph.Series[3].Points.AddY(_lightLevelToChart);
             /*
             foreach (int item in tellemetry)
             {
                 telemetryGraph.Series[0].Points.AddY(item);
-
             }
             */
         }
-
-       
     }
 }

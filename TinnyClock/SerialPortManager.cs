@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using TinnyClock.Converters;
+using TinnyClock.Helpers;
 
 namespace TinnyClock
 {
