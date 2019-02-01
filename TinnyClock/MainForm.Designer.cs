@@ -1,4 +1,4 @@
-namespace PCComm
+namespace TinnyClock
 {
     partial class frmMain
     {

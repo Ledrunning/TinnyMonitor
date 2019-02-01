@@ -6,10 +6,9 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using PCComm;
 using TinnyClock;
 
-namespace PCComm
+namespace TinnyClock
 {
     public partial class frmMain : Form
     {
@@ -132,11 +131,11 @@ namespace PCComm
         {
             if (rdoHex.Checked == true)
             {
-                comm.CurrentTransmissionType = PCComm.SerialPortManager.TransmissionType.Hex;
+                comm.CurrentTransmissionType = SerialPortManager.TransmissionType.Hex;
             }
             else
             {
-                comm.CurrentTransmissionType = PCComm.SerialPortManager.TransmissionType.Text;
+                comm.CurrentTransmissionType = SerialPortManager.TransmissionType.Text;
             }
         }
         // Clear Console;

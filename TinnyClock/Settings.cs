@@ -1,4 +1,4 @@
-﻿namespace PCComm.Properties {
+﻿namespace TinnyClock {
     
     
     // This class allows you to handle specific events on the settings class:
