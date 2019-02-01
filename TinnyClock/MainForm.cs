@@ -1,11 +1,14 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace TinnyClock
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form //MaterialForm
     {
+        private readonly MaterialSkinManager _materialSkinManager;
         private SerialPortManager _serialPort = new SerialPortManager();
         private string _transType = string.Empty;
         private int _firstTempToChart;
@@ -23,7 +26,10 @@ namespace TinnyClock
         public MainForm()
         {
             InitializeComponent();
-
+            _materialSkinManager = MaterialSkinManager.Instance;
+            _materialSkinManager.AddFormToManage(this);
+            _materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            _materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
             _serialPort.OnDataReceived += SerialPortOnDataReceived;
         }
 
