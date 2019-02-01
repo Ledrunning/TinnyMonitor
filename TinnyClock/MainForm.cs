@@ -13,7 +13,7 @@ namespace PCComm
 {
     public partial class frmMain : Form
     {
-        private CommunicationManager comm = new CommunicationManager();
+        private SerialPortManager comm = new SerialPortManager();
         private string transType = string.Empty;
         private int firstTempToChart;
         private int secondTempToChart;
@@ -42,18 +42,18 @@ namespace PCComm
         {
             this.Invoke((MethodInvoker)delegate ()
             {
-                insideTemp.Text = obj.Temp1;
-                outsideTemp.Text = obj.Temp2;
+                insideTemp.Text = obj.IndorTemperature;
+                outsideTemp.Text = obj.OutdoorTemperature;
                 huMidity.Text = obj.Humidity;
                 lightLevel.Text = obj.LightLevel;
                 rtbDisplay.AppendText(obj.RawText + Environment.NewLine);
             try
                 {
-                  if (obj.Temp1 != "NONE" && obj.Temp2 != "NONE" && obj.Humidity
+                  if (obj.IndorTemperature != "NONE" && obj.OutdoorTemperature != "NONE" && obj.Humidity
                   != "NONE" && obj.LightLevel != "NONE")
                     {
-                        firstTempToChart = Convert.ToInt32(obj.Temp1);
-                        secondTempToChart = Convert.ToInt32(obj.Temp2);
+                        firstTempToChart = Convert.ToInt32(obj.IndorTemperature);
+                        secondTempToChart = Convert.ToInt32(obj.OutdoorTemperature);
                         humidityToChart = Convert.ToInt32(obj.Humidity);
                         lightLevelToChart = Convert.ToInt32(obj.LightLevel);
                     }
@@ -72,7 +72,7 @@ namespace PCComm
             comm.Parity = cboParity.Text;
             comm.StopBits = cboStop.Text;
             comm.DataBits = cboData.Text;
-            comm.BaudRate = cboBaud.Text;
+            comm.BaudRatesRate = cboBaud.Text;
             comm.PortName = cboPort.Text;
             comm.OpenPort();
             cmdOpen.Enabled = false;
@@ -132,11 +132,11 @@ namespace PCComm
         {
             if (rdoHex.Checked == true)
             {
-                comm.CurrentTransmissionType = PCComm.CommunicationManager.TransmissionType.Hex;
+                comm.CurrentTransmissionType = PCComm.SerialPortManager.TransmissionType.Hex;
             }
             else
             {
-                comm.CurrentTransmissionType = PCComm.CommunicationManager.TransmissionType.Text;
+                comm.CurrentTransmissionType = PCComm.SerialPortManager.TransmissionType.Text;
             }
         }
         // Clear Console;
