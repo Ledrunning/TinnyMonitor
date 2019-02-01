@@ -60,7 +60,9 @@ namespace TinnyClock
         /// </summary>
         private void SetDefaults()
         {
-            //cboPort.SelectedIndex = 0;  // Тут закомментить при отладке;
+#if !DEBUG
+            cboPort.SelectedIndex = 0;
+#endif
             cboBaud.SelectedText = "9600";
             cboParity.SelectedIndex = 0;
             cboStop.SelectedIndex = 1;
@@ -89,7 +91,7 @@ namespace TinnyClock
             cmdClose.Enabled = false;
         }
 
-        private void cmdOpen_Click(object sender, EventArgs e)
+        private void ComPortOpenClick(object sender, EventArgs e)
         {
             _serialPort.Parity = cboParity.Text;
             _serialPort.StopBits = cboStop.Text;
@@ -102,8 +104,7 @@ namespace TinnyClock
             cmdSend.Enabled = true;
         }
 
-        // Close Com port;
-        private void cmdClose_Click(object sender, EventArgs e)
+        private void ComPortCloseClick(object sender, EventArgs e)
         {
             cmdOpen.Enabled = true;
             cmdClose.Enabled = false;
@@ -111,14 +112,14 @@ namespace TinnyClock
             _serialPort.ClosePort();
         }
 
-        private void cmdSend_Click(object sender, EventArgs e)
+        private void SendToComPortClick(object sender, EventArgs e)
         {
             _serialPort.WriteData(txtSend.Text);
         }
 
-        private void rdoHex_CheckedChanged(object sender, EventArgs e)
+        private void CheckedChanged(object sender, EventArgs e)
         {
-            if (rdoHex.Checked == true)
+            if (rdoHex.Checked)
             {
                 _serialPort.CurrentTransmissionType = SerialPortManager.TransmissionType.Hex;
             }
@@ -129,7 +130,7 @@ namespace TinnyClock
         }
 
         // Clear Console;
-        private void ConsoleClear_Click(object sender, EventArgs e)
+        private void ConsoleClearClick(object sender, EventArgs e)
         {
             rtbDisplay.Clear();
         }
@@ -141,7 +142,7 @@ namespace TinnyClock
             TimeLabel.Text = DateTime.Now.ToString("HH:mm:ss");
         }
 
-        private void OpenFrmw_Click(object sender, EventArgs e)
+        private void OpenFirmwareClick(object sender, EventArgs e)
         {
             this.FirmwBuffer.ForeColor = System.Drawing.Color.Green;
             Stream fileStream = null;
@@ -161,8 +162,8 @@ namespace TinnyClock
                         using (fileStream)
                         {
                             // Insert code to read the stream here.
-                            System.IO.StreamReader sr = new
-                            System.IO.StreamReader(oFile.FileName);
+                            StreamReader sr = new
+                            StreamReader(oFile.FileName);
                             FirmwBuffer.Text = (sr.ReadToEnd());
                             sr.Close();
                         }
@@ -170,12 +171,12 @@ namespace TinnyClock
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
+                    MessageBox.Show($@"Error: Could not read file from disk. Original error: {ex.Message}");
                 }
             }
         }
 
-        private void saveButton_Click(object sender, EventArgs e)
+        private void SaveButtonClick(object sender, EventArgs e)
         {
             MemoryStream memorystream = new System.IO.MemoryStream();
             SaveFileDialog sFile = new SaveFileDialog();
@@ -194,7 +195,7 @@ namespace TinnyClock
             }
         }
 
-        private void sAsButton_Click(object sender, EventArgs e)
+        private void SaveAsButtonClick(object sender, EventArgs e)
         {
             // Create a SaveFileDialog to request a path and file name to save to.
             SaveFileDialog sFile = new SaveFileDialog();
@@ -218,12 +219,12 @@ namespace TinnyClock
             }
         }
 
-        private void clearBuffer_Click(object sender, EventArgs e)
+        private void ClearBufferClick(object sender, EventArgs e)
         {
             FirmwBuffer.Clear();
         }
 
-        private void readData_Click(object sender, EventArgs e)
+        private void DataReadClick(object sender, EventArgs e)
         {
             // Граф
             /*

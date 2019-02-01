@@ -137,7 +137,7 @@ namespace TinnyClock
             this.cmdClose.TabIndex = 5;
             this.cmdClose.Text = "Close Port";
             this.cmdClose.UseVisualStyleBackColor = true;
-            this.cmdClose.Click += new System.EventHandler(this.cmdClose_Click);
+            this.cmdClose.Click += new System.EventHandler(this.ComPortCloseClick);
             // 
             // groupBox3
             // 
@@ -172,7 +172,7 @@ namespace TinnyClock
             this.rdoHex.TabStop = true;
             this.rdoHex.Text = "Hex";
             this.rdoHex.UseVisualStyleBackColor = true;
-            this.rdoHex.CheckedChanged += new System.EventHandler(this.rdoHex_CheckedChanged);
+            this.rdoHex.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
             // cmdOpen
             // 
@@ -182,7 +182,7 @@ namespace TinnyClock
             this.cmdOpen.TabIndex = 8;
             this.cmdOpen.Text = "Open Port";
             this.cmdOpen.UseVisualStyleBackColor = true;
-            this.cmdOpen.Click += new System.EventHandler(this.cmdOpen_Click);
+            this.cmdOpen.Click += new System.EventHandler(this.ComPortOpenClick);
             // 
             // cboStop
             // 
@@ -513,7 +513,7 @@ namespace TinnyClock
             this.ConsoleClear.TabIndex = 6;
             this.ConsoleClear.Text = "Clear";
             this.ConsoleClear.UseVisualStyleBackColor = true;
-            this.ConsoleClear.Click += new System.EventHandler(this.ConsoleClear_Click);
+            this.ConsoleClear.Click += new System.EventHandler(this.ConsoleClearClick);
             // 
             // cmdSend
             // 
@@ -523,7 +523,7 @@ namespace TinnyClock
             this.cmdSend.TabIndex = 5;
             this.cmdSend.Text = "Send";
             this.cmdSend.UseVisualStyleBackColor = true;
-            this.cmdSend.Click += new System.EventHandler(this.cmdSend_Click);
+            this.cmdSend.Click += new System.EventHandler(this.SendToComPortClick);
             // 
             // txtSend
             // 
@@ -560,7 +560,7 @@ namespace TinnyClock
             this.readData.TabIndex = 1;
             this.readData.Text = "Read data";
             this.readData.UseVisualStyleBackColor = true;
-            this.readData.Click += new System.EventHandler(this.readData_Click);
+            this.readData.Click += new System.EventHandler(this.DataReadClick);
             // 
             // telemetryGraph
             // 
@@ -629,7 +629,7 @@ namespace TinnyClock
             this.clearBuffer.TabIndex = 6;
             this.clearBuffer.Text = "Clear buffer";
             this.clearBuffer.UseVisualStyleBackColor = true;
-            this.clearBuffer.Click += new System.EventHandler(this.clearBuffer_Click);
+            this.clearBuffer.Click += new System.EventHandler(this.ClearBufferClick);
             // 
             // saveButton
             // 
@@ -639,7 +639,7 @@ namespace TinnyClock
             this.saveButton.TabIndex = 5;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            this.saveButton.Click += new System.EventHandler(this.SaveButtonClick);
             // 
             // progressBar
             // 
@@ -673,7 +673,7 @@ namespace TinnyClock
             this.sAsButton.TabIndex = 1;
             this.sAsButton.Text = "Save As";
             this.sAsButton.UseVisualStyleBackColor = true;
-            this.sAsButton.Click += new System.EventHandler(this.sAsButton_Click);
+            this.sAsButton.Click += new System.EventHandler(this.SaveAsButtonClick);
             // 
             // OpenFrmw
             // 
@@ -683,7 +683,7 @@ namespace TinnyClock
             this.OpenFrmw.TabIndex = 0;
             this.OpenFrmw.Text = "Open ";
             this.OpenFrmw.UseVisualStyleBackColor = true;
-            this.OpenFrmw.Click += new System.EventHandler(this.OpenFrmw_Click);
+            this.OpenFrmw.Click += new System.EventHandler(this.OpenFirmwareClick);
             // 
             // timer1
             // 
