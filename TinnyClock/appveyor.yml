@@ -6,7 +6,7 @@ before_build:
 - choco install codecov
 
 build:
-  project: TinnyClock.sln.sln
+  project: TinnyClock.sln
   verbosity: minimal
 
 test_script:
