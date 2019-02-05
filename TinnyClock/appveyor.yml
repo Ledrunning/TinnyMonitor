@@ -10,13 +10,9 @@ build:
   verbosity: minimal
   
 artifacts:
-- path: deploy\*.exe
-    name: TinnyMonitor
-    
-deploy: 
-  - provider: WebDeploy 
-    artifact: TinnyMonitor    
-
+- path: deploy\TinnyMonitor.exe
+  name: TinnyMonitor
+  
 test_script:
 - OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:".\MyUnitTests\bin\Debug\MyUnitTests.dll -noshadow" -filter:"+[UnitTestTargetProject*]* -[MyUnitTests*]*" -output:".\MyProject_coverage.xml"
 - codecov -f "MyProject_coverage.xml
