@@ -8,6 +8,14 @@ before_build:
 build:
   project: TinnyClock.sln
   verbosity: minimal
+  
+artifacts:
+- path: deploy\*.exe
+    name: TinnyMonitor
+    
+deploy: 
+  - provider: WebDeploy 
+    artifact: TinnyMonitor    
 
 test_script:
 - OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:".\MyUnitTests\bin\Debug\MyUnitTests.dll -noshadow" -filter:"+[UnitTestTargetProject*]* -[MyUnitTests*]*" -output:".\MyProject_coverage.xml"
