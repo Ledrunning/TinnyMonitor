@@ -6,7 +6,7 @@ using MaterialSkin.Controls;
 
 namespace TinnyClock
 {
-    public partial class MainForm : Form //MaterialForm
+    public partial class MainForm : MaterialForm
     {
         private readonly MaterialSkinManager _materialSkinManager;
         private SerialPortManager _serialPort = new SerialPortManager();
@@ -15,6 +15,7 @@ namespace TinnyClock
         private int _secondTempToChart;
         private int _humidityToChart;
         private int _lightLevelToChart;
+        private int _colorSchemeIndex;
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -37,11 +38,11 @@ namespace TinnyClock
         {
             this.Invoke((MethodInvoker)delegate ()
             {
-                insideTemp.Text = obj.IndorTemperature;
-                outsideTemp.Text = obj.OutdoorTemperature;
-                huMidity.Text = obj.Humidity;
-                lightLevel.Text = obj.LightLevel;
-                rtbDisplay.AppendText(obj.RawText + Environment.NewLine);
+                //insideTemp.Text = obj.IndorTemperature;
+                //outsideTemp.Text = obj.OutdoorTemperature;
+                //huMidity.Text = obj.Humidity;
+                //lightLevel.Text = obj.LightLevel;
+                //rtbDisplay.AppendText(obj.RawText + Environment.NewLine);
                 try
                 {
                     if (obj.IndorTemperature != "NONE" && obj.OutdoorTemperature != "NONE" && obj.Humidity
@@ -69,10 +70,10 @@ namespace TinnyClock
 #if !DEBUG
             cboPort.SelectedIndex = 0;
 #endif
-            cboBaud.SelectedText = "9600";
-            cboParity.SelectedIndex = 0;
-            cboStop.SelectedIndex = 1;
-            cboData.SelectedIndex = 1;
+            //cboBaud.SelectedText = "9600";
+            //cboParity.SelectedIndex = 0;
+            //cboStop.SelectedIndex = 1;
+            //cboData.SelectedIndex = 1;
         }
 
         /// <summary>
@@ -81,9 +82,9 @@ namespace TinnyClock
         /// </summary>
         private void LoadValues()
         {
-            cboPort.DataSource = _serialPort.PortNameValues;
-            cboParity.DataSource = _serialPort.ParityValues;
-            cboStop.DataSource = _serialPort.StopBitValues;
+            //cboPort.DataSource = _serialPort.PortNameValues;
+            //cboParity.DataSource = _serialPort.ParityValues;
+            //cboStop.DataSource = _serialPort.StopBitValues;
         }
 
         /// <summary>
@@ -92,65 +93,65 @@ namespace TinnyClock
         /// </summary>
         private void SetControlState()
         {
-            rdoText.Checked = true;
-            cmdSend.Enabled = false;
-            cmdClose.Enabled = false;
+            //rdoText.Checked = true;
+            //cmdSend.Enabled = false;
+            //cmdClose.Enabled = false;
         }
 
         private void ComPortOpenClick(object sender, EventArgs e)
         {
-            _serialPort.Parity = cboParity.Text;
-            _serialPort.StopBits = cboStop.Text;
-            _serialPort.DataBits = cboData.Text;
-            _serialPort.BaudRatesRate = cboBaud.Text;
-            _serialPort.PortName = cboPort.Text;
-            _serialPort.OpenPort();
-            cmdOpen.Enabled = false;
-            cmdClose.Enabled = true;
-            cmdSend.Enabled = true;
+            //_serialPort.Parity = cboParity.Text;
+            //_serialPort.StopBits = cboStop.Text;
+            //_serialPort.DataBits = cboData.Text;
+            //_serialPort.BaudRatesRate = cboBaud.Text;
+            //_serialPort.PortName = cboPort.Text;
+            //_serialPort.OpenPort();
+            //cmdOpen.Enabled = false;
+            //cmdClose.Enabled = true;
+            //cmdSend.Enabled = true;
         }
 
         private void ComPortCloseClick(object sender, EventArgs e)
         {
-            cmdOpen.Enabled = true;
-            cmdClose.Enabled = false;
-            cmdSend.Enabled = false;
-            _serialPort.ClosePort();
+            //cmdOpen.Enabled = true;
+            //cmdClose.Enabled = false;
+            //cmdSend.Enabled = false;
+            //_serialPort.ClosePort();
         }
 
         private void SendToComPortClick(object sender, EventArgs e)
         {
-            _serialPort.WriteData(txtSend.Text);
+            //_serialPort.WriteData(txtSend.Text);
         }
 
         private void CheckedChanged(object sender, EventArgs e)
         {
-            if (rdoHex.Checked)
-            {
-                _serialPort.CurrentTransmissionType = SerialPortManager.TransmissionType.Hex;
-            }
-            else
-            {
-                _serialPort.CurrentTransmissionType = SerialPortManager.TransmissionType.Text;
-            }
+            //if (rdoHex.Checked)
+            //{
+            //    _serialPort.CurrentTransmissionType = SerialPortManager.TransmissionType.Hex;
+            //}
+            //else
+            //{
+            //    _serialPort.CurrentTransmissionType = SerialPortManager.TransmissionType.Text;
+            //}
         }
 
         // Clear Console;
         private void ConsoleClearClick(object sender, EventArgs e)
         {
-            rtbDisplay.Clear();
+            //rtbDisplay.Clear();
         }
 
         // Time and date;
         private void OnTimerTick(object sender, EventArgs e)
         {
-            DateLabel.Text = DateTime.Now.ToString("MM/dd/yyyy");
-            TimeLabel.Text = DateTime.Now.ToString("HH:mm:ss");
+            //DateLabel.Text = DateTime.Now.ToString("MM/dd/yyyy");
+            //TimeLabel.Text = DateTime.Now.ToString("HH:mm:ss");
         }
 
         private void OpenFirmwareClick(object sender, EventArgs e)
         {
-            this.FirmwBuffer.ForeColor = System.Drawing.Color.Green;
+            //this.FirmwBuffer.ForeColor = System.Drawing.Color.Green;
             Stream fileStream = null;
             OpenFileDialog oFile = new OpenFileDialog();
 
@@ -170,7 +171,7 @@ namespace TinnyClock
                             // Insert code to read the stream here.
                             StreamReader sr = new
                             StreamReader(oFile.FileName);
-                            FirmwBuffer.Text = (sr.ReadToEnd());
+                            //FirmwBuffer.Text = (sr.ReadToEnd());
                             sr.Close();
                         }
                     }
@@ -193,8 +194,7 @@ namespace TinnyClock
                 fileStream = sFile.OpenFile();
                 //       memorystream.Position = 0;
                 //сохраняем в поток содержимое richTextBox1
-                FirmwBuffer.SaveFile(memorystream,
-                      RichTextBoxStreamType.PlainText);
+                //FirmwBuffer.SaveFile(memorystream, RichTextBoxStreamType.PlainText);
                 //переносим в файл информацию и закрываем поток
                 memorystream.WriteTo(fileStream);
                 fileStream.Close();
@@ -216,7 +216,7 @@ namespace TinnyClock
                    sFile.FileName.Length > 0)
                 {
                     // Save the contents of the RichTextBox into the file.
-                    FirmwBuffer.SaveFile(sFile.FileName, RichTextBoxStreamType.PlainText);
+                    //FirmwBuffer.SaveFile(sFile.FileName, RichTextBoxStreamType.PlainText);
                 }
             }
             catch (Exception ex)
@@ -227,7 +227,7 @@ namespace TinnyClock
 
         private void ClearBufferClick(object sender, EventArgs e)
         {
-            FirmwBuffer.Clear();
+            //FirmwBuffer.Clear();
         }
 
         private void DataReadClick(object sender, EventArgs e)
@@ -240,16 +240,44 @@ namespace TinnyClock
             tellemetry.Add(humidityToChart);
             tellemetry.Add(lightLevelToChart);
             */
-            telemetryGraph.Series[0].Points.AddY(_firstTempToChart);
-            telemetryGraph.Series[1].Points.AddY(_secondTempToChart);
-            telemetryGraph.Series[2].Points.AddY(_humidityToChart);
-            telemetryGraph.Series[3].Points.AddY(_lightLevelToChart);
+            //telemetryGraph.Series[0].Points.AddY(_firstTempToChart);
+            //telemetryGraph.Series[1].Points.AddY(_secondTempToChart);
+            //telemetryGraph.Series[2].Points.AddY(_humidityToChart);
+            //telemetryGraph.Series[3].Points.AddY(_lightLevelToChart);
             /*
             foreach (int item in tellemetry)
             {
                 telemetryGraph.Series[0].Points.AddY(item);
             }
             */
+        }
+
+        private void ThemeClick(object sender, EventArgs e)
+        {
+            _materialSkinManager.Theme = _materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? MaterialSkinManager.Themes.LIGHT : MaterialSkinManager.Themes.DARK;
+        }
+
+        private void ColorClick(object sender, EventArgs e)
+        {
+            _colorSchemeIndex++;
+            if (_colorSchemeIndex > 3) _colorSchemeIndex = 0;
+
+            //These are just example color schemes
+            switch (_colorSchemeIndex)
+            {
+                case 0:
+                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+                    break;
+                case 1:
+                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
+                    break;
+                case 2:
+                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.Green600, Primary.Green700, Primary.Green200, Accent.Red100, TextShade.WHITE);
+                    break;
+                case 3:
+                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.Red200, Primary.Red800, Primary.Red300, Accent.Red200, TextShade.WHITE);
+                    break;
+            }
         }
     }
 }
