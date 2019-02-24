@@ -1,6 +1,8 @@
 # TinnyMonitor
 Desktop application for hardware weather station
 
+You should find it on this repository - https://github.com/Ledrunning/HomeMeteostation
+
 ## Application Capabilities
 
 * Getting data from hardware device using USB (Virtual com port); 
