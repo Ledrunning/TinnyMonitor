@@ -1,5 +1,7 @@
 # TinnyMonitor
-Desktop application for hardware weather station
+Desktop application for hardware weather station 
+
+You should find it on this repository - https://github.com/Ledrunning/HomeMeteostation
 
 You should find it on this repository - https://github.com/Ledrunning/HomeMeteostation
 
