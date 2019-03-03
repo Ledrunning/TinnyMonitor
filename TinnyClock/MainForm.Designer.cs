@@ -74,6 +74,14 @@ namespace TinnyClock
             this.rdoText = new MaterialSkin.Controls.MaterialRadioButton();
             this.themeButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.colorButton = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.firmwBuffer = new System.Windows.Forms.RichTextBox();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.materialRaisedButton4 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.materialRaisedButton3 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.openFrmw = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.materialTabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -81,6 +89,10 @@ namespace TinnyClock
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // timer1
@@ -431,6 +443,7 @@ namespace TinnyClock
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.tableLayoutPanel4);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Size = new System.Drawing.Size(575, 348);
@@ -644,6 +657,114 @@ namespace TinnyClock
             this.colorButton.UseVisualStyleBackColor = true;
             this.colorButton.Click += new System.EventHandler(this.OnColorChangedClick);
             // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tableLayoutPanel4.Controls.Add(this.firmwBuffer, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel5, 0, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(575, 348);
+            this.tableLayoutPanel4.TabIndex = 0;
+            // 
+            // firmwBuffer
+            // 
+            this.firmwBuffer.Location = new System.Drawing.Point(233, 3);
+            this.firmwBuffer.Name = "firmwBuffer";
+            this.firmwBuffer.Size = new System.Drawing.Size(339, 342);
+            this.firmwBuffer.TabIndex = 0;
+            this.firmwBuffer.Text = "";
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 1;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel6, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.progressBar1, 0, 1);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 2;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(224, 342);
+            this.tableLayoutPanel5.TabIndex = 1;
+            // 
+            // tableLayoutPanel6
+            // 
+            this.tableLayoutPanel6.ColumnCount = 2;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 41.96429F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 58.03571F));
+            this.tableLayoutPanel6.Controls.Add(this.openFrmw, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.materialRaisedButton3, 0, 1);
+            this.tableLayoutPanel6.Controls.Add(this.materialRaisedButton4, 0, 2);
+            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+            this.tableLayoutPanel6.RowCount = 3;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 57F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(224, 171);
+            this.tableLayoutPanel6.TabIndex = 0;
+            // 
+            // materialRaisedButton4
+            // 
+            this.materialRaisedButton4.Depth = 0;
+            this.materialRaisedButton4.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.materialRaisedButton4.Location = new System.Drawing.Point(3, 137);
+            this.materialRaisedButton4.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton4.Name = "materialRaisedButton4";
+            this.materialRaisedButton4.Primary = true;
+            this.materialRaisedButton4.Size = new System.Drawing.Size(88, 31);
+            this.materialRaisedButton4.TabIndex = 38;
+            this.materialRaisedButton4.Text = "FLASH";
+            this.materialRaisedButton4.UseVisualStyleBackColor = true;
+            // 
+            // materialRaisedButton3
+            // 
+            this.materialRaisedButton3.Depth = 0;
+            this.materialRaisedButton3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.materialRaisedButton3.Location = new System.Drawing.Point(3, 80);
+            this.materialRaisedButton3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton3.Name = "materialRaisedButton3";
+            this.materialRaisedButton3.Primary = true;
+            this.materialRaisedButton3.Size = new System.Drawing.Size(88, 31);
+            this.materialRaisedButton3.TabIndex = 37;
+            this.materialRaisedButton3.Text = "cLEAR BUFFER";
+            this.materialRaisedButton3.UseVisualStyleBackColor = true;
+            // 
+            // openFrmw
+            // 
+            this.openFrmw.Depth = 0;
+            this.openFrmw.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.openFrmw.Location = new System.Drawing.Point(3, 23);
+            this.openFrmw.MouseState = MaterialSkin.MouseState.HOVER;
+            this.openFrmw.Name = "openFrmw";
+            this.openFrmw.Primary = true;
+            this.openFrmw.Size = new System.Drawing.Size(88, 31);
+            this.openFrmw.TabIndex = 36;
+            this.openFrmw.Text = "Open File";
+            this.openFrmw.UseVisualStyleBackColor = true;
+            this.openFrmw.Click += new System.EventHandler(this.OpenFirmwareClick);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.progressBar1.Location = new System.Drawing.Point(3, 316);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(218, 23);
+            this.progressBar1.TabIndex = 1;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -685,6 +806,10 @@ namespace TinnyClock
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel6.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -735,5 +860,13 @@ namespace TinnyClock
         private System.Windows.Forms.RichTextBox txtSend;
         private MaterialSkin.Controls.MaterialRaisedButton drawChart;
         private OxyPlot.WindowsForms.PlotView plotView;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.RichTextBox firmwBuffer;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
+        private MaterialSkin.Controls.MaterialRaisedButton openFrmw;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton3;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton4;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }

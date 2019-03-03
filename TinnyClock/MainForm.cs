@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using MaterialSkin;
@@ -216,28 +217,27 @@ namespace TinnyClock
 
         private void OpenFirmwareClick(object sender, EventArgs e)
         {
-            //this.FirmwBuffer.ForeColor = System.Drawing.Color.Green;
+            this.firmwBuffer.ForeColor = Color.Green;
             Stream fileStream = null;
-            OpenFileDialog oFile = new OpenFileDialog();
+            var openFile = new OpenFileDialog();
 
-            oFile.InitialDirectory = "c:\\";
-            oFile.Filter = "HEX files (*.hex)|*.hex|All files (*.*)|*.*";
-            oFile.FilterIndex = 2;
-            oFile.RestoreDirectory = true;
+            openFile.InitialDirectory = "c:\\";
+            openFile.Filter = "HEX files (*.hex)|*.hex|All files (*.*)|*.*";
+            openFile.FilterIndex = 2;
+            openFile.RestoreDirectory = true;
 
-            if (oFile.ShowDialog() == DialogResult.OK)
+            if (openFile.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
-                    if ((fileStream = oFile.OpenFile()) != null)
+                    if ((fileStream = openFile.OpenFile()) != null)
                     {
                         using (fileStream)
                         {
                             // Insert code to read the stream here.
-                            StreamReader sr = new
-                            StreamReader(oFile.FileName);
-                            //FirmwBuffer.Text = (sr.ReadToEnd());
-                            sr.Close();
+                            StreamReader reader = new StreamReader(openFile.FileName);
+                            this.firmwBuffer.Text = (reader.ReadToEnd());
+                            reader.Close();
                         }
                     }
                 }
@@ -250,13 +250,13 @@ namespace TinnyClock
 
         private void SaveButtonClick(object sender, EventArgs e)
         {
-            MemoryStream memorystream = new System.IO.MemoryStream();
-            SaveFileDialog sFile = new SaveFileDialog();
-            Stream fileStream;
+            var memorystream = new MemoryStream();
+            var sFile = new SaveFileDialog();
+
             if (sFile.ShowDialog() == DialogResult.OK)
             {
                 //ассоциируем поток с именем файла - если фйла нет создаем
-                fileStream = sFile.OpenFile();
+                var fileStream = sFile.OpenFile();
                 //       memorystream.Position = 0;
                 //сохраняем в поток содержимое richTextBox1
                 //FirmwBuffer.SaveFile(memorystream, RichTextBoxStreamType.PlainText);
@@ -269,7 +269,7 @@ namespace TinnyClock
         private void SaveAsButtonClick(object sender, EventArgs e)
         {
             // Create a SaveFileDialog to request a path and file name to save to.
-            SaveFileDialog sFile = new SaveFileDialog();
+            var sFile = new SaveFileDialog();
 
             // Initialize the SaveFileDialog to specify the RTF extension for the file.
             // saveFile1.DefaultExt = "*.hex";
@@ -292,7 +292,7 @@ namespace TinnyClock
 
         private void ClearBufferClick(object sender, EventArgs e)
         {
-            //FirmwBuffer.Clear();
+            this.firmwBuffer.Clear();
         }
 
         private void OnThemeClick(object sender, EventArgs e)
