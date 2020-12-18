@@ -1,11 +1,11 @@
-﻿namespace TinnyClock
+﻿namespace TinnyClock.Models
 {
-	public class ReceivedDataDTO
-	{
-		public string IndorTemperature { get; set; }
-		public string OutdoorTemperature { get; set; }
-		public string Humidity { get; set; }
-		public string LightLevel { get; set; }
-		public string RawText { get; set; }
-	}
+    public class ReceivedDataDto
+    {
+        public string IndorTemperature { get; set; }
+        public string OutdoorTemperature { get; set; }
+        public string Humidity { get; set; }
+        public string LightLevel { get; set; }
+        public string RawText { get; set; }
+    }
 }

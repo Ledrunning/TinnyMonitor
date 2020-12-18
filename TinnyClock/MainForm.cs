@@ -7,19 +7,32 @@ using MaterialSkin.Controls;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using TinnyClock.Models;
 
 namespace TinnyClock
 {
     public partial class MainForm : MaterialForm
     {
         private readonly MaterialSkinManager _materialSkinManager;
-        private SerialPortManager _serialPort = new SerialPortManager();
-        private string _transType = string.Empty;
+        private int _colorSchemeIndex;
         private int _firstTempToChart;
-        private int _secondTempToChart;
         private int _humidityToChart;
         private int _lightLevelToChart;
-        private int _colorSchemeIndex;
+        private int _secondTempToChart;
+        private readonly SerialPortManager _serialPort = new SerialPortManager();
+        private string _transType = string.Empty;
+        private const string HexFilesFilter = "HEX files (*.hex)|*.hex|All files (*.*)|*.*";
+
+        public MainForm()
+        {
+            InitializeComponent();
+            _materialSkinManager = MaterialSkinManager.Instance;
+            _materialSkinManager.AddFormToManage(this);
+            _materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            _materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900,
+                Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+            _serialPort.OnDataReceived += SerialPortOnDataReceived;
+        }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -28,19 +41,9 @@ namespace TinnyClock
             SetControlState();
         }
 
-        public MainForm()
+        private void SerialPortOnDataReceived(ReceivedDataDto obj)
         {
-            InitializeComponent();
-            _materialSkinManager = MaterialSkinManager.Instance;
-            _materialSkinManager.AddFormToManage(this);
-            _materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-            _materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
-            _serialPort.OnDataReceived += SerialPortOnDataReceived;
-        }
-
-        private void SerialPortOnDataReceived(TinnyClock.ReceivedDataDTO obj)
-        {
-            this.Invoke((MethodInvoker)delegate ()
+            Invoke((MethodInvoker) delegate
             {
                 insideTemp.Text = obj.IndorTemperature;
                 outsideTemp.Text = obj.OutdoorTemperature;
@@ -50,7 +53,7 @@ namespace TinnyClock
                 try
                 {
                     if (obj.IndorTemperature != "NONE" && obj.OutdoorTemperature != "NONE" && obj.Humidity
-                    != "NONE" && obj.LightLevel != "NONE")
+                        != "NONE" && obj.LightLevel != "NONE")
                     {
                         _firstTempToChart = Convert.ToInt32(obj.IndorTemperature);
                         _secondTempToChart = Convert.ToInt32(obj.OutdoorTemperature);
@@ -66,8 +69,8 @@ namespace TinnyClock
         }
 
         /// <summary>
-        /// Method to initialize serial port
-        /// values to standard defaults
+        ///     Method to initialize serial port
+        ///     values to standard defaults
         /// </summary>
         private void SetDefaults()
         {
@@ -81,8 +84,8 @@ namespace TinnyClock
         }
 
         /// <summary>
-        /// methods to load our serial
-        /// port option values
+        ///     methods to load our serial
+        ///     port option values
         /// </summary>
         private void LoadValues()
         {
@@ -92,8 +95,8 @@ namespace TinnyClock
         }
 
         /// <summary>
-        /// method to set the state of controls
-        /// when the form first loads
+        ///     method to set the state of controls
+        ///     when the form first loads
         /// </summary>
         private void SetControlState()
         {
@@ -101,68 +104,6 @@ namespace TinnyClock
             cmdSend.Enabled = false;
             cmdClose.Enabled = false;
         }
-
-        #region Test Chart drawing
-        private void PrintChart()
-        {
-            PlotModel plotModel = new PlotModel
-            {
-                // set here main properties such as the legend, the title, etc. example :
-                Title = "Test Graph",
-                TitleHorizontalAlignment = TitleHorizontalAlignment.CenteredWithinPlotArea,
-                LegendTitle = "f/t",
-                LegendOrientation = LegendOrientation.Horizontal,
-                LegendPlacement = LegendPlacement.Inside,
-                LegendPosition = LegendPosition.TopRight
-            };
-
-            // now let's define X and Y axis for the plot model
-
-            LinearAxis xAxis = new LinearAxis();
-            xAxis.Position = AxisPosition.Bottom;
-            xAxis.Title = "Time (hours)";
-
-            LinearAxis yAxis = new LinearAxis();
-            yAxis.Position = AxisPosition.Left;
-            yAxis.Title = "Frequency";
-
-            plotModel.Axes.Add(xAxis);
-            plotModel.Axes.Add(yAxis);
-
-            // Finally let's define a LineSerie
-
-            LineSeries lineSerie = new LineSeries
-            {
-                StrokeThickness = 2,
-                CanTrackerInterpolatePoints = false,
-                Title = "Value",
-                Smooth = false
-            };
-            plotModel.Series.Add(lineSerie);
-            this.plotView.Model = plotModel;
-            this.plotView.Model.Series.Add(GetFunction());
-        }
-
-        private FunctionSeries GetFunction()
-        {
-            int n = 10;
-            FunctionSeries fs = new FunctionSeries();
-            for (int x = -10; x <= n; x++)
-            {
-                for (int y = -10; y <= n; y++)
-                {
-                    DataPoint dataPoint = new DataPoint(x, GetValue(x, y));
-                    fs.Points.Add(dataPoint);
-                }
-            }
-            return fs;
-        }
-
-        private double GetValue(int x, int y)
-        {
-            return -1 * (x * x) + 50;
-        }
-        #endregion
 
         private void ComPortOpenClick(object sender, EventArgs e)
         {
@@ -217,12 +158,12 @@ namespace TinnyClock
 
         private void OpenFirmwareClick(object sender, EventArgs e)
         {
-            this.firmwBuffer.ForeColor = Color.Green;
+            firmwBuffer.ForeColor = Color.Green;
             Stream fileStream = null;
             var openFile = new OpenFileDialog();
 
             openFile.InitialDirectory = "c:\\";
-            openFile.Filter = "HEX files (*.hex)|*.hex|All files (*.*)|*.*";
+            openFile.Filter = HexFilesFilter;
             openFile.FilterIndex = 2;
             openFile.RestoreDirectory = true;
 
@@ -235,8 +176,8 @@ namespace TinnyClock
                         using (fileStream)
                         {
                             // Insert code to read the stream here.
-                            StreamReader reader = new StreamReader(openFile.FileName);
-                            this.firmwBuffer.Text = (reader.ReadToEnd());
+                            var reader = new StreamReader(openFile.FileName);
+                            firmwBuffer.Text = reader.ReadToEnd();
                             reader.Close();
                         }
                     }
@@ -255,12 +196,8 @@ namespace TinnyClock
 
             if (sFile.ShowDialog() == DialogResult.OK)
             {
-                //ассоциируем поток с именем файла - если фйла нет создаем
+                
                 var fileStream = sFile.OpenFile();
-                //       memorystream.Position = 0;
-                //сохраняем в поток содержимое richTextBox1
-                //FirmwBuffer.SaveFile(memorystream, RichTextBoxStreamType.PlainText);
-                //переносим в файл информацию и закрываем поток
                 memorystream.WriteTo(fileStream);
                 fileStream.Close();
             }
@@ -273,12 +210,12 @@ namespace TinnyClock
 
             // Initialize the SaveFileDialog to specify the RTF extension for the file.
             // saveFile1.DefaultExt = "*.hex";
-            sFile.Filter = "HEX files (*.hex)|*.hex|All files (*.*)|*.*";
+            sFile.Filter = HexFilesFilter;
             try
             {
                 // Determine if the user selected a file name from the saveFileDialog.
-                if (sFile.ShowDialog() == System.Windows.Forms.DialogResult.OK &&
-                   sFile.FileName.Length > 0)
+                if (sFile.ShowDialog() == DialogResult.OK &&
+                    sFile.FileName.Length > 0)
                 {
                     // Save the contents of the RichTextBox into the file.
                     //FirmwBuffer.SaveFile(sFile.FileName, RichTextBoxStreamType.PlainText);
@@ -292,33 +229,42 @@ namespace TinnyClock
 
         private void ClearBufferClick(object sender, EventArgs e)
         {
-            this.firmwBuffer.Clear();
+            firmwBuffer.Clear();
         }
 
         private void OnThemeClick(object sender, EventArgs e)
         {
-            _materialSkinManager.Theme = _materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? MaterialSkinManager.Themes.LIGHT : MaterialSkinManager.Themes.DARK;
+            _materialSkinManager.Theme = _materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
+                ? MaterialSkinManager.Themes.LIGHT
+                : MaterialSkinManager.Themes.DARK;
         }
 
         private void OnColorChangedClick(object sender, EventArgs e)
         {
             _colorSchemeIndex++;
-            if (_colorSchemeIndex > 3) _colorSchemeIndex = 0;
+            if (_colorSchemeIndex > 3)
+            {
+                _colorSchemeIndex = 0;
+            }
 
             //These are just example color schemes
             switch (_colorSchemeIndex)
             {
                 case 0:
-                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900,
+                        Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
                     break;
                 case 1:
-                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
+                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700,
+                        Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
                     break;
                 case 2:
-                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.Green600, Primary.Green700, Primary.Green200, Accent.Red100, TextShade.WHITE);
+                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.Green600, Primary.Green700,
+                        Primary.Green200, Accent.Red100, TextShade.WHITE);
                     break;
                 case 3:
-                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.Red200, Primary.Red800, Primary.Red300, Accent.Red200, TextShade.WHITE);
+                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.Red200, Primary.Red800, Primary.Red300,
+                        Accent.Red200, TextShade.WHITE);
                     break;
             }
         }
@@ -327,5 +273,70 @@ namespace TinnyClock
         {
             PrintChart();
         }
+
+        #region Test Chart drawing
+
+        private void PrintChart()
+        {
+            var plotModel = new PlotModel
+            {
+                // set here main properties such as the legend, the title, etc. example :
+                Title = "Test Graph",
+                TitleHorizontalAlignment = TitleHorizontalAlignment.CenteredWithinPlotArea,
+                LegendTitle = "f/t",
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendPlacement = LegendPlacement.Inside,
+                LegendPosition = LegendPosition.TopRight
+            };
+
+            // now let's define X and Y axis for the plot model
+
+            var xAxis = new LinearAxis();
+            xAxis.Position = AxisPosition.Bottom;
+            xAxis.Title = "Time (hours)";
+
+            var yAxis = new LinearAxis();
+            yAxis.Position = AxisPosition.Left;
+            yAxis.Title = "Humidity";
+
+            plotModel.Axes.Add(xAxis);
+            plotModel.Axes.Add(yAxis);
+
+            // Finally let's define a LineSerie
+
+            var lineSerie = new LineSeries
+            {
+                StrokeThickness = 2,
+                CanTrackerInterpolatePoints = false,
+                Title = "Value",
+                Smooth = false
+            };
+            plotModel.Series.Add(lineSerie);
+            plotView.Model = plotModel;
+            plotView.Model.Series.Add(GetFunction());
+        }
+
+        private FunctionSeries GetFunction()
+        {
+            var n = 10;
+            var fs = new FunctionSeries();
+            for (var x = -10; x <= n; x++)
+            {
+                for (var y = -10; y <= n; y++)
+                {
+                    var dataPoint = new DataPoint(x, GetValue(x, y));
+                    fs.Points.Add(dataPoint);
+                }
+            }
+
+            return fs;
+        }
+
+        private double GetValue(int x, int y)
+        {
+            return -1 * x * x + 50;
+        }
+
+        #endregion
     }
 }
