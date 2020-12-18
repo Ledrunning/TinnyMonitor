@@ -7,21 +7,26 @@ using MaterialSkin.Controls;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using OxyPlot.WindowsForms;
 using TinnyClock.Models;
 
 namespace TinnyClock
 {
     public partial class MainForm : MaterialForm
     {
+        private const string HexFilesFilter = "HEX files (*.hex)|*.hex|All files (*.*)|*.*";
+
+        private readonly Timer _graphChangeTimer = new Timer();
         private readonly MaterialSkinManager _materialSkinManager;
+        private readonly SerialPortManager _serialPort = new SerialPortManager();
         private int _colorSchemeIndex;
         private int _firstTempToChart;
         private int _humidityToChart;
         private int _lightLevelToChart;
         private int _secondTempToChart;
-        private readonly SerialPortManager _serialPort = new SerialPortManager();
         private string _transType = string.Empty;
-        private const string HexFilesFilter = "HEX files (*.hex)|*.hex|All files (*.*)|*.*";
+
+        private bool isClicked = true;
 
         public MainForm()
         {
@@ -31,7 +36,10 @@ namespace TinnyClock
             _materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             _materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900,
                 Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
-            _serialPort.OnDataReceived += SerialPortOnDataReceived;
+            _serialPort.OnDataReceived += OnSerialPortDataReceived;
+
+            //InitializeGraphTimer();
+            SetupChartModel();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -41,7 +49,7 @@ namespace TinnyClock
             SetControlState();
         }
 
-        private void SerialPortOnDataReceived(ReceivedDataDto obj)
+        private void OnSerialPortDataReceived(ReceivedDataDto obj)
         {
             Invoke((MethodInvoker) delegate
             {
@@ -196,7 +204,6 @@ namespace TinnyClock
 
             if (sFile.ShowDialog() == DialogResult.OK)
             {
-                
                 var fileStream = sFile.OpenFile();
                 memorystream.WriteTo(fileStream);
                 fileStream.Close();
@@ -269,74 +276,120 @@ namespace TinnyClock
             }
         }
 
+        private void InitializeGraphTimer()
+        {
+            _graphChangeTimer.Enabled = true;
+            _graphChangeTimer.Interval = 100;
+            _graphChangeTimer.Tick += OnGraphChangeTimerTick;
+        }
+
+        private void SetupChartModel()
+        {
+            if (plotView.Model == null)
+            {
+                plotView.Model = new PlotModel();
+            }
+
+            InitializeCharts(plotView, "Telemetry data");
+        }
+
+        private void InitializeCharts(PlotView plotModel, string title)
+        {
+            plotModel.Model.Title = title;
+            plotModel.Model.PlotAreaBorderColor = OxyColor.FromRgb(255, 255, 255);
+            plotModel.Model.TitleColor = OxyColor.FromRgb(255, 255, 255);
+
+            plotModel.Model.LegendPosition = LegendPosition.RightBottom;
+            //Y
+            plotModel.Model.Axes.Add(new LinearAxis
+            {
+                IsPanEnabled = false, // отключение скролинга
+                IsZoomEnabled = false, // отключение зума 
+                Position = AxisPosition.Left,
+                Minimum = -2,
+                Maximum = 2,
+                TextColor = OxyColor.FromRgb(74, 134, 187),
+                AxislineColor = OxyColor.FromRgb(255, 255, 255),
+                MajorGridlineColor = OxyColor.FromArgb(40, 100, 0, 139),
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineColor = OxyColor.FromArgb(20, 0, 0, 139),
+                MinorGridlineStyle = LineStyle.Solid,
+                TicklineColor = OxyColor.FromRgb(255, 255, 255)
+            });
+
+            //X
+            plotModel.Model.Axes.Add(new LinearAxis
+            {
+                IsPanEnabled = false, // отключение скролинга
+                IsZoomEnabled = false, // отключение зума
+                Position = AxisPosition.Bottom,
+                TextColor = OxyColor.FromRgb(74, 134, 187),
+                AxislineColor = OxyColor.FromRgb(255, 255, 255),
+                MajorGridlineColor = OxyColor.FromArgb(40, 100, 0, 139),
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineColor = OxyColor.FromArgb(20, 0, 0, 139),
+                MinorGridlineStyle = LineStyle.Solid,
+                TicklineColor = OxyColor.FromRgb(255, 255, 255)
+            });
+
+            plotModel.Model.Series.Add(new LineSeries
+            {
+                LineStyle = LineStyle.Solid, Color = OxyColor.FromRgb(74, 134, 187)
+            }); //rgb(74,134,187) #4a86bb
+        }
+
+        private void UpdateFirstChart()
+        {
+            var lineSeries = (LineSeries) plotView.Model.Series[0];
+
+            var x = lineSeries.Points.Count > 0 ? lineSeries.Points[lineSeries.Points.Count - 1].X + 1 : 0;
+            if (lineSeries.Points.Count >= 200)
+            {
+                lineSeries.Points.RemoveAt(0);
+            }
+
+            double y = 0;
+            var m = 80;
+            for (var j = 0; j < m; j++)
+            {
+                y += Math.Cos(0.001 * x * j * j);
+            }
+
+            y /= m;
+            lineSeries.Points.Add(new DataPoint(x, y));
+        }
+
+        private void OnGraphChangeTimerTick(object sender, EventArgs e)
+        {
+            lock (plotView.Model.SyncRoot)
+            {
+                UpdateFirstChart();
+                plotView.Model.InvalidatePlot(true);
+            }
+        }
+
         private void OnDrawChartClick(object sender, EventArgs e)
         {
-            PrintChart();
+            if (isClicked)
+            {
+                drawChart.Text = "Stop Drawing";
+                InitializeGraphTimer();
+                _graphChangeTimer.Start();
+                isClicked = false;
+            }
+            else
+            {
+                drawChart.Text = "Draw";
+                _graphChangeTimer.Enabled = false;
+                _graphChangeTimer.Stop();
+                isClicked = true;
+            }
+
+            //PrintChart();
         }
 
         #region Test Chart drawing
-
-        private void PrintChart()
-        {
-            var plotModel = new PlotModel
-            {
-                // set here main properties such as the legend, the title, etc. example :
-                Title = "Test Graph",
-                TitleHorizontalAlignment = TitleHorizontalAlignment.CenteredWithinPlotArea,
-                LegendTitle = "f/t",
-                LegendOrientation = LegendOrientation.Horizontal,
-                LegendPlacement = LegendPlacement.Inside,
-                LegendPosition = LegendPosition.TopRight
-            };
-
-            // now let's define X and Y axis for the plot model
-
-            var xAxis = new LinearAxis();
-            xAxis.Position = AxisPosition.Bottom;
-            xAxis.Title = "Time (hours)";
-
-            var yAxis = new LinearAxis();
-            yAxis.Position = AxisPosition.Left;
-            yAxis.Title = "Humidity";
-
-            plotModel.Axes.Add(xAxis);
-            plotModel.Axes.Add(yAxis);
-
-            // Finally let's define a LineSerie
-
-            var lineSerie = new LineSeries
-            {
-                StrokeThickness = 2,
-                CanTrackerInterpolatePoints = false,
-                Title = "Value",
-                Smooth = false
-            };
-            plotModel.Series.Add(lineSerie);
-            plotView.Model = plotModel;
-            plotView.Model.Series.Add(GetFunction());
-        }
-
-        private FunctionSeries GetFunction()
-        {
-            var n = 10;
-            var fs = new FunctionSeries();
-            for (var x = -10; x <= n; x++)
-            {
-                for (var y = -10; y <= n; y++)
-                {
-                    var dataPoint = new DataPoint(x, GetValue(x, y));
-                    fs.Points.Add(dataPoint);
-                }
-            }
-
-            return fs;
-        }
-
-        private double GetValue(int x, int y)
-        {
-            return -1 * x * x + 50;
-        }
-
+        
         #endregion
     }
 }
