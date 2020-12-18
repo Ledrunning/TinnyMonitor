@@ -22,6 +22,6 @@ You should find it on this repository - https://github.com/Ledrunning/HomeMeteos
 * Nplot or Oxyplot for charts;
 * Nlog;
 
-![GitHub Logo](https://habrastorage.org/web/328/e3c/e48/328e3ce4873544ac8ac13994e84b6335.jpeg)
+![GitHub Logo](https://habrastorage.org/webt/p0/xb/ic/p0xbiclbdltl33e_tdruic3qdgo.jpeg)
 
 
