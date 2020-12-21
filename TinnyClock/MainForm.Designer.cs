@@ -57,15 +57,6 @@ namespace TinnyClock
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.drawChart = new MaterialSkin.Controls.MaterialRaisedButton();
             this.plotView = new OxyPlot.WindowsForms.PlotView();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.firmwBuffer = new System.Windows.Forms.RichTextBox();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.openFrmw = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.materialRaisedButton3 = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.materialRaisedButton4 = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.cboPort = new System.Windows.Forms.ComboBox();
             this.cboBaud = new System.Windows.Forms.ComboBox();
             this.cboParity = new System.Windows.Forms.ComboBox();
@@ -89,10 +80,6 @@ namespace TinnyClock
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            this.tabPage4.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
-            this.tableLayoutPanel5.SuspendLayout();
-            this.tableLayoutPanel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // timer1
@@ -107,7 +94,7 @@ namespace TinnyClock
             this.materialTabSelector1.BaseTabControl = this.materialTabControl1;
             this.materialTabSelector1.Depth = 0;
             this.materialTabSelector1.Location = new System.Drawing.Point(0, 79);
-            this.materialTabSelector1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.materialTabSelector1.Margin = new System.Windows.Forms.Padding(4);
             this.materialTabSelector1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialTabSelector1.Name = "materialTabSelector1";
             this.materialTabSelector1.Size = new System.Drawing.Size(987, 59);
@@ -119,10 +106,9 @@ namespace TinnyClock
             this.materialTabControl1.Controls.Add(this.tabPage1);
             this.materialTabControl1.Controls.Add(this.tabPage2);
             this.materialTabControl1.Controls.Add(this.tabPage3);
-            this.materialTabControl1.Controls.Add(this.tabPage4);
             this.materialTabControl1.Depth = 0;
             this.materialTabControl1.Location = new System.Drawing.Point(0, 143);
-            this.materialTabControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.materialTabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.materialTabControl1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialTabControl1.Name = "materialTabControl1";
             this.materialTabControl1.SelectedIndex = 0;
@@ -144,9 +130,9 @@ namespace TinnyClock
             this.tabPage1.Controls.Add(this.materialLabel2);
             this.tabPage1.Controls.Add(this.lb);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage1.Size = new System.Drawing.Size(769, 431);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Monitor";
@@ -325,9 +311,9 @@ namespace TinnyClock
             // 
             this.tabPage2.Controls.Add(this.tableLayoutPanel1);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage2.Size = new System.Drawing.Size(769, 431);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Console";
@@ -341,7 +327,7 @@ namespace TinnyClock
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(4, 4);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85F));
@@ -353,7 +339,7 @@ namespace TinnyClock
             // 
             this.rtbDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbDisplay.Location = new System.Drawing.Point(4, 4);
-            this.rtbDisplay.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rtbDisplay.Margin = new System.Windows.Forms.Padding(4);
             this.rtbDisplay.Name = "rtbDisplay";
             this.rtbDisplay.Size = new System.Drawing.Size(753, 351);
             this.rtbDisplay.TabIndex = 0;
@@ -368,7 +354,7 @@ namespace TinnyClock
             this.tableLayoutPanel2.Controls.Add(this.txtSend, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(4, 363);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -384,7 +370,7 @@ namespace TinnyClock
             this.tableLayoutPanel3.Controls.Add(this.cmdSend, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(485, 4);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -395,7 +381,7 @@ namespace TinnyClock
             // 
             this.cmdClose.Depth = 0;
             this.cmdClose.Location = new System.Drawing.Point(136, 4);
-            this.cmdClose.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdClose.Margin = new System.Windows.Forms.Padding(4);
             this.cmdClose.MouseState = MaterialSkin.MouseState.HOVER;
             this.cmdClose.Name = "cmdClose";
             this.cmdClose.Primary = true;
@@ -409,7 +395,7 @@ namespace TinnyClock
             // 
             this.cmdSend.Depth = 0;
             this.cmdSend.Location = new System.Drawing.Point(4, 4);
-            this.cmdSend.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdSend.Margin = new System.Windows.Forms.Padding(4);
             this.cmdSend.MouseState = MaterialSkin.MouseState.HOVER;
             this.cmdSend.Name = "cmdSend";
             this.cmdSend.Primary = true;
@@ -422,7 +408,7 @@ namespace TinnyClock
             // txtSend
             // 
             this.txtSend.Location = new System.Drawing.Point(4, 4);
-            this.txtSend.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtSend.Margin = new System.Windows.Forms.Padding(4);
             this.txtSend.Name = "txtSend";
             this.txtSend.Size = new System.Drawing.Size(469, 41);
             this.txtSend.TabIndex = 1;
@@ -433,7 +419,7 @@ namespace TinnyClock
             this.tabPage3.Controls.Add(this.drawChart);
             this.tabPage3.Controls.Add(this.plotView);
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage3.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(769, 431);
             this.tabPage3.TabIndex = 2;
@@ -444,7 +430,7 @@ namespace TinnyClock
             // 
             this.drawChart.Depth = 0;
             this.drawChart.Location = new System.Drawing.Point(343, 386);
-            this.drawChart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.drawChart.Margin = new System.Windows.Forms.Padding(4);
             this.drawChart.MouseState = MaterialSkin.MouseState.HOVER;
             this.drawChart.Name = "drawChart";
             this.drawChart.Primary = true;
@@ -457,7 +443,7 @@ namespace TinnyClock
             // plotView
             // 
             this.plotView.Location = new System.Drawing.Point(4, 4);
-            this.plotView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.plotView.Margin = new System.Windows.Forms.Padding(4);
             this.plotView.Name = "plotView";
             this.plotView.PanCursor = System.Windows.Forms.Cursors.Hand;
             this.plotView.Size = new System.Drawing.Size(763, 382);
@@ -467,136 +453,11 @@ namespace TinnyClock
             this.plotView.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
             this.plotView.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
             // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.tableLayoutPanel4);
-            this.tabPage4.Location = new System.Drawing.Point(4, 25);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(769, 431);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Flash!";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.ColumnCount = 2;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.tableLayoutPanel4.Controls.Add(this.firmwBuffer, 1, 0);
-            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel5, 0, 0);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(769, 431);
-            this.tableLayoutPanel4.TabIndex = 0;
-            // 
-            // firmwBuffer
-            // 
-            this.firmwBuffer.Location = new System.Drawing.Point(311, 4);
-            this.firmwBuffer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.firmwBuffer.Name = "firmwBuffer";
-            this.firmwBuffer.Size = new System.Drawing.Size(451, 420);
-            this.firmwBuffer.TabIndex = 0;
-            this.firmwBuffer.Text = "";
-            // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.ColumnCount = 1;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel6, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.progressBar1, 0, 1);
-            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(4, 4);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 2;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(299, 423);
-            this.tableLayoutPanel5.TabIndex = 1;
-            // 
-            // tableLayoutPanel6
-            // 
-            this.tableLayoutPanel6.ColumnCount = 2;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 41.96429F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 58.03571F));
-            this.tableLayoutPanel6.Controls.Add(this.openFrmw, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.materialRaisedButton3, 0, 1);
-            this.tableLayoutPanel6.Controls.Add(this.materialRaisedButton4, 0, 2);
-            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            this.tableLayoutPanel6.RowCount = 3;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(299, 211);
-            this.tableLayoutPanel6.TabIndex = 0;
-            // 
-            // openFrmw
-            // 
-            this.openFrmw.Depth = 0;
-            this.openFrmw.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.openFrmw.Location = new System.Drawing.Point(4, 28);
-            this.openFrmw.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.openFrmw.MouseState = MaterialSkin.MouseState.HOVER;
-            this.openFrmw.Name = "openFrmw";
-            this.openFrmw.Primary = true;
-            this.openFrmw.Size = new System.Drawing.Size(117, 38);
-            this.openFrmw.TabIndex = 36;
-            this.openFrmw.Text = "Open File";
-            this.openFrmw.UseVisualStyleBackColor = true;
-            this.openFrmw.Click += new System.EventHandler(this.OpenFirmwareClick);
-            // 
-            // materialRaisedButton3
-            // 
-            this.materialRaisedButton3.Depth = 0;
-            this.materialRaisedButton3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.materialRaisedButton3.Location = new System.Drawing.Point(4, 98);
-            this.materialRaisedButton3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.materialRaisedButton3.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton3.Name = "materialRaisedButton3";
-            this.materialRaisedButton3.Primary = true;
-            this.materialRaisedButton3.Size = new System.Drawing.Size(117, 38);
-            this.materialRaisedButton3.TabIndex = 37;
-            this.materialRaisedButton3.Text = "cLEAR BUFFER";
-            this.materialRaisedButton3.UseVisualStyleBackColor = true;
-            // 
-            // materialRaisedButton4
-            // 
-            this.materialRaisedButton4.Depth = 0;
-            this.materialRaisedButton4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.materialRaisedButton4.Location = new System.Drawing.Point(4, 169);
-            this.materialRaisedButton4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.materialRaisedButton4.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton4.Name = "materialRaisedButton4";
-            this.materialRaisedButton4.Primary = true;
-            this.materialRaisedButton4.Size = new System.Drawing.Size(117, 38);
-            this.materialRaisedButton4.TabIndex = 38;
-            this.materialRaisedButton4.Text = "FLASH";
-            this.materialRaisedButton4.UseVisualStyleBackColor = true;
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.progressBar1.Location = new System.Drawing.Point(4, 391);
-            this.progressBar1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(291, 28);
-            this.progressBar1.TabIndex = 1;
-            // 
             // cboPort
             // 
             this.cboPort.FormattingEnabled = true;
             this.cboPort.Location = new System.Drawing.Point(807, 170);
-            this.cboPort.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboPort.Margin = new System.Windows.Forms.Padding(4);
             this.cboPort.Name = "cboPort";
             this.cboPort.Size = new System.Drawing.Size(160, 24);
             this.cboPort.TabIndex = 20;
@@ -613,7 +474,7 @@ namespace TinnyClock
             "57600",
             "115200 "});
             this.cboBaud.Location = new System.Drawing.Point(807, 229);
-            this.cboBaud.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboBaud.Margin = new System.Windows.Forms.Padding(4);
             this.cboBaud.Name = "cboBaud";
             this.cboBaud.Size = new System.Drawing.Size(160, 24);
             this.cboBaud.TabIndex = 21;
@@ -622,7 +483,7 @@ namespace TinnyClock
             // 
             this.cboParity.FormattingEnabled = true;
             this.cboParity.Location = new System.Drawing.Point(807, 286);
-            this.cboParity.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboParity.Margin = new System.Windows.Forms.Padding(4);
             this.cboParity.Name = "cboParity";
             this.cboParity.Size = new System.Drawing.Size(160, 24);
             this.cboParity.TabIndex = 22;
@@ -631,7 +492,7 @@ namespace TinnyClock
             // 
             this.cboStop.FormattingEnabled = true;
             this.cboStop.Location = new System.Drawing.Point(807, 342);
-            this.cboStop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboStop.Margin = new System.Windows.Forms.Padding(4);
             this.cboStop.Name = "cboStop";
             this.cboStop.Size = new System.Drawing.Size(160, 24);
             this.cboStop.TabIndex = 23;
@@ -645,7 +506,7 @@ namespace TinnyClock
             "7",
             "8"});
             this.cboData.Location = new System.Drawing.Point(807, 399);
-            this.cboData.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboData.Margin = new System.Windows.Forms.Padding(4);
             this.cboData.Name = "cboData";
             this.cboData.Size = new System.Drawing.Size(160, 24);
             this.cboData.TabIndex = 24;
@@ -724,7 +585,7 @@ namespace TinnyClock
             // 
             this.cmdOpen.Depth = 0;
             this.cmdOpen.Location = new System.Drawing.Point(833, 437);
-            this.cmdOpen.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdOpen.Margin = new System.Windows.Forms.Padding(4);
             this.cmdOpen.MouseState = MaterialSkin.MouseState.HOVER;
             this.cmdOpen.Name = "cmdOpen";
             this.cmdOpen.Primary = true;
@@ -738,7 +599,7 @@ namespace TinnyClock
             // 
             this.materialRaisedButton2.Depth = 0;
             this.materialRaisedButton2.Location = new System.Drawing.Point(833, 494);
-            this.materialRaisedButton2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.materialRaisedButton2.Margin = new System.Windows.Forms.Padding(4);
             this.materialRaisedButton2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialRaisedButton2.Name = "materialRaisedButton2";
             this.materialRaisedButton2.Primary = true;
@@ -788,7 +649,7 @@ namespace TinnyClock
             // 
             this.themeButton.Depth = 0;
             this.themeButton.Location = new System.Drawing.Point(568, 96);
-            this.themeButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.themeButton.Margin = new System.Windows.Forms.Padding(4);
             this.themeButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.themeButton.Name = "themeButton";
             this.themeButton.Primary = true;
@@ -802,7 +663,7 @@ namespace TinnyClock
             // 
             this.colorButton.Depth = 0;
             this.colorButton.Location = new System.Drawing.Point(707, 96);
-            this.colorButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.colorButton.Margin = new System.Windows.Forms.Padding(4);
             this.colorButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.colorButton.Name = "colorButton";
             this.colorButton.Primary = true;
@@ -837,7 +698,7 @@ namespace TinnyClock
             this.Controls.Add(this.materialTabControl1);
             this.Controls.Add(this.materialTabSelector1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(984, 628);
             this.MinimumSize = new System.Drawing.Size(984, 628);
@@ -854,10 +715,6 @@ namespace TinnyClock
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
-            this.tabPage4.ResumeLayout(false);
-            this.tableLayoutPanel4.ResumeLayout(false);
-            this.tableLayoutPanel5.ResumeLayout(false);
-            this.tableLayoutPanel6.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -870,7 +727,6 @@ namespace TinnyClock
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TabPage tabPage4;
         private MaterialSkin.Controls.MaterialLabel materialLabel3;
         private MaterialSkin.Controls.MaterialLabel materialLabel2;
         private MaterialSkin.Controls.MaterialLabel lb;
@@ -908,13 +764,5 @@ namespace TinnyClock
         private System.Windows.Forms.RichTextBox txtSend;
         private MaterialSkin.Controls.MaterialRaisedButton drawChart;
         private OxyPlot.WindowsForms.PlotView plotView;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private System.Windows.Forms.RichTextBox firmwBuffer;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
-        private MaterialSkin.Controls.MaterialRaisedButton openFrmw;
-        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton3;
-        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton4;
-        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }

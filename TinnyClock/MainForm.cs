@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using MaterialSkin;
@@ -14,17 +13,15 @@ namespace TinnyClock
 {
     public partial class MainForm : MaterialForm
     {
-        private const string HexFilesFilter = "HEX files (*.hex)|*.hex|All files (*.*)|*.*";
-
-        private readonly Timer _graphChangeTimer = new Timer();
+        private readonly Timer graphChangeTimer = new Timer();
         private readonly MaterialSkinManager _materialSkinManager;
         private readonly SerialPortManager _serialPort = new SerialPortManager();
-        private int _colorSchemeIndex;
-        private int _firstTempToChart;
-        private int _humidityToChart;
-        private int _lightLevelToChart;
-        private int _secondTempToChart;
-        private string _transType = string.Empty;
+        private int colorSchemeIndex;
+        private int firstTempToChart;
+        private int humidityToChart;
+        private int lightLevelToChart;
+        private int secondTempToChart;
+        private string transType = string.Empty;
 
         private bool isClicked = true;
 
@@ -38,7 +35,6 @@ namespace TinnyClock
                 Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
             _serialPort.OnDataReceived += OnSerialPortDataReceived;
 
-            //InitializeGraphTimer();
             SetupChartModel();
         }
 
@@ -63,10 +59,10 @@ namespace TinnyClock
                     if (obj.IndorTemperature != "NONE" && obj.OutdoorTemperature != "NONE" && obj.Humidity
                         != "NONE" && obj.LightLevel != "NONE")
                     {
-                        _firstTempToChart = Convert.ToInt32(obj.IndorTemperature);
-                        _secondTempToChart = Convert.ToInt32(obj.OutdoorTemperature);
-                        _humidityToChart = Convert.ToInt32(obj.Humidity);
-                        _lightLevelToChart = Convert.ToInt32(obj.LightLevel);
+                        firstTempToChart = Convert.ToInt32(obj.IndorTemperature);
+                        secondTempToChart = Convert.ToInt32(obj.OutdoorTemperature);
+                        humidityToChart = Convert.ToInt32(obj.Humidity);
+                        lightLevelToChart = Convert.ToInt32(obj.LightLevel);
                     }
                 }
                 catch (Exception e)
@@ -164,39 +160,6 @@ namespace TinnyClock
             timeLabel.Text = DateTime.Now.ToString("HH:mm:ss");
         }
 
-        private void OpenFirmwareClick(object sender, EventArgs e)
-        {
-            firmwBuffer.ForeColor = Color.Green;
-            Stream fileStream = null;
-            var openFile = new OpenFileDialog();
-
-            openFile.InitialDirectory = "c:\\";
-            openFile.Filter = HexFilesFilter;
-            openFile.FilterIndex = 2;
-            openFile.RestoreDirectory = true;
-
-            if (openFile.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    if ((fileStream = openFile.OpenFile()) != null)
-                    {
-                        using (fileStream)
-                        {
-                            // Insert code to read the stream here.
-                            var reader = new StreamReader(openFile.FileName);
-                            firmwBuffer.Text = reader.ReadToEnd();
-                            reader.Close();
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($@"Error: Could not read file from disk. Original error: {ex.Message}");
-                }
-            }
-        }
-
         private void SaveButtonClick(object sender, EventArgs e)
         {
             var memorystream = new MemoryStream();
@@ -210,35 +173,6 @@ namespace TinnyClock
             }
         }
 
-        private void SaveAsButtonClick(object sender, EventArgs e)
-        {
-            // Create a SaveFileDialog to request a path and file name to save to.
-            var sFile = new SaveFileDialog();
-
-            // Initialize the SaveFileDialog to specify the RTF extension for the file.
-            // saveFile1.DefaultExt = "*.hex";
-            sFile.Filter = HexFilesFilter;
-            try
-            {
-                // Determine if the user selected a file name from the saveFileDialog.
-                if (sFile.ShowDialog() == DialogResult.OK &&
-                    sFile.FileName.Length > 0)
-                {
-                    // Save the contents of the RichTextBox into the file.
-                    //FirmwBuffer.SaveFile(sFile.FileName, RichTextBoxStreamType.PlainText);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void ClearBufferClick(object sender, EventArgs e)
-        {
-            firmwBuffer.Clear();
-        }
-
         private void OnThemeClick(object sender, EventArgs e)
         {
             _materialSkinManager.Theme = _materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
@@ -248,14 +182,14 @@ namespace TinnyClock
 
         private void OnColorChangedClick(object sender, EventArgs e)
         {
-            _colorSchemeIndex++;
-            if (_colorSchemeIndex > 3)
+            colorSchemeIndex++;
+            if (colorSchemeIndex > 3)
             {
-                _colorSchemeIndex = 0;
+                colorSchemeIndex = 0;
             }
 
             //These are just example color schemes
-            switch (_colorSchemeIndex)
+            switch (colorSchemeIndex)
             {
                 case 0:
                     _materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900,
@@ -278,9 +212,9 @@ namespace TinnyClock
 
         private void InitializeGraphTimer()
         {
-            _graphChangeTimer.Enabled = true;
-            _graphChangeTimer.Interval = 100;
-            _graphChangeTimer.Tick += OnGraphChangeTimerTick;
+            graphChangeTimer.Enabled = true;
+            graphChangeTimer.Interval = 100;
+            graphChangeTimer.Tick += OnGraphChangeTimerTick;
         }
 
         private void SetupChartModel()
@@ -306,8 +240,8 @@ namespace TinnyClock
                 IsPanEnabled = false, // отключение скролинга
                 IsZoomEnabled = false, // отключение зума 
                 Position = AxisPosition.Left,
-                Minimum = -2,
-                Maximum = 2,
+                Minimum = -10,
+                Maximum = 10,
                 TextColor = OxyColor.FromRgb(74, 134, 187),
                 AxislineColor = OxyColor.FromRgb(255, 255, 255),
                 MajorGridlineColor = OxyColor.FromArgb(40, 100, 0, 139),
@@ -336,9 +270,20 @@ namespace TinnyClock
             {
                 LineStyle = LineStyle.Solid, Color = OxyColor.FromRgb(74, 134, 187)
             }); //rgb(74,134,187) #4a86bb
+
+            plotModel.Model.Series.Add(new LineSeries
+            {
+                LineStyle = LineStyle.Solid,
+                Color = OxyColor.FromRgb(227, 64, 64)
+            });
         }
 
-        private void UpdateFirstChart()
+        private void UpdateChart()
+        {
+            PrintTemperatureChart();
+        }
+
+        private void PrintTemperatureChart()
         {
             var lineSeries = (LineSeries) plotView.Model.Series[0];
 
@@ -349,13 +294,13 @@ namespace TinnyClock
             }
 
             double y = 0;
-            var m = 80;
+            var m = 5;
             for (var j = 0; j < m; j++)
             {
-                y += Math.Cos(0.001 * x * j * j);
+                y += Math.Cos(20 * x * j * j);
             }
 
-            y /= m;
+            //y /= m;
             lineSeries.Points.Add(new DataPoint(x, y));
         }
 
@@ -363,7 +308,7 @@ namespace TinnyClock
         {
             lock (plotView.Model.SyncRoot)
             {
-                UpdateFirstChart();
+                UpdateChart();
                 plotView.Model.InvalidatePlot(true);
             }
         }
@@ -374,14 +319,14 @@ namespace TinnyClock
             {
                 drawChart.Text = "Stop Drawing";
                 InitializeGraphTimer();
-                _graphChangeTimer.Start();
+                graphChangeTimer.Start();
                 isClicked = false;
             }
             else
             {
                 drawChart.Text = "Draw";
-                _graphChangeTimer.Enabled = false;
-                _graphChangeTimer.Stop();
+                graphChangeTimer.Enabled = false;
+                graphChangeTimer.Stop();
                 isClicked = true;
             }
 
@@ -389,7 +334,7 @@ namespace TinnyClock
         }
 
         #region Test Chart drawing
-        
+
         #endregion
     }
 }
