@@ -4,36 +4,36 @@ using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
-using OxyPlot.WindowsForms;
+using TinnyClock.Enums;
 using TinnyClock.Models;
+using TinnyClock.Service;
 
 namespace TinnyClock
 {
     public partial class MainForm : MaterialForm
     {
         private readonly Timer graphChangeTimer = new Timer();
-        private readonly MaterialSkinManager _materialSkinManager;
-        private readonly SerialPortManager _serialPort = new SerialPortManager();
+        private readonly MaterialSkinManager materialSkinManager;
+        private readonly SerialPortManager serialPort = new SerialPortManager();
+        private ChartDrawingService chartService;
         private int colorSchemeIndex;
         private int firstTempToChart;
         private int humidityToChart;
+
+        private bool isClicked = true;
         private int lightLevelToChart;
         private int secondTempToChart;
         private string transType = string.Empty;
 
-        private bool isClicked = true;
-
         public MainForm()
         {
             InitializeComponent();
-            _materialSkinManager = MaterialSkinManager.Instance;
-            _materialSkinManager.AddFormToManage(this);
-            _materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-            _materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900,
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900,
                 Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
-            _serialPort.OnDataReceived += OnSerialPortDataReceived;
+            serialPort.OnDataReceived += OnSerialPortDataReceived;
 
             SetupChartModel();
         }
@@ -93,9 +93,9 @@ namespace TinnyClock
         /// </summary>
         private void LoadValues()
         {
-            cboPort.DataSource = _serialPort.PortNameValues;
-            cboParity.DataSource = _serialPort.ParityValues;
-            cboStop.DataSource = _serialPort.StopBitValues;
+            cboPort.DataSource = serialPort.PortNameValues;
+            cboParity.DataSource = serialPort.ParityValues;
+            cboStop.DataSource = serialPort.StopBitValues;
         }
 
         /// <summary>
@@ -111,12 +111,12 @@ namespace TinnyClock
 
         private void ComPortOpenClick(object sender, EventArgs e)
         {
-            _serialPort.Parity = cboParity.Text;
-            _serialPort.StopBits = cboStop.Text;
-            _serialPort.DataBits = cboData.Text;
-            _serialPort.BaudRatesRate = cboBaud.Text;
-            _serialPort.PortName = cboPort.Text;
-            _serialPort.OpenPort();
+            serialPort.Parity = cboParity.Text;
+            serialPort.StopBits = cboStop.Text;
+            serialPort.DataBits = cboData.Text;
+            serialPort.BaudRatesRate = cboBaud.Text;
+            serialPort.PortName = cboPort.Text;
+            serialPort.OpenPort();
             cmdOpen.Enabled = false;
             cmdClose.Enabled = true;
             cmdSend.Enabled = true;
@@ -127,23 +127,23 @@ namespace TinnyClock
             cmdOpen.Enabled = true;
             cmdClose.Enabled = false;
             cmdSend.Enabled = false;
-            _serialPort.ClosePort();
+            serialPort.ClosePort();
         }
 
         private void SendToComPortClick(object sender, EventArgs e)
         {
-            _serialPort.WriteData(txtSend.Text);
+            serialPort.WriteData(txtSend.Text);
         }
 
         private void CheckedChanged(object sender, EventArgs e)
         {
             if (rdoHex.Checked)
             {
-                _serialPort.CurrentTransmissionType = SerialPortManager.TransmissionType.Hex;
+                serialPort.CurrentTransmissionType = TransmissionType.Hex;
             }
             else
             {
-                _serialPort.CurrentTransmissionType = SerialPortManager.TransmissionType.Text;
+                serialPort.CurrentTransmissionType = TransmissionType.Text;
             }
         }
 
@@ -175,7 +175,7 @@ namespace TinnyClock
 
         private void OnThemeClick(object sender, EventArgs e)
         {
-            _materialSkinManager.Theme = _materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
+            materialSkinManager.Theme = materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
                 ? MaterialSkinManager.Themes.LIGHT
                 : MaterialSkinManager.Themes.DARK;
         }
@@ -192,19 +192,19 @@ namespace TinnyClock
             switch (colorSchemeIndex)
             {
                 case 0:
-                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900,
+                    materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900,
                         Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
                     break;
                 case 1:
-                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700,
+                    materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700,
                         Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
                     break;
                 case 2:
-                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.Green600, Primary.Green700,
+                    materialSkinManager.ColorScheme = new ColorScheme(Primary.Green600, Primary.Green700,
                         Primary.Green200, Accent.Red100, TextShade.WHITE);
                     break;
                 case 3:
-                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.Red200, Primary.Red800, Primary.Red300,
+                    materialSkinManager.ColorScheme = new ColorScheme(Primary.Red200, Primary.Red800, Primary.Red300,
                         Accent.Red200, TextShade.WHITE);
                     break;
             }
@@ -224,91 +224,15 @@ namespace TinnyClock
                 plotView.Model = new PlotModel();
             }
 
-            InitializeCharts(plotView, "Telemetry data");
+            chartService = new ChartDrawingService(plotView, "Telemetry Data");
         }
 
-        private void InitializeCharts(PlotView plotModel, string title)
-        {
-            plotModel.Model.Title = title;
-            plotModel.Model.PlotAreaBorderColor = OxyColor.FromRgb(255, 255, 255);
-            plotModel.Model.TitleColor = OxyColor.FromRgb(255, 255, 255);
-
-            plotModel.Model.LegendPosition = LegendPosition.RightBottom;
-            //Y
-            plotModel.Model.Axes.Add(new LinearAxis
-            {
-                IsPanEnabled = false, // отключение скролинга
-                IsZoomEnabled = false, // отключение зума 
-                Position = AxisPosition.Left,
-                Minimum = -10,
-                Maximum = 10,
-                TextColor = OxyColor.FromRgb(74, 134, 187),
-                AxislineColor = OxyColor.FromRgb(255, 255, 255),
-                MajorGridlineColor = OxyColor.FromArgb(40, 100, 0, 139),
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineColor = OxyColor.FromArgb(20, 0, 0, 139),
-                MinorGridlineStyle = LineStyle.Solid,
-                TicklineColor = OxyColor.FromRgb(255, 255, 255)
-            });
-
-            //X
-            plotModel.Model.Axes.Add(new LinearAxis
-            {
-                IsPanEnabled = false, // отключение скролинга
-                IsZoomEnabled = false, // отключение зума
-                Position = AxisPosition.Bottom,
-                TextColor = OxyColor.FromRgb(74, 134, 187),
-                AxislineColor = OxyColor.FromRgb(255, 255, 255),
-                MajorGridlineColor = OxyColor.FromArgb(40, 100, 0, 139),
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineColor = OxyColor.FromArgb(20, 0, 0, 139),
-                MinorGridlineStyle = LineStyle.Solid,
-                TicklineColor = OxyColor.FromRgb(255, 255, 255)
-            });
-
-            plotModel.Model.Series.Add(new LineSeries
-            {
-                LineStyle = LineStyle.Solid, Color = OxyColor.FromRgb(74, 134, 187)
-            }); //rgb(74,134,187) #4a86bb
-
-            plotModel.Model.Series.Add(new LineSeries
-            {
-                LineStyle = LineStyle.Solid,
-                Color = OxyColor.FromRgb(227, 64, 64)
-            });
-        }
-
-        private void UpdateChart()
-        {
-            PrintTemperatureChart();
-        }
-
-        private void PrintTemperatureChart()
-        {
-            var lineSeries = (LineSeries) plotView.Model.Series[0];
-
-            var x = lineSeries.Points.Count > 0 ? lineSeries.Points[lineSeries.Points.Count - 1].X + 1 : 0;
-            if (lineSeries.Points.Count >= 200)
-            {
-                lineSeries.Points.RemoveAt(0);
-            }
-
-            double y = 0;
-            var m = 5;
-            for (var j = 0; j < m; j++)
-            {
-                y += Math.Cos(20 * x * j * j);
-            }
-
-            //y /= m;
-            lineSeries.Points.Add(new DataPoint(x, y));
-        }
 
         private void OnGraphChangeTimerTick(object sender, EventArgs e)
         {
             lock (plotView.Model.SyncRoot)
             {
-                UpdateChart();
+                chartService.UpdateChart();
                 plotView.Model.InvalidatePlot(true);
             }
         }

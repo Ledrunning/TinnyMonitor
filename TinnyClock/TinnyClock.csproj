@@ -75,8 +75,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\MessageType.cs" />
+    <Compile Include="Enums\TransmissionType.cs" />
+    <Compile Include="Service\ChartDrawingService.cs" />
+    <Compile Include="Contracts\IChartDrawingService.cs" />
     <Compile Include="Converters\SubConverter.cs" />
-    <Compile Include="SerialPortManager.cs" />
+    <Compile Include="Service\SerialPortManager.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +134,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

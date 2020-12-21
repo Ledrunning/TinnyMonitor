@@ -2,31 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using TinnyClock.Converters;
+using TinnyClock.Enums;
 using TinnyClock.Helpers;
 using TinnyClock.Models;
 
-namespace TinnyClock
+namespace TinnyClock.Service
 {
     internal class SerialPortManager
     {
-        public enum MessageType
-        {
-            Incoming,
-            Outgoing,
-            Normal,
-            Warning,
-            Error,
-            Closed
-        }
-
-        public enum TransmissionType
-        {
-            Text,
-            Hex
-        }
-
-        private readonly SerialPort _comPort = new SerialPort();
-        private readonly StringParser _recievedStrFromComPort = new StringParser();
+        private readonly SerialPort comPort = new SerialPort();
+        private readonly StringParser recievedStrFromComPort = new StringParser();
 
         public SerialPortManager(string baudRates, string parity, string stopBits, string dataBits, string name)
         {
@@ -36,7 +21,7 @@ namespace TinnyClock
             DataBits = dataBits;
             PortName = name;
 
-            _comPort.DataReceived += SerialPortDataReceived;
+            comPort.DataReceived += SerialPortDataReceived;
         }
 
         public SerialPortManager() : this(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty)
@@ -55,8 +40,8 @@ namespace TinnyClock
 
         public TransmissionType CurrentTransmissionType { get; set; }
 
-        public IEnumerable<string> ParityValues => Enum.GetNames(typeof(Parity));
-        public IEnumerable<string> StopBitValues => Enum.GetNames(typeof(StopBits));
+        public IEnumerable<string> ParityValues => System.Enum.GetNames(typeof(Parity));
+        public IEnumerable<string> StopBitValues => System.Enum.GetNames(typeof(StopBits));
         public IEnumerable<string> PortNameValues => SerialPort.GetPortNames();
 
         public event Action<ReceivedDataDto> OnDataReceived = delegate { };
@@ -67,7 +52,7 @@ namespace TinnyClock
             {
                 case TransmissionType.Text:
                     EnsurePortOpened();
-                    _comPort.Write(msg);
+                    comPort.Write(msg);
                     //display the message
                     DisplayData(MessageType.Outgoing, $"{msg}\n");
                     break;
@@ -79,7 +64,7 @@ namespace TinnyClock
                         //convert the message to byte array
                         var newMsg = SubConverter.HexToByte(msg);
                         //send the message to the port
-                        _comPort.Write(newMsg, 0, newMsg.Length);
+                        comPort.Write(newMsg, 0, newMsg.Length);
                         //convert back to hex and display
                         DisplayData(MessageType.Outgoing, $"{SubConverter.ByteToHex(newMsg)}\n");
                     }
@@ -93,7 +78,7 @@ namespace TinnyClock
 
                 default:
                     EnsurePortOpened();
-                    _comPort.Write(msg);
+                    comPort.Write(msg);
                     //display the message
                     DisplayData(MessageType.Outgoing, $"{msg}\n");
                     break;
@@ -104,10 +89,10 @@ namespace TinnyClock
         {
             var dto = new ReceivedDataDto
             {
-                IndorTemperature = _recievedStrFromComPort.ParseInsideTemperature(msg),
-                OutdoorTemperature = _recievedStrFromComPort.ParseOutsideTemperature(msg),
-                Humidity = _recievedStrFromComPort.ParseHumidity(msg),
-                LightLevel = _recievedStrFromComPort.ParseLightLevel(msg),
+                IndorTemperature = recievedStrFromComPort.ParseInsideTemperature(msg),
+                OutdoorTemperature = recievedStrFromComPort.ParseOutsideTemperature(msg),
+                Humidity = recievedStrFromComPort.ParseHumidity(msg),
+                LightLevel = recievedStrFromComPort.ParseLightLevel(msg),
                 RawText = msg
             };
 
@@ -118,19 +103,19 @@ namespace TinnyClock
         {
             try
             {
-                if (_comPort.IsOpen)
+                if (comPort.IsOpen)
                 {
-                    _comPort.Close();
+                    comPort.Close();
                 }
 
                 //set the properties of our SerialPort Object
-                _comPort.BaudRate = int.Parse(BaudRatesRate); //BaudRatesRate
-                _comPort.DataBits = int.Parse(DataBits); //DataBits
-                _comPort.StopBits = (StopBits) Enum.Parse(typeof(StopBits), StopBits); //StopBits
-                _comPort.Parity = (Parity) Enum.Parse(typeof(Parity), Parity); //Parity
-                _comPort.PortName = PortName; //PortName
+                comPort.BaudRate = int.Parse(BaudRatesRate); //BaudRatesRate
+                comPort.DataBits = int.Parse(DataBits); //DataBits
+                comPort.StopBits = (StopBits) Enum.Parse(typeof(StopBits), StopBits); //StopBits
+                comPort.Parity = (Parity) Enum.Parse(typeof(Parity), Parity); //Parity
+                comPort.PortName = PortName; //PortName
                 //now open the port
-                _comPort.Open();
+                comPort.Open();
                 //display message
                 DisplayData(MessageType.Normal, $"Port opened at {DateTime.Now}\n");
                 // Что бы не выводилась надпись при открытии порта.
@@ -145,7 +130,7 @@ namespace TinnyClock
 
         public bool ClosePort()
         {
-            _comPort.Close();
+            comPort.Close();
             //display message
             var message = "Port closed at ";
             DisplayData(MessageType.Closed, $"{message}{DateTime.Now}\n");
@@ -154,9 +139,9 @@ namespace TinnyClock
 
         private void EnsurePortOpened()
         {
-            if (!_comPort.IsOpen)
+            if (!comPort.IsOpen)
             {
-                _comPort.Open();
+                comPort.Open();
             }
         }
 
@@ -168,7 +153,7 @@ namespace TinnyClock
                 //user chose string
                 case TransmissionType.Text:
                     //read data waiting in the buffer
-                    var msg = _comPort.ReadExisting();
+                    var msg = comPort.ReadExisting();
                     //display the data to the user
                     DisplayData(MessageType.Incoming, $"{msg}\n");
                     break;
@@ -176,18 +161,18 @@ namespace TinnyClock
                 //user chose binary
                 case TransmissionType.Hex:
                     //retrieve number of bytes in the buffer
-                    var bytes = _comPort.BytesToRead;
+                    var bytes = comPort.BytesToRead;
                     //create a byte array to hold the awaiting data
                     var comBuffer = new byte[bytes];
                     //read the data and store it
-                    _comPort.Read(comBuffer, 0, bytes);
+                    comPort.Read(comBuffer, 0, bytes);
                     //display the data to the user
                     DisplayData(MessageType.Incoming, $"{SubConverter.ByteToHex(comBuffer)}\n");
                     break;
 
                 default:
                     //read data waiting in the buffer
-                    var str = _comPort.ReadExisting();
+                    var str = comPort.ReadExisting();
                     //display the data to the user
                     DisplayData(MessageType.Incoming, $"{str}\n");
                     break;
