@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
+using TinnyClock.Contracts;
 using TinnyClock.Converters;
 using TinnyClock.Enums;
 using TinnyClock.Helpers;
@@ -8,7 +9,7 @@ using TinnyClock.Models;
 
 namespace TinnyClock.Service
 {
-    internal class SerialPortManager
+    internal class SerialPortManager : ISerialPortManager
     {
         private readonly SerialPort comPort = new SerialPort();
         private readonly StringParser recievedStrFromComPort = new StringParser();
@@ -85,20 +86,6 @@ namespace TinnyClock.Service
             }
         }
 
-        private void DisplayData(MessageType type, string msg)
-        {
-            var dto = new ReceivedDataDto
-            {
-                IndorTemperature = recievedStrFromComPort.ParseInsideTemperature(msg),
-                OutdoorTemperature = recievedStrFromComPort.ParseOutsideTemperature(msg),
-                Humidity = recievedStrFromComPort.ParseHumidity(msg),
-                LightLevel = recievedStrFromComPort.ParseLightLevel(msg),
-                RawText = msg
-            };
-
-            OnDataReceived(dto);
-        }
-
         public bool OpenPort()
         {
             try
@@ -135,6 +122,20 @@ namespace TinnyClock.Service
             var message = "Port closed at ";
             DisplayData(MessageType.Closed, $"{message}{DateTime.Now}\n");
             return true;
+        }
+
+        private void DisplayData(MessageType type, string msg)
+        {
+            var dto = new ReceivedDataDto
+            {
+                IndorTemperature = recievedStrFromComPort.ParseInsideTemperature(msg),
+                OutdoorTemperature = recievedStrFromComPort.ParseOutsideTemperature(msg),
+                Humidity = recievedStrFromComPort.ParseHumidity(msg),
+                LightLevel = recievedStrFromComPort.ParseLightLevel(msg),
+                RawText = msg
+            };
+
+            OnDataReceived(dto);
         }
 
         private void EnsurePortOpened()
