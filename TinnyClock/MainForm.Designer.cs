@@ -57,7 +57,6 @@ namespace TinnyClock
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.drawChart = new MaterialSkin.Controls.MaterialRaisedButton();
             this.plotView = new OxyPlot.WindowsForms.PlotView();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
             this.cboPort = new System.Windows.Forms.ComboBox();
             this.cboBaud = new System.Windows.Forms.ComboBox();
             this.cboParity = new System.Windows.Forms.ComboBox();
@@ -94,10 +93,11 @@ namespace TinnyClock
             | System.Windows.Forms.AnchorStyles.Right)));
             this.materialTabSelector1.BaseTabControl = this.materialTabControl1;
             this.materialTabSelector1.Depth = 0;
-            this.materialTabSelector1.Location = new System.Drawing.Point(0, 64);
+            this.materialTabSelector1.Location = new System.Drawing.Point(0, 79);
+            this.materialTabSelector1.Margin = new System.Windows.Forms.Padding(4);
             this.materialTabSelector1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialTabSelector1.Name = "materialTabSelector1";
-            this.materialTabSelector1.Size = new System.Drawing.Size(740, 48);
+            this.materialTabSelector1.Size = new System.Drawing.Size(987, 59);
             this.materialTabSelector1.TabIndex = 18;
             this.materialTabSelector1.Text = "materialTabSelector1";
             // 
@@ -106,13 +106,13 @@ namespace TinnyClock
             this.materialTabControl1.Controls.Add(this.tabPage1);
             this.materialTabControl1.Controls.Add(this.tabPage2);
             this.materialTabControl1.Controls.Add(this.tabPage3);
-            this.materialTabControl1.Controls.Add(this.tabPage4);
             this.materialTabControl1.Depth = 0;
-            this.materialTabControl1.Location = new System.Drawing.Point(0, 116);
+            this.materialTabControl1.Location = new System.Drawing.Point(0, 143);
+            this.materialTabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.materialTabControl1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialTabControl1.Name = "materialTabControl1";
             this.materialTabControl1.SelectedIndex = 0;
-            this.materialTabControl1.Size = new System.Drawing.Size(583, 374);
+            this.materialTabControl1.Size = new System.Drawing.Size(777, 460);
             this.materialTabControl1.TabIndex = 19;
             // 
             // tabPage1
@@ -129,10 +129,11 @@ namespace TinnyClock
             this.tabPage1.Controls.Add(this.materialLabel3);
             this.tabPage1.Controls.Add(this.materialLabel2);
             this.tabPage1.Controls.Add(this.lb);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(575, 348);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPage1.Size = new System.Drawing.Size(769, 431);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Monitor";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -143,10 +144,11 @@ namespace TinnyClock
             this.timeLabel.Depth = 0;
             this.timeLabel.Font = new System.Drawing.Font("Roboto", 11F);
             this.timeLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.timeLabel.Location = new System.Drawing.Point(454, 217);
+            this.timeLabel.Location = new System.Drawing.Point(605, 267);
+            this.timeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.timeLabel.MouseState = MaterialSkin.MouseState.HOVER;
             this.timeLabel.Name = "timeLabel";
-            this.timeLabel.Size = new System.Drawing.Size(41, 19);
+            this.timeLabel.Size = new System.Drawing.Size(50, 24);
             this.timeLabel.TabIndex = 11;
             this.timeLabel.Text = "--:--:--";
             // 
@@ -156,10 +158,11 @@ namespace TinnyClock
             this.materialLabel11.Depth = 0;
             this.materialLabel11.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel11.Location = new System.Drawing.Point(454, 160);
+            this.materialLabel11.Location = new System.Drawing.Point(605, 197);
+            this.materialLabel11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.materialLabel11.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel11.Name = "materialLabel11";
-            this.materialLabel11.Size = new System.Drawing.Size(43, 19);
+            this.materialLabel11.Size = new System.Drawing.Size(53, 24);
             this.materialLabel11.TabIndex = 10;
             this.materialLabel11.Text = "Time";
             // 
@@ -169,10 +172,11 @@ namespace TinnyClock
             this.lightLevel.Depth = 0;
             this.lightLevel.Font = new System.Drawing.Font("Roboto", 11F);
             this.lightLevel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lightLevel.Location = new System.Drawing.Point(250, 217);
+            this.lightLevel.Location = new System.Drawing.Point(333, 267);
+            this.lightLevel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lightLevel.MouseState = MaterialSkin.MouseState.HOVER;
             this.lightLevel.Name = "lightLevel";
-            this.lightLevel.Size = new System.Drawing.Size(53, 19);
+            this.lightLevel.Size = new System.Drawing.Size(65, 24);
             this.lightLevel.TabIndex = 9;
             this.lightLevel.Text = "-----------";
             // 
@@ -182,10 +186,11 @@ namespace TinnyClock
             this.materialLabel9.Depth = 0;
             this.materialLabel9.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel9.Location = new System.Drawing.Point(250, 160);
+            this.materialLabel9.Location = new System.Drawing.Point(333, 197);
+            this.materialLabel9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.materialLabel9.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel9.Name = "materialLabel9";
-            this.materialLabel9.Size = new System.Drawing.Size(81, 19);
+            this.materialLabel9.Size = new System.Drawing.Size(101, 24);
             this.materialLabel9.TabIndex = 8;
             this.materialLabel9.Text = "Light Level";
             // 
@@ -195,10 +200,11 @@ namespace TinnyClock
             this.outsideTemp.Depth = 0;
             this.outsideTemp.Font = new System.Drawing.Font("Roboto", 11F);
             this.outsideTemp.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.outsideTemp.Location = new System.Drawing.Point(43, 217);
+            this.outsideTemp.Location = new System.Drawing.Point(57, 267);
+            this.outsideTemp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.outsideTemp.MouseState = MaterialSkin.MouseState.HOVER;
             this.outsideTemp.Name = "outsideTemp";
-            this.outsideTemp.Size = new System.Drawing.Size(53, 19);
+            this.outsideTemp.Size = new System.Drawing.Size(65, 24);
             this.outsideTemp.TabIndex = 7;
             this.outsideTemp.Text = "-----------";
             // 
@@ -208,10 +214,11 @@ namespace TinnyClock
             this.materialLabel7.Depth = 0;
             this.materialLabel7.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel7.Location = new System.Drawing.Point(43, 160);
+            this.materialLabel7.Location = new System.Drawing.Point(57, 197);
+            this.materialLabel7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.materialLabel7.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel7.Name = "materialLabel7";
-            this.materialLabel7.Size = new System.Drawing.Size(145, 19);
+            this.materialLabel7.Size = new System.Drawing.Size(182, 24);
             this.materialLabel7.TabIndex = 6;
             this.materialLabel7.Text = "Outside temperature";
             // 
@@ -221,10 +228,11 @@ namespace TinnyClock
             this.dateLabel.Depth = 0;
             this.dateLabel.Font = new System.Drawing.Font("Roboto", 11F);
             this.dateLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.dateLabel.Location = new System.Drawing.Point(454, 99);
+            this.dateLabel.Location = new System.Drawing.Point(605, 122);
+            this.dateLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.dateLabel.MouseState = MaterialSkin.MouseState.HOVER;
             this.dateLabel.Name = "dateLabel";
-            this.dateLabel.Size = new System.Drawing.Size(49, 19);
+            this.dateLabel.Size = new System.Drawing.Size(60, 24);
             this.dateLabel.TabIndex = 5;
             this.dateLabel.Text = "--.--.----";
             // 
@@ -234,10 +242,11 @@ namespace TinnyClock
             this.huMidity.Depth = 0;
             this.huMidity.Font = new System.Drawing.Font("Roboto", 11F);
             this.huMidity.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.huMidity.Location = new System.Drawing.Point(250, 99);
+            this.huMidity.Location = new System.Drawing.Point(333, 122);
+            this.huMidity.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.huMidity.MouseState = MaterialSkin.MouseState.HOVER;
             this.huMidity.Name = "huMidity";
-            this.huMidity.Size = new System.Drawing.Size(53, 19);
+            this.huMidity.Size = new System.Drawing.Size(65, 24);
             this.huMidity.TabIndex = 4;
             this.huMidity.Text = "-----------";
             // 
@@ -247,10 +256,11 @@ namespace TinnyClock
             this.insideTemp.Depth = 0;
             this.insideTemp.Font = new System.Drawing.Font("Roboto", 11F);
             this.insideTemp.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.insideTemp.Location = new System.Drawing.Point(43, 99);
+            this.insideTemp.Location = new System.Drawing.Point(57, 122);
+            this.insideTemp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.insideTemp.MouseState = MaterialSkin.MouseState.HOVER;
             this.insideTemp.Name = "insideTemp";
-            this.insideTemp.Size = new System.Drawing.Size(53, 19);
+            this.insideTemp.Size = new System.Drawing.Size(65, 24);
             this.insideTemp.TabIndex = 3;
             this.insideTemp.Text = "-----------";
             this.insideTemp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -261,10 +271,11 @@ namespace TinnyClock
             this.materialLabel3.Depth = 0;
             this.materialLabel3.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel3.Location = new System.Drawing.Point(454, 37);
+            this.materialLabel3.Location = new System.Drawing.Point(605, 46);
+            this.materialLabel3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel3.Name = "materialLabel3";
-            this.materialLabel3.Size = new System.Drawing.Size(40, 19);
+            this.materialLabel3.Size = new System.Drawing.Size(48, 24);
             this.materialLabel3.TabIndex = 2;
             this.materialLabel3.Text = "Date";
             // 
@@ -274,10 +285,11 @@ namespace TinnyClock
             this.materialLabel2.Depth = 0;
             this.materialLabel2.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel2.Location = new System.Drawing.Point(250, 37);
+            this.materialLabel2.Location = new System.Drawing.Point(333, 46);
+            this.materialLabel2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel2.Name = "materialLabel2";
-            this.materialLabel2.Size = new System.Drawing.Size(69, 19);
+            this.materialLabel2.Size = new System.Drawing.Size(87, 24);
             this.materialLabel2.TabIndex = 1;
             this.materialLabel2.Text = "Humidity";
             // 
@@ -287,20 +299,22 @@ namespace TinnyClock
             this.lb.Depth = 0;
             this.lb.Font = new System.Drawing.Font("Roboto", 11F);
             this.lb.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lb.Location = new System.Drawing.Point(43, 37);
+            this.lb.Location = new System.Drawing.Point(57, 46);
+            this.lb.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lb.MouseState = MaterialSkin.MouseState.HOVER;
             this.lb.Name = "lb";
-            this.lb.Size = new System.Drawing.Size(134, 19);
+            this.lb.Size = new System.Drawing.Size(168, 24);
             this.lb.TabIndex = 0;
             this.lb.Text = "Inside temperature";
             // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.tableLayoutPanel1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(575, 348);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPage2.Size = new System.Drawing.Size(769, 431);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Console";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -312,20 +326,22 @@ namespace TinnyClock
             this.tableLayoutPanel1.Controls.Add(this.rtbDisplay, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(4, 4);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(569, 342);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(761, 423);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // rtbDisplay
             // 
             this.rtbDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbDisplay.Location = new System.Drawing.Point(3, 3);
+            this.rtbDisplay.Location = new System.Drawing.Point(4, 4);
+            this.rtbDisplay.Margin = new System.Windows.Forms.Padding(4);
             this.rtbDisplay.Name = "rtbDisplay";
-            this.rtbDisplay.Size = new System.Drawing.Size(563, 284);
+            this.rtbDisplay.Size = new System.Drawing.Size(753, 351);
             this.rtbDisplay.TabIndex = 0;
             this.rtbDisplay.Text = "";
             // 
@@ -337,11 +353,12 @@ namespace TinnyClock
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.txtSend, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 293);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(4, 363);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(563, 46);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(753, 56);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // tableLayoutPanel3
@@ -352,21 +369,23 @@ namespace TinnyClock
             this.tableLayoutPanel3.Controls.Add(this.cmdClose, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.cmdSend, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(362, 3);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(485, 4);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(198, 40);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(264, 48);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // cmdClose
             // 
             this.cmdClose.Depth = 0;
-            this.cmdClose.Location = new System.Drawing.Point(102, 3);
+            this.cmdClose.Location = new System.Drawing.Point(136, 4);
+            this.cmdClose.Margin = new System.Windows.Forms.Padding(4);
             this.cmdClose.MouseState = MaterialSkin.MouseState.HOVER;
             this.cmdClose.Name = "cmdClose";
             this.cmdClose.Primary = true;
-            this.cmdClose.Size = new System.Drawing.Size(87, 31);
+            this.cmdClose.Size = new System.Drawing.Size(116, 38);
             this.cmdClose.TabIndex = 36;
             this.cmdClose.Text = "Clear";
             this.cmdClose.UseVisualStyleBackColor = true;
@@ -375,11 +394,12 @@ namespace TinnyClock
             // cmdSend
             // 
             this.cmdSend.Depth = 0;
-            this.cmdSend.Location = new System.Drawing.Point(3, 3);
+            this.cmdSend.Location = new System.Drawing.Point(4, 4);
+            this.cmdSend.Margin = new System.Windows.Forms.Padding(4);
             this.cmdSend.MouseState = MaterialSkin.MouseState.HOVER;
             this.cmdSend.Name = "cmdSend";
             this.cmdSend.Primary = true;
-            this.cmdSend.Size = new System.Drawing.Size(87, 31);
+            this.cmdSend.Size = new System.Drawing.Size(116, 38);
             this.cmdSend.TabIndex = 36;
             this.cmdSend.Text = "Send";
             this.cmdSend.UseVisualStyleBackColor = true;
@@ -387,9 +407,10 @@ namespace TinnyClock
             // 
             // txtSend
             // 
-            this.txtSend.Location = new System.Drawing.Point(3, 3);
+            this.txtSend.Location = new System.Drawing.Point(4, 4);
+            this.txtSend.Margin = new System.Windows.Forms.Padding(4);
             this.txtSend.Name = "txtSend";
-            this.txtSend.Size = new System.Drawing.Size(353, 34);
+            this.txtSend.Size = new System.Drawing.Size(469, 41);
             this.txtSend.TabIndex = 1;
             this.txtSend.Text = "";
             // 
@@ -397,9 +418,10 @@ namespace TinnyClock
             // 
             this.tabPage3.Controls.Add(this.drawChart);
             this.tabPage3.Controls.Add(this.plotView);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(575, 348);
+            this.tabPage3.Size = new System.Drawing.Size(769, 431);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Charts";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -407,11 +429,12 @@ namespace TinnyClock
             // drawChart
             // 
             this.drawChart.Depth = 0;
-            this.drawChart.Location = new System.Drawing.Point(257, 314);
+            this.drawChart.Location = new System.Drawing.Point(343, 386);
+            this.drawChart.Margin = new System.Windows.Forms.Padding(4);
             this.drawChart.MouseState = MaterialSkin.MouseState.HOVER;
             this.drawChart.Name = "drawChart";
             this.drawChart.Primary = true;
-            this.drawChart.Size = new System.Drawing.Size(87, 31);
+            this.drawChart.Size = new System.Drawing.Size(116, 38);
             this.drawChart.TabIndex = 36;
             this.drawChart.Text = "Draw";
             this.drawChart.UseVisualStyleBackColor = true;
@@ -419,31 +442,24 @@ namespace TinnyClock
             // 
             // plotView
             // 
-            this.plotView.Location = new System.Drawing.Point(3, 3);
+            this.plotView.Location = new System.Drawing.Point(4, 4);
+            this.plotView.Margin = new System.Windows.Forms.Padding(4);
             this.plotView.Name = "plotView";
             this.plotView.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView.Size = new System.Drawing.Size(572, 310);
+            this.plotView.Size = new System.Drawing.Size(763, 382);
             this.plotView.TabIndex = 0;
             this.plotView.Text = "plotView1";
             this.plotView.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
             this.plotView.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
             this.plotView.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
             // 
-            // tabPage4
-            // 
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(575, 348);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Flash!";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
             // cboPort
             // 
             this.cboPort.FormattingEnabled = true;
-            this.cboPort.Location = new System.Drawing.Point(605, 138);
+            this.cboPort.Location = new System.Drawing.Point(807, 170);
+            this.cboPort.Margin = new System.Windows.Forms.Padding(4);
             this.cboPort.Name = "cboPort";
-            this.cboPort.Size = new System.Drawing.Size(121, 21);
+            this.cboPort.Size = new System.Drawing.Size(160, 24);
             this.cboPort.TabIndex = 20;
             // 
             // cboBaud
@@ -457,25 +473,28 @@ namespace TinnyClock
             "38400",
             "57600",
             "115200 "});
-            this.cboBaud.Location = new System.Drawing.Point(605, 186);
+            this.cboBaud.Location = new System.Drawing.Point(807, 229);
+            this.cboBaud.Margin = new System.Windows.Forms.Padding(4);
             this.cboBaud.Name = "cboBaud";
-            this.cboBaud.Size = new System.Drawing.Size(121, 21);
+            this.cboBaud.Size = new System.Drawing.Size(160, 24);
             this.cboBaud.TabIndex = 21;
             // 
             // cboParity
             // 
             this.cboParity.FormattingEnabled = true;
-            this.cboParity.Location = new System.Drawing.Point(605, 232);
+            this.cboParity.Location = new System.Drawing.Point(807, 286);
+            this.cboParity.Margin = new System.Windows.Forms.Padding(4);
             this.cboParity.Name = "cboParity";
-            this.cboParity.Size = new System.Drawing.Size(121, 21);
+            this.cboParity.Size = new System.Drawing.Size(160, 24);
             this.cboParity.TabIndex = 22;
             // 
             // cboStop
             // 
             this.cboStop.FormattingEnabled = true;
-            this.cboStop.Location = new System.Drawing.Point(605, 278);
+            this.cboStop.Location = new System.Drawing.Point(807, 342);
+            this.cboStop.Margin = new System.Windows.Forms.Padding(4);
             this.cboStop.Name = "cboStop";
-            this.cboStop.Size = new System.Drawing.Size(121, 21);
+            this.cboStop.Size = new System.Drawing.Size(160, 24);
             this.cboStop.TabIndex = 23;
             // 
             // cboData
@@ -486,9 +505,10 @@ namespace TinnyClock
             "6",
             "7",
             "8"});
-            this.cboData.Location = new System.Drawing.Point(605, 324);
+            this.cboData.Location = new System.Drawing.Point(807, 399);
+            this.cboData.Margin = new System.Windows.Forms.Padding(4);
             this.cboData.Name = "cboData";
-            this.cboData.Size = new System.Drawing.Size(121, 21);
+            this.cboData.Size = new System.Drawing.Size(160, 24);
             this.cboData.TabIndex = 24;
             // 
             // materialLabel13
@@ -497,10 +517,11 @@ namespace TinnyClock
             this.materialLabel13.Depth = 0;
             this.materialLabel13.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel13.Location = new System.Drawing.Point(601, 116);
+            this.materialLabel13.Location = new System.Drawing.Point(801, 143);
+            this.materialLabel13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.materialLabel13.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel13.Name = "materialLabel13";
-            this.materialLabel13.Size = new System.Drawing.Size(37, 19);
+            this.materialLabel13.Size = new System.Drawing.Size(45, 24);
             this.materialLabel13.TabIndex = 25;
             this.materialLabel13.Text = "Port";
             // 
@@ -510,10 +531,11 @@ namespace TinnyClock
             this.materialLabel14.Depth = 0;
             this.materialLabel14.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel14.Location = new System.Drawing.Point(601, 162);
+            this.materialLabel14.Location = new System.Drawing.Point(801, 199);
+            this.materialLabel14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.materialLabel14.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel14.Name = "materialLabel14";
-            this.materialLabel14.Size = new System.Drawing.Size(72, 19);
+            this.materialLabel14.Size = new System.Drawing.Size(90, 24);
             this.materialLabel14.TabIndex = 26;
             this.materialLabel14.Text = "Baud rate";
             // 
@@ -523,10 +545,11 @@ namespace TinnyClock
             this.materialLabel15.Depth = 0;
             this.materialLabel15.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel15.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel15.Location = new System.Drawing.Point(601, 210);
+            this.materialLabel15.Location = new System.Drawing.Point(801, 258);
+            this.materialLabel15.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.materialLabel15.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel15.Name = "materialLabel15";
-            this.materialLabel15.Size = new System.Drawing.Size(47, 19);
+            this.materialLabel15.Size = new System.Drawing.Size(58, 24);
             this.materialLabel15.TabIndex = 27;
             this.materialLabel15.Text = "Parity";
             // 
@@ -536,10 +559,11 @@ namespace TinnyClock
             this.materialLabel16.Depth = 0;
             this.materialLabel16.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel16.Location = new System.Drawing.Point(601, 256);
+            this.materialLabel16.Location = new System.Drawing.Point(801, 315);
+            this.materialLabel16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.materialLabel16.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel16.Name = "materialLabel16";
-            this.materialLabel16.Size = new System.Drawing.Size(70, 19);
+            this.materialLabel16.Size = new System.Drawing.Size(87, 24);
             this.materialLabel16.TabIndex = 28;
             this.materialLabel16.Text = "Stop Bits";
             // 
@@ -549,21 +573,23 @@ namespace TinnyClock
             this.materialLabel17.Depth = 0;
             this.materialLabel17.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel17.Location = new System.Drawing.Point(601, 302);
+            this.materialLabel17.Location = new System.Drawing.Point(801, 372);
+            this.materialLabel17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.materialLabel17.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel17.Name = "materialLabel17";
-            this.materialLabel17.Size = new System.Drawing.Size(70, 19);
+            this.materialLabel17.Size = new System.Drawing.Size(86, 24);
             this.materialLabel17.TabIndex = 29;
             this.materialLabel17.Text = "Data Bits";
             // 
             // cmdOpen
             // 
             this.cmdOpen.Depth = 0;
-            this.cmdOpen.Location = new System.Drawing.Point(625, 355);
+            this.cmdOpen.Location = new System.Drawing.Point(833, 437);
+            this.cmdOpen.Margin = new System.Windows.Forms.Padding(4);
             this.cmdOpen.MouseState = MaterialSkin.MouseState.HOVER;
             this.cmdOpen.Name = "cmdOpen";
             this.cmdOpen.Primary = true;
-            this.cmdOpen.Size = new System.Drawing.Size(87, 31);
+            this.cmdOpen.Size = new System.Drawing.Size(116, 38);
             this.cmdOpen.TabIndex = 30;
             this.cmdOpen.Text = "Open Port";
             this.cmdOpen.UseVisualStyleBackColor = true;
@@ -572,11 +598,12 @@ namespace TinnyClock
             // materialRaisedButton2
             // 
             this.materialRaisedButton2.Depth = 0;
-            this.materialRaisedButton2.Location = new System.Drawing.Point(625, 401);
+            this.materialRaisedButton2.Location = new System.Drawing.Point(833, 494);
+            this.materialRaisedButton2.Margin = new System.Windows.Forms.Padding(4);
             this.materialRaisedButton2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialRaisedButton2.Name = "materialRaisedButton2";
             this.materialRaisedButton2.Primary = true;
-            this.materialRaisedButton2.Size = new System.Drawing.Size(87, 31);
+            this.materialRaisedButton2.Size = new System.Drawing.Size(116, 38);
             this.materialRaisedButton2.TabIndex = 31;
             this.materialRaisedButton2.Text = "Close Port";
             this.materialRaisedButton2.UseVisualStyleBackColor = true;
@@ -587,13 +614,13 @@ namespace TinnyClock
             this.rdoHex.AutoSize = true;
             this.rdoHex.Depth = 0;
             this.rdoHex.Font = new System.Drawing.Font("Roboto", 10F);
-            this.rdoHex.Location = new System.Drawing.Point(586, 456);
+            this.rdoHex.Location = new System.Drawing.Point(781, 561);
             this.rdoHex.Margin = new System.Windows.Forms.Padding(0);
             this.rdoHex.MouseLocation = new System.Drawing.Point(-1, -1);
             this.rdoHex.MouseState = MaterialSkin.MouseState.HOVER;
             this.rdoHex.Name = "rdoHex";
             this.rdoHex.Ripple = true;
-            this.rdoHex.Size = new System.Drawing.Size(55, 30);
+            this.rdoHex.Size = new System.Drawing.Size(63, 30);
             this.rdoHex.TabIndex = 32;
             this.rdoHex.TabStop = true;
             this.rdoHex.Text = "HEX";
@@ -605,13 +632,13 @@ namespace TinnyClock
             this.rdoText.AutoSize = true;
             this.rdoText.Depth = 0;
             this.rdoText.Font = new System.Drawing.Font("Roboto", 10F);
-            this.rdoText.Location = new System.Drawing.Point(661, 456);
+            this.rdoText.Location = new System.Drawing.Point(881, 561);
             this.rdoText.Margin = new System.Windows.Forms.Padding(0);
             this.rdoText.MouseLocation = new System.Drawing.Point(-1, -1);
             this.rdoText.MouseState = MaterialSkin.MouseState.HOVER;
             this.rdoText.Name = "rdoText";
             this.rdoText.Ripple = true;
-            this.rdoText.Size = new System.Drawing.Size(56, 30);
+            this.rdoText.Size = new System.Drawing.Size(64, 30);
             this.rdoText.TabIndex = 33;
             this.rdoText.TabStop = true;
             this.rdoText.Text = "Text";
@@ -621,11 +648,12 @@ namespace TinnyClock
             // themeButton
             // 
             this.themeButton.Depth = 0;
-            this.themeButton.Location = new System.Drawing.Point(426, 78);
+            this.themeButton.Location = new System.Drawing.Point(568, 96);
+            this.themeButton.Margin = new System.Windows.Forms.Padding(4);
             this.themeButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.themeButton.Name = "themeButton";
             this.themeButton.Primary = true;
-            this.themeButton.Size = new System.Drawing.Size(75, 23);
+            this.themeButton.Size = new System.Drawing.Size(100, 28);
             this.themeButton.TabIndex = 34;
             this.themeButton.Text = "Theme";
             this.themeButton.UseVisualStyleBackColor = true;
@@ -634,11 +662,12 @@ namespace TinnyClock
             // colorButton
             // 
             this.colorButton.Depth = 0;
-            this.colorButton.Location = new System.Drawing.Point(530, 78);
+            this.colorButton.Location = new System.Drawing.Point(707, 96);
+            this.colorButton.Margin = new System.Windows.Forms.Padding(4);
             this.colorButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.colorButton.Name = "colorButton";
             this.colorButton.Primary = true;
-            this.colorButton.Size = new System.Drawing.Size(75, 23);
+            this.colorButton.Size = new System.Drawing.Size(100, 28);
             this.colorButton.TabIndex = 35;
             this.colorButton.Text = "Color";
             this.colorButton.UseVisualStyleBackColor = true;
@@ -646,10 +675,10 @@ namespace TinnyClock
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(738, 510);
+            this.ClientSize = new System.Drawing.Size(984, 628);
             this.Controls.Add(this.colorButton);
             this.Controls.Add(this.themeButton);
             this.Controls.Add(this.rdoText);
@@ -669,9 +698,10 @@ namespace TinnyClock
             this.Controls.Add(this.materialTabControl1);
             this.Controls.Add(this.materialTabSelector1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(738, 510);
-            this.MinimumSize = new System.Drawing.Size(738, 510);
+            this.MaximumSize = new System.Drawing.Size(984, 628);
+            this.MinimumSize = new System.Drawing.Size(984, 628);
             this.Name = "MainForm";
             this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -697,7 +727,6 @@ namespace TinnyClock
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TabPage tabPage4;
         private MaterialSkin.Controls.MaterialLabel materialLabel3;
         private MaterialSkin.Controls.MaterialLabel materialLabel2;
         private MaterialSkin.Controls.MaterialLabel lb;

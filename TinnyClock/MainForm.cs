@@ -4,21 +4,39 @@ using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
+using TinnyClock.Enums;
+using TinnyClock.Models;
+using TinnyClock.Service;
 
 namespace TinnyClock
 {
     public partial class MainForm : MaterialForm
     {
-        private readonly MaterialSkinManager _materialSkinManager;
-        private SerialPortManager _serialPort = new SerialPortManager();
-        private string _transType = string.Empty;
-        private int _firstTempToChart;
-        private int _secondTempToChart;
-        private int _humidityToChart;
-        private int _lightLevelToChart;
-        private int _colorSchemeIndex;
+        private readonly Timer graphChangeTimer = new Timer();
+        private readonly MaterialSkinManager materialSkinManager;
+        private readonly SerialPortManager serialPort = new SerialPortManager();
+        private ChartDrawingService chartService;
+        private int colorSchemeIndex;
+        private int firstTempToChart;
+        private int humidityToChart;
+
+        private bool isClicked = true;
+        private int lightLevelToChart;
+        private int secondTempToChart;
+        private string transType = string.Empty;
+
+        public MainForm()
+        {
+            InitializeComponent();
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900,
+                Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+            serialPort.OnDataReceived += OnSerialPortDataReceived;
+
+            SetupChartModel();
+        }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -27,19 +45,9 @@ namespace TinnyClock
             SetControlState();
         }
 
-        public MainForm()
+        private void OnSerialPortDataReceived(ReceivedDataDto obj)
         {
-            InitializeComponent();
-            _materialSkinManager = MaterialSkinManager.Instance;
-            _materialSkinManager.AddFormToManage(this);
-            _materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-            _materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
-            _serialPort.OnDataReceived += SerialPortOnDataReceived;
-        }
-
-        private void SerialPortOnDataReceived(TinnyClock.ReceivedDataDTO obj)
-        {
-            this.Invoke((MethodInvoker)delegate ()
+            Invoke((MethodInvoker) delegate
             {
                 insideTemp.Text = obj.IndorTemperature;
                 outsideTemp.Text = obj.OutdoorTemperature;
@@ -49,12 +57,12 @@ namespace TinnyClock
                 try
                 {
                     if (obj.IndorTemperature != "NONE" && obj.OutdoorTemperature != "NONE" && obj.Humidity
-                    != "NONE" && obj.LightLevel != "NONE")
+                        != "NONE" && obj.LightLevel != "NONE")
                     {
-                        _firstTempToChart = Convert.ToInt32(obj.IndorTemperature);
-                        _secondTempToChart = Convert.ToInt32(obj.OutdoorTemperature);
-                        _humidityToChart = Convert.ToInt32(obj.Humidity);
-                        _lightLevelToChart = Convert.ToInt32(obj.LightLevel);
+                        firstTempToChart = Convert.ToInt32(obj.IndorTemperature);
+                        secondTempToChart = Convert.ToInt32(obj.OutdoorTemperature);
+                        humidityToChart = Convert.ToInt32(obj.Humidity);
+                        lightLevelToChart = Convert.ToInt32(obj.LightLevel);
                     }
                 }
                 catch (Exception e)
@@ -65,8 +73,8 @@ namespace TinnyClock
         }
 
         /// <summary>
-        /// Method to initialize serial port
-        /// values to standard defaults
+        ///     Method to initialize serial port
+        ///     values to standard defaults
         /// </summary>
         private void SetDefaults()
         {
@@ -80,19 +88,19 @@ namespace TinnyClock
         }
 
         /// <summary>
-        /// methods to load our serial
-        /// port option values
+        ///     methods to load our serial
+        ///     port option values
         /// </summary>
         private void LoadValues()
         {
-            cboPort.DataSource = _serialPort.PortNameValues;
-            cboParity.DataSource = _serialPort.ParityValues;
-            cboStop.DataSource = _serialPort.StopBitValues;
+            cboPort.DataSource = serialPort.PortNameValues;
+            cboParity.DataSource = serialPort.ParityValues;
+            cboStop.DataSource = serialPort.StopBitValues;
         }
 
         /// <summary>
-        /// method to set the state of controls
-        /// when the form first loads
+        ///     method to set the state of controls
+        ///     when the form first loads
         /// </summary>
         private void SetControlState()
         {
@@ -101,76 +109,14 @@ namespace TinnyClock
             cmdClose.Enabled = false;
         }
 
-        #region Test Chart drawing
-        private void PrintChart()
-        {
-            PlotModel plotModel = new PlotModel
-            {
-                // set here main properties such as the legend, the title, etc. example :
-                Title = "Test Graph",
-                TitleHorizontalAlignment = TitleHorizontalAlignment.CenteredWithinPlotArea,
-                LegendTitle = "f/t",
-                LegendOrientation = LegendOrientation.Horizontal,
-                LegendPlacement = LegendPlacement.Inside,
-                LegendPosition = LegendPosition.TopRight
-            };
-
-            // now let's define X and Y axis for the plot model
-
-            LinearAxis xAxis = new LinearAxis();
-            xAxis.Position = AxisPosition.Bottom;
-            xAxis.Title = "Time (hours)";
-
-            LinearAxis yAxis = new LinearAxis();
-            yAxis.Position = AxisPosition.Left;
-            yAxis.Title = "Frequency";
-
-            plotModel.Axes.Add(xAxis);
-            plotModel.Axes.Add(yAxis);
-
-            // Finally let's define a LineSerie
-
-            LineSeries lineSerie = new LineSeries
-            {
-                StrokeThickness = 2,
-                CanTrackerInterpolatePoints = false,
-                Title = "Value",
-                Smooth = false
-            };
-            plotModel.Series.Add(lineSerie);
-            this.plotView.Model = plotModel;
-            this.plotView.Model.Series.Add(GetFunction());
-        }
-
-        private FunctionSeries GetFunction()
-        {
-            int n = 10;
-            FunctionSeries fs = new FunctionSeries();
-            for (int x = -10; x <= n; x++)
-            {
-                for (int y = -10; y <= n; y++)
-                {
-                    DataPoint dataPoint = new DataPoint(x, GetValue(x, y));
-                    fs.Points.Add(dataPoint);
-                }
-            }
-            return fs;
-        }
-
-        private double GetValue(int x, int y)
-        {
-            return -1 * (x * x) + 50;
-        }
-        #endregion
-
         private void ComPortOpenClick(object sender, EventArgs e)
         {
-            _serialPort.Parity = cboParity.Text;
-            _serialPort.StopBits = cboStop.Text;
-            _serialPort.DataBits = cboData.Text;
-            _serialPort.BaudRatesRate = cboBaud.Text;
-            _serialPort.PortName = cboPort.Text;
-            _serialPort.OpenPort();
+            serialPort.Parity = cboParity.Text;
+            serialPort.StopBits = cboStop.Text;
+            serialPort.DataBits = cboData.Text;
+            serialPort.BaudRatesRate = cboBaud.Text;
+            serialPort.PortName = cboPort.Text;
+            serialPort.OpenPort();
             cmdOpen.Enabled = false;
             cmdClose.Enabled = true;
             cmdSend.Enabled = true;
@@ -181,23 +127,23 @@ namespace TinnyClock
             cmdOpen.Enabled = true;
             cmdClose.Enabled = false;
             cmdSend.Enabled = false;
-            _serialPort.ClosePort();
+            serialPort.ClosePort();
         }
 
         private void SendToComPortClick(object sender, EventArgs e)
         {
-            _serialPort.WriteData(txtSend.Text);
+            serialPort.WriteData(txtSend.Text);
         }
 
         private void CheckedChanged(object sender, EventArgs e)
         {
             if (rdoHex.Checked)
             {
-                _serialPort.CurrentTransmissionType = SerialPortManager.TransmissionType.Hex;
+                serialPort.CurrentTransmissionType = TransmissionType.Hex;
             }
             else
             {
-                _serialPort.CurrentTransmissionType = SerialPortManager.TransmissionType.Text;
+                serialPort.CurrentTransmissionType = TransmissionType.Text;
             }
         }
 
@@ -214,118 +160,105 @@ namespace TinnyClock
             timeLabel.Text = DateTime.Now.ToString("HH:mm:ss");
         }
 
-        private void OpenFirmwareClick(object sender, EventArgs e)
-        {
-            //this.FirmwBuffer.ForeColor = System.Drawing.Color.Green;
-            Stream fileStream = null;
-            OpenFileDialog oFile = new OpenFileDialog();
-
-            oFile.InitialDirectory = "c:\\";
-            oFile.Filter = "HEX files (*.hex)|*.hex|All files (*.*)|*.*";
-            oFile.FilterIndex = 2;
-            oFile.RestoreDirectory = true;
-
-            if (oFile.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    if ((fileStream = oFile.OpenFile()) != null)
-                    {
-                        using (fileStream)
-                        {
-                            // Insert code to read the stream here.
-                            StreamReader sr = new
-                            StreamReader(oFile.FileName);
-                            //FirmwBuffer.Text = (sr.ReadToEnd());
-                            sr.Close();
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($@"Error: Could not read file from disk. Original error: {ex.Message}");
-                }
-            }
-        }
-
         private void SaveButtonClick(object sender, EventArgs e)
         {
-            MemoryStream memorystream = new System.IO.MemoryStream();
-            SaveFileDialog sFile = new SaveFileDialog();
-            Stream fileStream;
+            var memorystream = new MemoryStream();
+            var sFile = new SaveFileDialog();
+
             if (sFile.ShowDialog() == DialogResult.OK)
             {
-                //ассоциируем поток с именем файла - если фйла нет создаем
-                fileStream = sFile.OpenFile();
-                //       memorystream.Position = 0;
-                //сохраняем в поток содержимое richTextBox1
-                //FirmwBuffer.SaveFile(memorystream, RichTextBoxStreamType.PlainText);
-                //переносим в файл информацию и закрываем поток
+                var fileStream = sFile.OpenFile();
                 memorystream.WriteTo(fileStream);
                 fileStream.Close();
             }
         }
 
-        private void SaveAsButtonClick(object sender, EventArgs e)
-        {
-            // Create a SaveFileDialog to request a path and file name to save to.
-            SaveFileDialog sFile = new SaveFileDialog();
-
-            // Initialize the SaveFileDialog to specify the RTF extension for the file.
-            // saveFile1.DefaultExt = "*.hex";
-            sFile.Filter = "HEX files (*.hex)|*.hex|All files (*.*)|*.*";
-            try
-            {
-                // Determine if the user selected a file name from the saveFileDialog.
-                if (sFile.ShowDialog() == System.Windows.Forms.DialogResult.OK &&
-                   sFile.FileName.Length > 0)
-                {
-                    // Save the contents of the RichTextBox into the file.
-                    //FirmwBuffer.SaveFile(sFile.FileName, RichTextBoxStreamType.PlainText);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void ClearBufferClick(object sender, EventArgs e)
-        {
-            //FirmwBuffer.Clear();
-        }
-
         private void OnThemeClick(object sender, EventArgs e)
         {
-            _materialSkinManager.Theme = _materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? MaterialSkinManager.Themes.LIGHT : MaterialSkinManager.Themes.DARK;
+            materialSkinManager.Theme = materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
+                ? MaterialSkinManager.Themes.LIGHT
+                : MaterialSkinManager.Themes.DARK;
         }
 
         private void OnColorChangedClick(object sender, EventArgs e)
         {
-            _colorSchemeIndex++;
-            if (_colorSchemeIndex > 3) _colorSchemeIndex = 0;
+            colorSchemeIndex++;
+            if (colorSchemeIndex > 3)
+            {
+                colorSchemeIndex = 0;
+            }
 
             //These are just example color schemes
-            switch (_colorSchemeIndex)
+            switch (colorSchemeIndex)
             {
                 case 0:
-                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+                    materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900,
+                        Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
                     break;
                 case 1:
-                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
+                    materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700,
+                        Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
                     break;
                 case 2:
-                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.Green600, Primary.Green700, Primary.Green200, Accent.Red100, TextShade.WHITE);
+                    materialSkinManager.ColorScheme = new ColorScheme(Primary.Green600, Primary.Green700,
+                        Primary.Green200, Accent.Red100, TextShade.WHITE);
                     break;
                 case 3:
-                    _materialSkinManager.ColorScheme = new ColorScheme(Primary.Red200, Primary.Red800, Primary.Red300, Accent.Red200, TextShade.WHITE);
+                    materialSkinManager.ColorScheme = new ColorScheme(Primary.Red200, Primary.Red800, Primary.Red300,
+                        Accent.Red200, TextShade.WHITE);
                     break;
+            }
+        }
+
+        private void InitializeGraphTimer()
+        {
+            graphChangeTimer.Enabled = true;
+            graphChangeTimer.Interval = 100;
+            graphChangeTimer.Tick += OnGraphChangeTimerTick;
+        }
+
+        private void SetupChartModel()
+        {
+            if (plotView.Model == null)
+            {
+                plotView.Model = new PlotModel();
+            }
+
+            chartService = new ChartDrawingService(plotView, "Telemetry Data");
+        }
+
+
+        private void OnGraphChangeTimerTick(object sender, EventArgs e)
+        {
+            lock (plotView.Model.SyncRoot)
+            {
+                chartService.UpdateChart();
+                plotView.Model.InvalidatePlot(true);
             }
         }
 
         private void OnDrawChartClick(object sender, EventArgs e)
         {
-            PrintChart();
+            if (isClicked)
+            {
+                drawChart.Text = "Stop Drawing";
+                InitializeGraphTimer();
+                graphChangeTimer.Start();
+                isClicked = false;
+            }
+            else
+            {
+                drawChart.Text = "Draw";
+                graphChangeTimer.Enabled = false;
+                graphChangeTimer.Stop();
+                isClicked = true;
+            }
+
+            //PrintChart();
         }
+
+        #region Test Chart drawing
+
+        #endregion
     }
 }
