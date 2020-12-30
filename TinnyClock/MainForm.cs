@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
+using NLog;
 using OxyPlot;
 using TinnyClock.Enums;
 using TinnyClock.Models;
@@ -22,6 +23,8 @@ namespace TinnyClock
 
         private bool isClicked = true;
         private int lightLevelToChart;
+
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private int secondTempToChart;
         private string transType = string.Empty;
 
@@ -45,29 +48,36 @@ namespace TinnyClock
             SetControlState();
         }
 
-        private void OnSerialPortDataReceived(ReceivedDataDto obj)
+        private void OnSerialPortDataReceived(ReceivedDataDto data)
         {
             Invoke((MethodInvoker) delegate
             {
-                insideTemp.Text = obj.IndorTemperature;
-                outsideTemp.Text = obj.OutdoorTemperature;
-                huMidity.Text = obj.Humidity;
-                lightLevel.Text = obj.LightLevel;
-                rtbDisplay.AppendText(obj.RawText + Environment.NewLine);
+                insideTemp.Text = data.IndorTemperature;
+                outsideTemp.Text = data.OutdoorTemperature;
+                huMidity.Text = data.Humidity;
+                lightLevel.Text = data.LightLevel;
+                rtbDisplay.AppendText(data.RawText + Environment.NewLine);
                 try
                 {
-                    if (obj.IndorTemperature != "NONE" && obj.OutdoorTemperature != "NONE" && obj.Humidity
-                        != "NONE" && obj.LightLevel != "NONE")
+                    if (data.IndorTemperature != "NONE" && data.OutdoorTemperature != "NONE" && data.Humidity
+                        != "NONE" && data.LightLevel != "NONE")
                     {
-                        firstTempToChart = Convert.ToInt32(obj.IndorTemperature);
-                        secondTempToChart = Convert.ToInt32(obj.OutdoorTemperature);
-                        humidityToChart = Convert.ToInt32(obj.Humidity);
-                        lightLevelToChart = Convert.ToInt32(obj.LightLevel);
+                        firstTempToChart = Convert.ToInt32(data.IndorTemperature);
+                        secondTempToChart = Convert.ToInt32(data.OutdoorTemperature);
+                        humidityToChart = Convert.ToInt32(data.Humidity);
+                        lightLevelToChart = Convert.ToInt32(data.LightLevel);
+                        logger.Info(
+                            $"Indoor:{firstTempToChart}, Outdoor:{secondTempToChart}, Humidity:{humidityToChart}, Light:{lightLevelToChart}");
+                    }
+                    else
+                    {
+                        logger.Info("No data...");
                     }
                 }
                 catch (Exception e)
                 {
                     MessageBox.Show("Error", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    logger.Error(e);
                 }
             });
         }
@@ -158,19 +168,6 @@ namespace TinnyClock
         {
             dateLabel.Text = DateTime.Now.ToString("MM/dd/yyyy");
             timeLabel.Text = DateTime.Now.ToString("HH:mm:ss");
-        }
-
-        private void SaveButtonClick(object sender, EventArgs e)
-        {
-            var memorystream = new MemoryStream();
-            var sFile = new SaveFileDialog();
-
-            if (sFile.ShowDialog() == DialogResult.OK)
-            {
-                var fileStream = sFile.OpenFile();
-                memorystream.WriteTo(fileStream);
-                fileStream.Close();
-            }
         }
 
         private void OnThemeClick(object sender, EventArgs e)

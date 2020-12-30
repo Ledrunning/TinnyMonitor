@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
+using NLog;
 using TinnyClock.Contracts;
 using TinnyClock.Converters;
 using TinnyClock.Enums;
@@ -13,6 +14,7 @@ namespace TinnyClock.Service
     {
         private readonly SerialPort comPort = new SerialPort();
         private readonly StringParser recievedStrFromComPort = new StringParser();
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public SerialPortManager(string baudRates, string parity, string stopBits, string dataBits, string name)
         {
@@ -54,7 +56,6 @@ namespace TinnyClock.Service
                 case TransmissionType.Text:
                     EnsurePortOpened();
                     comPort.Write(msg);
-                    //display the message
                     DisplayData(MessageType.Outgoing, $"{msg}\n");
                     break;
 
@@ -62,11 +63,9 @@ namespace TinnyClock.Service
                     try
                     {
                         EnsurePortOpened();
-                        //convert the message to byte array
                         var newMsg = SubConverter.HexToByte(msg);
-                        //send the message to the port
+                        
                         comPort.Write(newMsg, 0, newMsg.Length);
-                        //convert back to hex and display
                         DisplayData(MessageType.Outgoing, $"{SubConverter.ByteToHex(newMsg)}\n");
                     }
                     catch (FormatException ex)
@@ -80,7 +79,6 @@ namespace TinnyClock.Service
                 default:
                     EnsurePortOpened();
                     comPort.Write(msg);
-                    //display the message
                     DisplayData(MessageType.Outgoing, $"{msg}\n");
                     break;
             }
@@ -95,22 +93,22 @@ namespace TinnyClock.Service
                     comPort.Close();
                 }
 
-                //set the properties of our SerialPort Object
-                comPort.BaudRate = int.Parse(BaudRatesRate); //BaudRatesRate
-                comPort.DataBits = int.Parse(DataBits); //DataBits
-                comPort.StopBits = (StopBits) Enum.Parse(typeof(StopBits), StopBits); //StopBits
-                comPort.Parity = (Parity) Enum.Parse(typeof(Parity), Parity); //Parity
-                comPort.PortName = PortName; //PortName
-                //now open the port
+                comPort.BaudRate = int.Parse(BaudRatesRate);
+                comPort.DataBits = int.Parse(DataBits);
+                comPort.StopBits = (StopBits) Enum.Parse(typeof(StopBits), StopBits); 
+                comPort.Parity = (Parity) Enum.Parse(typeof(Parity), Parity); 
+                comPort.PortName = PortName; 
+                
                 comPort.Open();
-                //display message
+                
                 DisplayData(MessageType.Normal, $"Port opened at {DateTime.Now}\n");
-                // Что бы не выводилась надпись при открытии порта.
+                logger.Info($"Port opened at {DateTime.Now}\n");
                 return true;
             }
             catch (Exception ex)
             {
                 DisplayData(MessageType.Error, ex.Message);
+                logger.Error(ex);
                 return false;
             }
         }
@@ -118,9 +116,9 @@ namespace TinnyClock.Service
         public bool ClosePort()
         {
             comPort.Close();
-            //display message
             var message = "Port closed at ";
             DisplayData(MessageType.Closed, $"{message}{DateTime.Now}\n");
+            logger.Info($"{message}{DateTime.Now}\n");
             return true;
         }
 
@@ -148,33 +146,25 @@ namespace TinnyClock.Service
 
         private void SerialPortDataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            //determine the mode the user selected (binary/string)
             switch (CurrentTransmissionType)
             {
-                //user chose string
                 case TransmissionType.Text:
-                    //read data waiting in the buffer
+                    
                     var msg = comPort.ReadExisting();
-                    //display the data to the user
                     DisplayData(MessageType.Incoming, $"{msg}\n");
                     break;
 
-                //user chose binary
                 case TransmissionType.Hex:
-                    //retrieve number of bytes in the buffer
+                   
                     var bytes = comPort.BytesToRead;
-                    //create a byte array to hold the awaiting data
                     var comBuffer = new byte[bytes];
-                    //read the data and store it
+                    
                     comPort.Read(comBuffer, 0, bytes);
-                    //display the data to the user
                     DisplayData(MessageType.Incoming, $"{SubConverter.ByteToHex(comBuffer)}\n");
                     break;
 
                 default:
-                    //read data waiting in the buffer
                     var str = comPort.ReadExisting();
-                    //display the data to the user
                     DisplayData(MessageType.Incoming, $"{str}\n");
                     break;
             }
