@@ -12,15 +12,7 @@ You should find it on this repository - https://github.com/Ledrunning/HomeMeteos
   * Real time clock;
 * Virtual Com port settings;
 * Console;
-* Simple graph builder without changing;
-* Flasher for AVR chip (In developing)
-
-## TO DO
-
-* Application desing;
-* Protocol for AVR chip flasher via VCP;
-* Nplot or Oxyplot for charts;
-* Nlog;
+* Telemetry graph;
 
 ![GitHub Logo](https://habrastorage.org/webt/p0/xb/ic/p0xbiclbdltl33e_tdruic3qdgo.jpeg)
 
