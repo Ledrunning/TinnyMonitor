@@ -46,6 +46,7 @@ namespace TinnyClock
             LoadValues();
             SetDefaults();
             SetControlState();
+            logger.Info("Application started!");
         }
 
         private void OnSerialPortDataReceived(ReceivedDataDto data)
