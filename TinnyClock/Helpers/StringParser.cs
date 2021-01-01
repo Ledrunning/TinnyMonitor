@@ -42,22 +42,5 @@ namespace TinnyClock.Helpers
 
             return match.Success ? match.Groups[resultingGroupIndex].Value : "NONE";
         }
-
-        public int?[] ParseInsideTemperatureFull(string msg)
-        {
-            var regex = new Regex(@"\b(\d+|NONE)");
-            var matches = regex.Matches(msg);
-
-            var result = new int?[matches.Count];
-
-            for (var i = 0; i < matches.Count; i++)
-            {
-                int? temp;
-                temp = int.TryParse(matches[i].Groups[1].Value, out var buffer) ? (int?) buffer : null;
-                result[i] = temp;
-            }
-
-            return result;
-        }
     }
 }
