@@ -6,9 +6,6 @@ before_build:
 - choco install codecov
 
 build:
-  publish_nuget: true
-  publish_nuget_symbols: true
-  include_nuget_references: true
   project: TinnyClock.sln
   verbosity: minimal
   
