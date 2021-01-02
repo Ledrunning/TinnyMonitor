@@ -108,6 +108,8 @@
     <Compile Include="Contracts\ISerialPortManager.cs" />
     <Compile Include="Enums\MessageType.cs" />
     <Compile Include="Enums\TransmissionType.cs" />
+    <Compile Include="Enums\WindowsMessageParams.cs" />
+    <Compile Include="Enums\WindowsMessages.cs" />
     <Compile Include="Service\ChartDrawingService.cs" />
     <Compile Include="Contracts\IChartDrawingService.cs" />
     <Compile Include="Converters\SubConverter.cs" />
