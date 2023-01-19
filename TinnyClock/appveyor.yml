@@ -14,5 +14,5 @@ build:
   include_nuget_references: true
   verbosity: minimal
 artifacts:
-- path: TinnyClock\bin\Release\TinnyClock.exe
+- path: TinnyClock\bin\TinnyClock.exe
   name: TinnyMonitor
