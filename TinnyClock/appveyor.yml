@@ -1,3 +1,6 @@
+version: 1.0.{build}
+nuget:
+  project_feed: true
 image: Visual Studio 2022
 
 before_build:
@@ -6,13 +9,10 @@ before_build:
 - choco install codecov
 
 build:
-  project: TinnyClock.sln
+  publish_nuget: true
+  publish_nuget_symbols: true
+  include_nuget_references: true
   verbosity: minimal
-  
 artifacts:
-- path: deploy\TinnyMonitor.exe
+- path: TinnyClock\bin\Debug\TinnyClock.exe
   name: TinnyMonitor
-  
-test_script:
-- OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:".\MyUnitTests\bin\Debug\MyUnitTests.dll -noshadow" -filter:"+[UnitTestTargetProject*]* -[MyUnitTests*]*" -output:".\MyProject_coverage.xml"
-- codecov -f "MyProject_coverage.xml
