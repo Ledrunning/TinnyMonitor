@@ -1,6 +1,3 @@
-version: 1.0.{build}
-nuget:
-  project_feed: true
 image: Visual Studio 2022
 
 before_build:
@@ -14,5 +11,5 @@ build:
   include_nuget_references: true
   verbosity: minimal
 artifacts:
-- path: TinnyClock\bin\TinnyClock.exe
+- path: TinnyClock\bin\Release\TinnyClock.exe
   name: TinnyMonitor
