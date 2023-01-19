@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
@@ -14,6 +13,8 @@ namespace TinnyClock
     public partial class MainForm : MaterialForm
     {
         private readonly Timer graphChangeTimer = new Timer();
+
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly MaterialSkinManager materialSkinManager;
         private readonly SerialPortManager serialPort = new SerialPortManager();
         private ChartDrawingService chartService;
@@ -23,10 +24,7 @@ namespace TinnyClock
 
         private bool isClicked = true;
         private int lightLevelToChart;
-
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private int secondTempToChart;
-        private string transType = string.Empty;
 
         public MainForm()
         {
@@ -41,7 +39,7 @@ namespace TinnyClock
             SetupChartModel();
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private void OnMainFormLoad(object sender, EventArgs e)
         {
             LoadValues();
             SetDefaults();
@@ -110,6 +108,39 @@ namespace TinnyClock
         }
 
         /// <summary>
+        ///     Windows Device manager handler
+        /// </summary>
+        /// <param name="m"></param>
+        //
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+
+            if (m.Msg == (int) WindowsMessages.WM_DEVICECHANGE)
+            {
+                try
+                {
+                    //New usb-device connection
+                    if (m.WParam.ToInt32() == (int) WindowsMessages.WM_APP)
+                    {
+                        cboPort.DataSource = serialPort.PortNameValues;
+                        cboPort.SelectedIndex = 0;
+                    }
+
+                    //Usb device disconnect
+                    if (m.WParam.ToInt32() == (int) WindowsMessageParams.DBT_DEVICEREMOVECOMPLETE)
+                    {
+                        MessageBox.Show("Error", "Port unavailable", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        /// <summary>
         ///     method to set the state of controls
         ///     when the form first loads
         /// </summary>
@@ -143,7 +174,14 @@ namespace TinnyClock
 
         private void SendToComPortClick(object sender, EventArgs e)
         {
-            serialPort.WriteData(txtSend.Text);
+            try
+            {
+                serialPort.WriteData(txtSend.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void CheckedChanged(object sender, EventArgs e)
