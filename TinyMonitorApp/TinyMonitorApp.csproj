@@ -2,7 +2,7 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Version>1.0.0</Version>
+    <!-- <Version>1.0.0</Version> -->
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E912E277-E79E-4F4A-90A5-AA11E852A9D8}</ProjectGuid>
@@ -179,16 +179,11 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <!-- 
   <Target Name="BeforeResolveReferences">
   <CreateProperty Value="$(MSBuildProjectDirectory)\TinnyClock\bin\Release\TinnyClock.exe;$(AssemblySearchPaths)">
     <Output TaskParameter="Value" PropertyName="AssemblySearchPaths"/>
   </CreateProperty>
 </Target>
-</Project>
+  -->
+ </Project>
