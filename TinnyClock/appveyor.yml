@@ -11,6 +11,7 @@ before_build:
 - nuget restore
 - choco install opencover.portable
 - choco install codecov
+
 build:
   project: TinyMonitor\TinnyClock.sln
   verbosity: minimal
