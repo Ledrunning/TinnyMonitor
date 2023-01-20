@@ -186,4 +186,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="BeforeResolveReferences">
+  <CreateProperty Value="$(MSBuildProjectDirectory)\TinnyClock\bin\Release\TinnyClock.exe;$(AssemblySearchPaths)">
+    <Output TaskParameter="Value" PropertyName="AssemblySearchPaths"/>
+  </CreateProperty>
+</Target>
 </Project>
