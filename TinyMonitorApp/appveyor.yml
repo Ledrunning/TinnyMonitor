@@ -12,8 +12,7 @@ before_build:
     - choco install opencover.portable
 
     - choco install codecov
+    
 build:
-  project: C:\projects\tinnymonitor-lu1w9\TinyMonitor.sln
-  # project: C:\projects\tinnymonitor-lu1w9\TinyMonitor\TinnyClock.sln
-
+  project: TinnyClock.sln
   verbosity: minimal
