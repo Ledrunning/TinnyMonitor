@@ -13,5 +13,7 @@ before_build:
 
     - choco install codecov
 build:
-  project: TinyMonitor\TinnyClock.sln
+  project: C:\projects\tinnymonitor-lu1w9\TinnyClock.sln 
+  # project: C:\projects\tinnymonitor-lu1w9\TinyMonitor\TinnyClock.sln
+
   verbosity: minimal
