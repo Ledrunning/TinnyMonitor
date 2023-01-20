@@ -1,17 +1,58 @@
-version: "{build}"
+version: 1.0.{build}
 image: Visual Studio 2022
-branches:
-  only:
-    - master
-    - develop
-environment:
-  DOTNET_CLI_TELEMETRY_OPTOUT: 1
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
-  NUGET_API_KEY:
-    secure: tQXopKGxbH8TK83YCogoAl3c9AeZmfFgl4I/k2ajOGMORcdtfs1FNbfUwvFTznUC
-  COVERALLS_TOKEN:
-    secure: 8Jc5l9jq4U44ds5CrF647bocwBRdV44FSQOsIe8CfD/0amEV3GHaCEtHHrtuX51S
-build_script:
-- ps: .\build.ps1 --currentBranch=$env:APPVEYOR_REPO_BRANCH --nugetApiKey=$env:NUGET_API_KEY --coverallsToken=$env:COVERALLS_TOKEN
-test: off #tests handled by cake script
-deploy: off #deploy handled by cake script
+configuration: Release
+platform: Any CPU
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{build}'
+  informational_version: '{version}'
+before_build:
+- cmd: dotnet restore TinyMonitor\TinnyClock.sln
+- nuget restore
+- choco install opencover.portable
+- choco install codecov
+build:
+  verbosity: minimal
+after_build:
+- cmd: dotnet pack TinyMonitor\TinnyClock\TinnyClock.csproj
+artifacts:
+- path: '**\*.nupkg'
+deploy: off
+
+for:
+-
+  branches:
+    only:
+      - dev
+
+  dotnet_csproj:
+    patch: true
+    file: '**\*.csproj'
+    version: '{version}-alpha'
+    package_version: '{version}-alpha'
+    assembly_version: '{version}'
+    file_version: '{version}'
+    informational_version: '{version} (pre-release)'
+
+
+
+#image: Visual Studio 2022
+
+#before_build:
+#- nuget restore
+#- choco install opencover.portable
+#- choco install codecov
+
+#build:
+#  publish_nuget: true
+#  publish_nuget_symbols: true
+#  include_nuget_references: true
+#  verbosity: minimal
+#artifacts:
+#- path: TinnyClock\bin\Release\TinnyClock.exe
+#  name: TinnyMonitor
+
