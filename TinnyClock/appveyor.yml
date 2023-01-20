@@ -1,16 +1,19 @@
+version: 1.0.{build}
+branches:
+  only:
+  - master
+  - Dev
+  
 image: Visual Studio 2022
+platform: Any CPU
 
 before_build:
 - nuget restore
 - choco install opencover.portable
 - choco install codecov
-
 build:
-  publish_nuget: true
-  publish_nuget_symbols: true
-  include_nuget_references: true
+  project: TinyMonitor\TinnyClock.sln
   verbosity: minimal
-artifacts:
-- path: TinnyClock\bin\Release\TinnyClock.exe
-  name: TinnyMonitor
+
+
 
