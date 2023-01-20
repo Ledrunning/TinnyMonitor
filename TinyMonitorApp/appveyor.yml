@@ -1,18 +1,19 @@
-version: 1.0.{build}
-branches:
-  only:
-#  - master
-  - Dev
 image: Visual Studio 2022
-platform: Any CPU
-before_build:
-- sh: >-
-    - nuget restore
-
-    - choco install opencover.portable
-
-    - choco install codecov
-    
-build:
-  project: TinyMonitorApp\TinyMonitorApp.csproj
-  verbosity: minimal
+configuration: Release
+environment:
+  major_version: 1
+  minor_version: 7
+  patch_version: 0
+version: '$(major_version).$(minor_version).$(patch_version).{build}'
+dotnet_csproj:
+  patch: true
+  file: 'TinyMonitorApp\TinyMonitorApp.csproj'
+  package_version: '$(major_version).$(minor_version).$(patch_version)'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+build_script:
+  - cmd: dotnet build -c Release
+artifacts:
+- path: 'TinyMonitorApp\**\*.nupkg'
+  name: Nuget
