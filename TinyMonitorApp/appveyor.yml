@@ -12,11 +12,12 @@ dotnet_csproj:
   assembly_version: '{version}'
   file_version: '{version}'
   informational_version: '{version}'
+  
 before_build: 
   # Display .NET Core version
   - cmd: dotnet --version
   # Display minimal restore text
-  - cmd: dotnet restore ./TinyMonitorApp/TinyMonitorApp.csproj --verbosity m
+  - cmd: dotnet restore
 build_script:
   - cmd: dotnet build -c Release
 artifacts:
