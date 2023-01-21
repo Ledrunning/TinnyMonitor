@@ -19,3 +19,5 @@ build_script:
 artifacts:
 - path: 'TinyMonitorApp\**\*.nupkg'
   name: Nuget
+ 
+ #C:\projects\tinnymonitor-lu1w9\TinyMonitorApp\TinyMonitorApp.csproj
