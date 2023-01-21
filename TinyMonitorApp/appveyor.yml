@@ -13,7 +13,7 @@ dotnet_csproj:
   file_version: '{version}'
   informational_version: '{version}'
 before_build: 
-- nuget restore TinnyMonitor\TinyMonitor.sln
+- nuget restore C:\projects\TinnyMonitor\TinyMonitorApp\TinyMonitorApp.csproj
 build_script:
   - cmd: dotnet build -c Release
 artifacts:
