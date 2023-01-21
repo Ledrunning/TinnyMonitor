@@ -17,7 +17,7 @@ before_build:
 build_script:
   - cmd: dotnet build -c Release
 artifacts:
-- path: 'TinyMonitorApp\**\*.nupkg'
+- path: 'TinyMonitorApp\bin\Release\TinyMonitorApp.exe
   name: Nuget
  
  #C:\projects\tinnymonitor-lu1w9\TinyMonitorApp\TinyMonitorApp.csproj
