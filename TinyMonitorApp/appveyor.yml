@@ -14,10 +14,10 @@ dotnet_csproj:
   informational_version: '{version}'
   
 before_build: 
-  # Display .NET Core version
+  # Display .NET version
   - cmd: dotnet --version
   # Display minimal restore text
-  - cmd: dotnet restore
+  - cmd: dotnet restore .\TinyMonitor.sln
 build_script:
   - cmd: dotnet build -c Release
 artifacts:
