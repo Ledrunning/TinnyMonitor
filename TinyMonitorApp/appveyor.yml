@@ -9,15 +9,5 @@ image: Visual Studio 2022
     - ps: nuget restore .\TinyMonitor.sln
   build:
     project: .\TinyMonitor.sln
-# configuration for all other branches except "master"
--
-  branches:
-    except:
-      - master
-  configuration: Test
-  before_build:
-    - ps: nuget restore .\TinyMonitor.sln
-  build:
-    project: .\TinyMonitor.sln
  
  #C:\projects\tinnymonitor-lu1w9\TinyMonitorApp\TinyMonitorApp.csproj
