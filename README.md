@@ -21,6 +21,8 @@ Also, you can use this program for your hardware device with different microcont
 just form your data transfer string it must be like that: "temp1 = {value}, temp2 = {value}, humidity = {value}, lightlevel = {value} \r"
 with real-time values (you should put it instead of placeholders)
 
-![GitHub Logo](https://habrastorage.org/webt/p0/xb/ic/p0xbiclbdltl33e_tdruic3qdgo.jpeg)
+## UI Layouts
+  
+  ![](tinyMonitor.gif)
 
 
