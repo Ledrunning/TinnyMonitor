@@ -1,13 +1,27 @@
 image: Visual Studio 2022
-# configuration for "master" branch
-
-  branches:
-    only:
-      - Dev
-  configuration: Release
-  before_build:
-    - ps: nuget restore .\TinyMonitor.sln
-  build:
-    project: .\TinyMonitor.sln
+configuration: Release
+environment:
+  major_version: 1
+  minor_version: 7
+  patch_version: 0
+version: '$(major_version).$(minor_version).$(patch_version).{build}'
+dotnet_csproj:
+  patch: true
+  file: 'TinyMonitorApp\TinyMonitorApp.csproj'
+  package_version: '$(major_version).$(minor_version).$(patch_version)'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+  
+before_build: 
+  # Display .NET version
+  - cmd: dotnet --version
+  # Display minimal restore text
+  - cmd: dotnet restore TinyMonitor.sln
+build_script:
+  - cmd: dotnet build -c Release
+artifacts:
+- path: 'TinyMonitorApp\bin\Release\TinyMonitorApp.exe
+  name: Nuget
  
  #C:\projects\tinnymonitor-lu1w9\TinyMonitorApp\TinyMonitorApp.csproj
