@@ -17,7 +17,7 @@ before_build:
   # Display .NET version
   - cmd: dotnet --version
   # Display minimal restore text
-  - cmd: dotnet restore -PackagesDirectory packages
+  - cmd: dotnet restore
 build_script:
   - cmd: dotnet build -c Release
 artifacts:
