@@ -1,6 +1,8 @@
 # TinnyMonitor
 Desktop application for the hardware weather station 
 
+[https://ci.appveyor.com/api/projects/status/32r7s2skrgm9ubva?svg=true](https://ci.appveyor.com/api/projects/status/32r7s2skrgm9ubva?svg=true)
+
 You can find the hardware project on the next repository - https://github.com/Ledrunning/HomeMeteostation
 
 ## Application Capabilities
