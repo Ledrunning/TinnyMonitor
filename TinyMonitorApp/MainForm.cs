@@ -42,7 +42,6 @@ namespace TinnyClock
         private void OnMainFormLoad(object sender, EventArgs e)
         {
             LoadValues();
-            SetDefaults();
             SetControlState();
             logger.Info("Application started!");
         }
@@ -87,9 +86,7 @@ namespace TinnyClock
         /// </summary>
         private void SetDefaults()
         {
-#if !DEBUG
             cboPort.SelectedIndex = 0;
-#endif
             cboBaud.SelectedText = "9600";
             cboParity.SelectedIndex = 0;
             cboStop.SelectedIndex = 1;
@@ -124,7 +121,7 @@ namespace TinnyClock
                     if (m.WParam.ToInt32() == (int) WindowsMessages.WM_APP)
                     {
                         cboPort.DataSource = serialPort.PortNameValues;
-                        cboPort.SelectedIndex = 0;
+                        SetDefaults();
                     }
 
                     //Usb device disconnect
@@ -292,9 +289,5 @@ namespace TinnyClock
 
             //PrintChart();
         }
-
-        #region Test Chart drawing
-
-        #endregion
     }
 }
