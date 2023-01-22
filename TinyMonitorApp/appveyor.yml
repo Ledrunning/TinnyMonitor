@@ -28,3 +28,16 @@ artifacts:
 - path: 'TinyMonitorApp\bin\Release\TinyMonitorApp.exe
   name: Nuget
  
+ deploy:
+  release: tinymonitor-v$(APPVEYOR_BUILD_VERSION)
+  description: 'Release version'
+  provider: GitHub
+  auth_token:
+    secure: MEUZKpoe3XC1JH4JClPXo/YMsK0kuuZ5uUkzTrZ2OWkYW8wv3Xo2eelty58uti6/
+  artifact: /.*\.nupkg/            # upload all NuGet packages to release assets
+  draft: false
+  prerelease: false
+  on:
+    branch: master                 # release from master branch only
+    #APPVEYOR_REPO_TAG: true        # deploy on tag push only
+ 
