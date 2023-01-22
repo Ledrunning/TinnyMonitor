@@ -1,4 +1,8 @@
 image: Visual Studio 2022
+branches:
+  only:
+  - master
+  
 configuration: Release
 environment:
   major_version: 1
@@ -24,4 +28,3 @@ artifacts:
 - path: 'TinyMonitorApp\bin\Release\TinyMonitorApp.exe
   name: Nuget
  
- #C:\projects\tinnymonitor-lu1w9\TinyMonitorApp\TinyMonitorApp.csproj
