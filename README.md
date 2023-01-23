@@ -21,7 +21,7 @@ TODO:
 Also, you can use this program for your hardware device with different microcontrollers,
 just form your data transfer string it must be like that: "temp1 = {value}, temp2 = {value}, humidity = {value}, lightlevel = {value} \r"
 with real-time values (you should put it instead of placeholders)
-* Download Release as a TinyMonitorSetup.exe classic desktop installation and instal it!
+# Download Release as a TinyMonitorSetup.exe classic desktop installation and instal it!
 
 ## UI Layouts
   
