@@ -1,4 +1,4 @@
-﻿namespace TinnyClock.Enums
+﻿namespace TinyMonitorApp.Enums
 {
     public enum TransmissionType
     {

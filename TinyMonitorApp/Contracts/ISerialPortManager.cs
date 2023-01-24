@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using TinnyClock.Enums;
-using TinnyClock.Models;
+using TinyMonitorApp.Enums;
+using TinyMonitorApp.Models;
 
-namespace TinnyClock.Contracts
+namespace TinyMonitorApp.Contracts
 {
     public interface ISerialPortManager
     {

@@ -25,7 +25,7 @@ before_build:
 build_script:
   - cmd: dotnet build -c Release
 artifacts:
-- path: 'TinyMonitorApp\bin\Release\TinyMonitorApp.exe
+- path: 'TinyMonitorApp\bin\Release\TinyMonitorApp.exe'
   name: Nuget
  
  deploy:

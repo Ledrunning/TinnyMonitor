@@ -1,4 +1,4 @@
-namespace TinnyClock
+namespace TinyMonitorApp
 {
     partial class MainForm
     {

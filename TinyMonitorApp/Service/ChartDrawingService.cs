@@ -3,9 +3,9 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using OxyPlot.WindowsForms;
-using TinnyClock.Contracts;
+using TinyMonitorApp.Contracts;
 
-namespace TinnyClock.Service
+namespace TinyMonitorApp.Service
 {
     public class ChartDrawingService : IChartDrawingService
     {
