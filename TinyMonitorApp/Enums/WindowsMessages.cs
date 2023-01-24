@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TinnyClock.Enums
+namespace TinyMonitorApp.Enums
 {
     /// <summary>
     ///     From http://wiki.winehq.org/List_Of_Windows_Messages

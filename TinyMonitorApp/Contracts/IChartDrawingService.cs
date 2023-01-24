@@ -1,4 +1,4 @@
-﻿namespace TinnyClock.Contracts
+﻿namespace TinyMonitorApp.Contracts
 {
     public interface IChartDrawingService
     {

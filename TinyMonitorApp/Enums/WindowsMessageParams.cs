@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TinnyClock.Enums
+namespace TinyMonitorApp.Enums
 {
     [Flags]
     public enum WindowsMessageParams

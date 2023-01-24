@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace TinnyClock.Helpers
+namespace TinyMonitorApp.Helpers
 {
     internal class StringParser
     {

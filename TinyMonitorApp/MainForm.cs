@@ -4,11 +4,11 @@ using MaterialSkin;
 using MaterialSkin.Controls;
 using NLog;
 using OxyPlot;
-using TinnyClock.Enums;
-using TinnyClock.Models;
-using TinnyClock.Service;
+using TinyMonitorApp.Enums;
+using TinyMonitorApp.Models;
+using TinyMonitorApp.Service;
 
-namespace TinnyClock
+namespace TinyMonitorApp
 {
     public partial class MainForm : MaterialForm
     {
@@ -57,20 +57,18 @@ namespace TinnyClock
                 rtbDisplay.AppendText(data.RawText + Environment.NewLine);
                 try
                 {
-                    if (data.IndorTemperature != "NONE" && data.OutdoorTemperature != "NONE" && data.Humidity
-                        != "NONE" && data.LightLevel != "NONE")
+                    if (data.IndorTemperature == "NONE" || data.OutdoorTemperature == "NONE" ||
+                        data.Humidity == "NONE" || data.LightLevel == "NONE")
                     {
-                        firstTempToChart = Convert.ToInt32(data.IndorTemperature);
-                        secondTempToChart = Convert.ToInt32(data.OutdoorTemperature);
-                        humidityToChart = Convert.ToInt32(data.Humidity);
-                        lightLevelToChart = Convert.ToInt32(data.LightLevel);
-                        logger.Info(
-                            $"Indoor:{firstTempToChart}, Outdoor:{secondTempToChart}, Humidity:{humidityToChart}, Light:{lightLevelToChart}");
+                        return;
                     }
-                    else
-                    {
-                        logger.Info("No data...");
-                    }
+
+                    firstTempToChart = Convert.ToInt32(data.IndorTemperature);
+                    secondTempToChart = Convert.ToInt32(data.OutdoorTemperature);
+                    humidityToChart = Convert.ToInt32(data.Humidity);
+                    lightLevelToChart = Convert.ToInt32(data.LightLevel);
+                    logger.Info(
+                        $"Indoor:{firstTempToChart}, Outdoor:{secondTempToChart}, Humidity:{humidityToChart}, Light:{lightLevelToChart}");
                 }
                 catch (Exception e)
                 {

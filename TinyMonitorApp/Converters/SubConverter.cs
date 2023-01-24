@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace TinnyClock.Converters
+namespace TinyMonitorApp.Converters
 {
     public static class SubConverter
     {

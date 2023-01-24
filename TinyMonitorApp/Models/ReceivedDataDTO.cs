@@ -1,4 +1,4 @@
-﻿namespace TinnyClock.Models
+﻿namespace TinyMonitorApp.Models
 {
     public class ReceivedDataDto
     {

@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using NLog;
-using TinnyClock.Contracts;
-using TinnyClock.Converters;
-using TinnyClock.Enums;
-using TinnyClock.Helpers;
-using TinnyClock.Models;
+using TinyMonitorApp.Contracts;
+using TinyMonitorApp.Converters;
+using TinyMonitorApp.Enums;
+using TinyMonitorApp.Helpers;
+using TinyMonitorApp.Models;
 
-namespace TinnyClock.Service
+namespace TinyMonitorApp.Service
 {
     internal class SerialPortManager : ISerialPortManager
     {
