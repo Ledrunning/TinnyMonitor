@@ -3,6 +3,7 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using OxyPlot.WindowsForms;
+using TinyMonitorApp.Constants;
 using TinyMonitorApp.Contracts;
 
 namespace TinyMonitorApp.Service
@@ -19,54 +20,58 @@ namespace TinyMonitorApp.Service
             InitializeCharts(chartName);
         }
 
-        public void UpdateChart()
+        public void UpdateChart(double inputTemperature)
         {
-            PrintTemperatureChart();
+            PrintTemperatureChart(inputTemperature);
         }
 
-        private void PrintTemperatureChart()
+        private void PrintTemperatureChart(double inputTemperature)
         {
-            var lineSeries = (LineSeries) plotModel.Model.Series[0];
+            var indoorSeries = (LineSeries) plotModel.Model.Series[0];
+            var outdoorSeries = (LineSeries) plotModel.Model.Series[1];
 
-            var x = lineSeries.Points.Count > 0 ? lineSeries.Points[lineSeries.Points.Count - 1].X + 1 : 0;
-            if (lineSeries.Points.Count >= 200)
+            var x = indoorSeries.Points.Count > 0 ? indoorSeries.Points[indoorSeries.Points.Count - 1].X + 1 : 0;
+            
+            if (indoorSeries.Points.Count >= 200)
             {
-                lineSeries.Points.RemoveAt(0);
+                indoorSeries.Points.RemoveAt(0);
             }
 
-            double y = 0;
-            var m = 5;
-            for (var j = 0; j < m; j++)
+            var x1 = outdoorSeries.Points.Count > 0 ? outdoorSeries.Points[outdoorSeries.Points.Count - 1].X + 1 : 0;
+            
+            if (outdoorSeries.Points.Count >= 200)
             {
-                y += Math.Cos(20 * x * j * j);
+                outdoorSeries.Points.RemoveAt(0);
             }
 
-            //y /= m;
-            lineSeries.Points.Add(new DataPoint(x, y));
+            indoorSeries.Points.Add(new DataPoint(x, inputTemperature));
+            outdoorSeries.Points.Add(new DataPoint(x1, 20));
         }
 
         private void InitializeCharts(string title)
         {
             plotModel.Model.Title = title;
-            plotModel.Model.PlotAreaBorderColor = OxyColor.FromRgb(255, 255, 255);
-            plotModel.Model.TitleColor = OxyColor.FromRgb(255, 255, 255);
+            plotModel.Model.PlotAreaBorderColor = ChartConstants.Black;
+            plotModel.Model.TitleColor = ChartConstants.Black;
 
             plotModel.Model.LegendPosition = LegendPosition.RightBottom;
             //Y
             plotModel.Model.Axes.Add(new LinearAxis
             {
-                IsPanEnabled = false, // отключение скролинга
-                IsZoomEnabled = false, // отключение зума 
+                IsPanEnabled = true, // отключение скролинга
+                IsZoomEnabled = true, // отключение зума 
+                AbsoluteMaximum = ChartConstants.AbsoluteMaximum,
+                AbsoluteMinimum = ChartConstants.AbsoluteMinimum,
                 Position = AxisPosition.Left,
-                Minimum = -10,
-                Maximum = 10,
-                TextColor = OxyColor.FromRgb(74, 134, 187),
-                AxislineColor = OxyColor.FromRgb(255, 255, 255),
-                MajorGridlineColor = OxyColor.FromArgb(40, 100, 0, 139),
+                Maximum = ChartConstants.AxisX,
+                Minimum = ChartConstants.AxisY,
+                TextColor = ChartConstants.TextColor,
+                AxislineColor = ChartConstants.Black,
+                MajorGridlineColor = ChartConstants.MajorGridlineColor,
                 MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineColor = OxyColor.FromArgb(20, 0, 0, 139),
+                MinorGridlineColor = ChartConstants.MinorGridlineColor,
                 MinorGridlineStyle = LineStyle.Solid,
-                TicklineColor = OxyColor.FromRgb(255, 255, 255)
+                TicklineColor = ChartConstants.Black
             });
 
             //X
@@ -75,25 +80,25 @@ namespace TinyMonitorApp.Service
                 IsPanEnabled = false, // отключение скролинга
                 IsZoomEnabled = false, // отключение зума
                 Position = AxisPosition.Bottom,
-                TextColor = OxyColor.FromRgb(74, 134, 187),
-                AxislineColor = OxyColor.FromRgb(255, 255, 255),
-                MajorGridlineColor = OxyColor.FromArgb(40, 100, 0, 139),
+                TextColor = ChartConstants.TextColor,
+                AxislineColor = ChartConstants.Black,
+                MajorGridlineColor = ChartConstants.MajorGridlineColor,
                 MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineColor = OxyColor.FromArgb(20, 0, 0, 139),
+                MinorGridlineColor = ChartConstants.MinorGridlineColor,
                 MinorGridlineStyle = LineStyle.Solid,
-                TicklineColor = OxyColor.FromRgb(255, 255, 255)
+                TicklineColor = ChartConstants.Black
             });
 
             plotModel.Model.Series.Add(new LineSeries
             {
                 LineStyle = LineStyle.Solid,
-                Color = OxyColor.FromRgb(74, 134, 187)
-            }); //rgb(74,134,187) #4a86bb
+                Color = ChartConstants.Blue
+            }); 
 
             plotModel.Model.Series.Add(new LineSeries
             {
                 LineStyle = LineStyle.Solid,
-                Color = OxyColor.FromRgb(227, 64, 64)
+                Color = ChartConstants.Red
             });
         }
     }

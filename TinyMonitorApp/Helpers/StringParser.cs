@@ -33,7 +33,7 @@ namespace TinyMonitorApp.Helpers
         }
 
         // String parser function;
-        private string Parse(string regExp, string input)
+        private static string Parse(string regExp, string input)
         {
             const int resultingGroupIndex = 1;
 
