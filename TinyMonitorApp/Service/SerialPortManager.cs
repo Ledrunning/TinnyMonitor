@@ -116,7 +116,7 @@ namespace TinyMonitorApp.Service
         public bool ClosePort()
         {
             comPort.Close();
-            var message = "Port closed at ";
+            const string message = "Port closed at ";
             DisplayData($"{message}{DateTime.Now}\n");
             logger.Info($"{message}{DateTime.Now}\n");
             return true;
@@ -144,6 +144,7 @@ namespace TinyMonitorApp.Service
             }
         }
 
+        //TODO Some bug with byte reading
         private void SerialPortDataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             switch (CurrentTransmissionType)

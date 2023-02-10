@@ -258,7 +258,7 @@ namespace TinyMonitorApp
         {
             lock (plotView.Model.SyncRoot)
             {
-                chartService.UpdateChart(secondTempToChart);
+                chartService.UpdateChart(firstTempToChart, secondTempToChart);
                 plotView.Model.InvalidatePlot(true);
             }
         }

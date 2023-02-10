@@ -20,12 +20,12 @@ namespace TinyMonitorApp.Service
             InitializeCharts(chartName);
         }
 
-        public void UpdateChart(double inputTemperature)
+        public void UpdateChart(double indoorTemperature, double outdoorTemperature)
         {
-            PrintTemperatureChart(inputTemperature);
+            PrintTemperatureChart(indoorTemperature, outdoorTemperature);
         }
 
-        private void PrintTemperatureChart(double inputTemperature)
+        private void PrintTemperatureChart(double inputTemperature, double outdoorTemperature)
         {
             var indoorSeries = (LineSeries) plotModel.Model.Series[0];
             var outdoorSeries = (LineSeries) plotModel.Model.Series[1];
@@ -38,14 +38,14 @@ namespace TinyMonitorApp.Service
             }
 
             var x1 = outdoorSeries.Points.Count > 0 ? outdoorSeries.Points[outdoorSeries.Points.Count - 1].X + 1 : 0;
-            
+
             if (outdoorSeries.Points.Count >= 200)
             {
                 outdoorSeries.Points.RemoveAt(0);
             }
 
             indoorSeries.Points.Add(new DataPoint(x, inputTemperature));
-            outdoorSeries.Points.Add(new DataPoint(x1, 20));
+            outdoorSeries.Points.Add(new DataPoint(x1, outdoorTemperature));
         }
 
         private void InitializeCharts(string title)
