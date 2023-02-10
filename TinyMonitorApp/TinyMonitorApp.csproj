@@ -107,6 +107,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\ChartConstants.cs" />
     <Compile Include="Contracts\ISerialPortManager.cs" />
     <Compile Include="Enums\MessageType.cs" />
     <Compile Include="Enums\TransmissionType.cs" />

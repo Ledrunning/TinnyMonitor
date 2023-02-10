@@ -25,6 +25,9 @@ namespace TinyMonitorApp
         private bool isClicked = true;
         private int lightLevelToChart;
         private int secondTempToChart;
+        private const int ThemeQuantity = 3;
+        private const int ChartDrawingIntervalInMs = 100;
+        private const string NoneMessage = "NONE";
 
         public MainForm()
         {
@@ -57,8 +60,8 @@ namespace TinyMonitorApp
                 rtbDisplay.AppendText(data.RawText + Environment.NewLine);
                 try
                 {
-                    if (data.IndorTemperature == "NONE" || data.OutdoorTemperature == "NONE" ||
-                        data.Humidity == "NONE" || data.LightLevel == "NONE")
+                    if (data.IndorTemperature == NoneMessage || data.OutdoorTemperature == NoneMessage ||
+                        data.Humidity == NoneMessage || data.LightLevel == NoneMessage)
                     {
                         return;
                     }
@@ -181,14 +184,7 @@ namespace TinyMonitorApp
 
         private void CheckedChanged(object sender, EventArgs e)
         {
-            if (rdoHex.Checked)
-            {
-                serialPort.CurrentTransmissionType = TransmissionType.Hex;
-            }
-            else
-            {
-                serialPort.CurrentTransmissionType = TransmissionType.Text;
-            }
+            serialPort.CurrentTransmissionType = rdoHex.Checked ? TransmissionType.Hex : TransmissionType.Text;
         }
 
         // Clear Console;
@@ -214,7 +210,7 @@ namespace TinyMonitorApp
         private void OnColorChangedClick(object sender, EventArgs e)
         {
             colorSchemeIndex++;
-            if (colorSchemeIndex > 3)
+            if (colorSchemeIndex > ThemeQuantity)
             {
                 colorSchemeIndex = 0;
             }
@@ -244,7 +240,7 @@ namespace TinyMonitorApp
         private void InitializeGraphTimer()
         {
             graphChangeTimer.Enabled = true;
-            graphChangeTimer.Interval = 100;
+            graphChangeTimer.Interval = ChartDrawingIntervalInMs;
             graphChangeTimer.Tick += OnGraphChangeTimerTick;
         }
 
@@ -257,13 +253,12 @@ namespace TinyMonitorApp
 
             chartService = new ChartDrawingService(plotView, "Telemetry Data");
         }
-
-
+        
         private void OnGraphChangeTimerTick(object sender, EventArgs e)
         {
             lock (plotView.Model.SyncRoot)
             {
-                chartService.UpdateChart();
+                chartService.UpdateChart(firstTempToChart, secondTempToChart);
                 plotView.Model.InvalidatePlot(true);
             }
         }
@@ -284,8 +279,6 @@ namespace TinyMonitorApp
                 graphChangeTimer.Stop();
                 isClicked = true;
             }
-
-            //PrintChart();
         }
     }
 }

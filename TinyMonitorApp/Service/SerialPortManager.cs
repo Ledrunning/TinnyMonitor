@@ -13,8 +13,8 @@ namespace TinyMonitorApp.Service
     internal class SerialPortManager : ISerialPortManager
     {
         private readonly SerialPort comPort = new SerialPort();
-        private readonly StringParser recievedStrFromComPort = new StringParser();
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly StringParser receivedStrFromComPort = new StringParser();
 
         public SerialPortManager(string baudRates, string parity, string stopBits, string dataBits, string name)
         {
@@ -43,8 +43,8 @@ namespace TinyMonitorApp.Service
 
         public TransmissionType CurrentTransmissionType { get; set; }
 
-        public IEnumerable<string> ParityValues => System.Enum.GetNames(typeof(Parity));
-        public IEnumerable<string> StopBitValues => System.Enum.GetNames(typeof(StopBits));
+        public IEnumerable<string> ParityValues => Enum.GetNames(typeof(Parity));
+        public IEnumerable<string> StopBitValues => Enum.GetNames(typeof(StopBits));
         public IEnumerable<string> PortNameValues => SerialPort.GetPortNames();
 
         public event Action<ReceivedDataDto> OnDataReceived = delegate { };
@@ -56,7 +56,7 @@ namespace TinyMonitorApp.Service
                 case TransmissionType.Text:
                     EnsurePortOpened();
                     comPort.Write(msg);
-                    DisplayData(MessageType.Outgoing, $"{msg}\n");
+                    DisplayData($"{msg}\n");
                     break;
 
                 case TransmissionType.Hex:
@@ -64,14 +64,14 @@ namespace TinyMonitorApp.Service
                     {
                         EnsurePortOpened();
                         var newMsg = SubConverter.HexToByte(msg);
-                        
+
                         comPort.Write(newMsg, 0, newMsg.Length);
-                        DisplayData(MessageType.Outgoing, $"{SubConverter.ByteToHex(newMsg)}\n");
+                        DisplayData($"{SubConverter.ByteToHex(newMsg)}\n");
                     }
                     catch (FormatException ex)
                     {
                         //display error message
-                        DisplayData(MessageType.Error, ex.Message);
+                        DisplayData(ex.Message);
                     }
 
                     break;
@@ -79,7 +79,7 @@ namespace TinyMonitorApp.Service
                 default:
                     EnsurePortOpened();
                     comPort.Write(msg);
-                    DisplayData(MessageType.Outgoing, $"{msg}\n");
+                    DisplayData($"{msg}\n");
                     break;
             }
         }
@@ -95,19 +95,19 @@ namespace TinyMonitorApp.Service
 
                 comPort.BaudRate = int.Parse(BaudRatesRate);
                 comPort.DataBits = int.Parse(DataBits);
-                comPort.StopBits = (StopBits) Enum.Parse(typeof(StopBits), StopBits); 
-                comPort.Parity = (Parity) Enum.Parse(typeof(Parity), Parity); 
-                comPort.PortName = PortName; 
-                
+                comPort.StopBits = (StopBits)Enum.Parse(typeof(StopBits), StopBits);
+                comPort.Parity = (Parity)Enum.Parse(typeof(Parity), Parity);
+                comPort.PortName = PortName;
+
                 comPort.Open();
-                
-                DisplayData(MessageType.Normal, $"Port opened at {DateTime.Now}\n");
+
+                DisplayData($"Port opened at {DateTime.Now}\n");
                 logger.Info($"Port opened at {DateTime.Now}\n");
                 return true;
             }
             catch (Exception ex)
             {
-                DisplayData(MessageType.Error, ex.Message);
+                DisplayData(ex.Message);
                 logger.Error(ex);
                 return false;
             }
@@ -116,20 +116,20 @@ namespace TinyMonitorApp.Service
         public bool ClosePort()
         {
             comPort.Close();
-            var message = "Port closed at ";
-            DisplayData(MessageType.Closed, $"{message}{DateTime.Now}\n");
+            const string message = "Port closed at ";
+            DisplayData($"{message}{DateTime.Now}\n");
             logger.Info($"{message}{DateTime.Now}\n");
             return true;
         }
 
-        private void DisplayData(MessageType type, string msg)
+        private void DisplayData(string msg)
         {
             var dto = new ReceivedDataDto
             {
-                IndorTemperature = recievedStrFromComPort.ParseInsideTemperature(msg),
-                OutdoorTemperature = recievedStrFromComPort.ParseOutsideTemperature(msg),
-                Humidity = recievedStrFromComPort.ParseHumidity(msg),
-                LightLevel = recievedStrFromComPort.ParseLightLevel(msg),
+                IndorTemperature = receivedStrFromComPort.ParseInsideTemperature(msg),
+                OutdoorTemperature = receivedStrFromComPort.ParseOutsideTemperature(msg),
+                Humidity = receivedStrFromComPort.ParseHumidity(msg),
+                LightLevel = receivedStrFromComPort.ParseLightLevel(msg),
                 RawText = msg
             };
 
@@ -144,28 +144,29 @@ namespace TinyMonitorApp.Service
             }
         }
 
+        //TODO Some bug with byte reading
         private void SerialPortDataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             switch (CurrentTransmissionType)
             {
                 case TransmissionType.Text:
-                    
+
                     var msg = comPort.ReadExisting();
-                    DisplayData(MessageType.Incoming, $"{msg}\n");
+                    DisplayData($"{msg}\n");
                     break;
 
                 case TransmissionType.Hex:
-                   
+
                     var bytes = comPort.BytesToRead;
                     var comBuffer = new byte[bytes];
-                    
+
                     comPort.Read(comBuffer, 0, bytes);
-                    DisplayData(MessageType.Incoming, $"{SubConverter.ByteToHex(comBuffer)}\n");
+                    DisplayData($"{SubConverter.ByteToHex(comBuffer)}\n");
                     break;
 
                 default:
                     var str = comPort.ReadExisting();
-                    DisplayData(MessageType.Incoming, $"{str}\n");
+                    DisplayData($"{str}\n");
                     break;
             }
         }
