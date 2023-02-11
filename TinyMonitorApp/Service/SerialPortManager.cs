@@ -56,7 +56,7 @@ namespace TinyMonitorApp.Service
                 case TransmissionType.Text:
                     EnsurePortOpened();
                     comPort.Write(msg);
-                    DisplayData($"{msg}\n");
+                    InputStringProcessing($"{msg}\n");
                     break;
 
                 case TransmissionType.Hex:
@@ -66,12 +66,12 @@ namespace TinyMonitorApp.Service
                         var newMsg = SubConverter.HexToByte(msg);
 
                         comPort.Write(newMsg, 0, newMsg.Length);
-                        DisplayData($"{SubConverter.ByteToHex(newMsg)}\n");
+                        InputStringProcessing($"{SubConverter.ByteToHex(newMsg)}\n");
                     }
                     catch (FormatException ex)
                     {
                         //display error message
-                        DisplayData(ex.Message);
+                        InputStringProcessing(ex.Message);
                     }
 
                     break;
@@ -79,7 +79,7 @@ namespace TinyMonitorApp.Service
                 default:
                     EnsurePortOpened();
                     comPort.Write(msg);
-                    DisplayData($"{msg}\n");
+                    InputStringProcessing($"{msg}\n");
                     break;
             }
         }
@@ -101,13 +101,13 @@ namespace TinyMonitorApp.Service
 
                 comPort.Open();
 
-                DisplayData($"Port opened at {DateTime.Now}\n");
+                InputStringProcessing($"Port opened at {DateTime.Now}\n");
                 logger.Info($"Port opened at {DateTime.Now}\n");
                 return true;
             }
             catch (Exception ex)
             {
-                DisplayData(ex.Message);
+                InputStringProcessing(ex.Message);
                 logger.Error(ex);
                 return false;
             }
@@ -117,23 +117,23 @@ namespace TinyMonitorApp.Service
         {
             comPort.Close();
             const string message = "Port closed at ";
-            DisplayData($"{message}{DateTime.Now}\n");
+            InputStringProcessing($"{message}{DateTime.Now}\n");
             logger.Info($"{message}{DateTime.Now}\n");
             return true;
         }
 
-        private void DisplayData(string msg)
+        private void InputStringProcessing(string msg)
         {
             var dto = new ReceivedDataDto
             {
-                IndorTemperature = receivedStrFromComPort.ParseInsideTemperature(msg),
+                IndoorTemperature = receivedStrFromComPort.ParseInsideTemperature(msg),
                 OutdoorTemperature = receivedStrFromComPort.ParseOutsideTemperature(msg),
                 Humidity = receivedStrFromComPort.ParseHumidity(msg),
                 LightLevel = receivedStrFromComPort.ParseLightLevel(msg),
                 RawText = msg
             };
 
-            OnDataReceived(dto);
+            OnDataReceived?.Invoke(dto);
         }
 
         private void EnsurePortOpened()
@@ -144,7 +144,6 @@ namespace TinyMonitorApp.Service
             }
         }
 
-        //TODO Some bug with byte reading
         private void SerialPortDataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             switch (CurrentTransmissionType)
@@ -152,7 +151,7 @@ namespace TinyMonitorApp.Service
                 case TransmissionType.Text:
 
                     var msg = comPort.ReadExisting();
-                    DisplayData($"{msg}\n");
+                    InputStringProcessing($"{msg}\n");
                     break;
 
                 case TransmissionType.Hex:
@@ -161,12 +160,12 @@ namespace TinyMonitorApp.Service
                     var comBuffer = new byte[bytes];
 
                     comPort.Read(comBuffer, 0, bytes);
-                    DisplayData($"{SubConverter.ByteToHex(comBuffer)}\n");
+                    InputStringProcessing($"{SubConverter.ByteToHex(comBuffer)}\n");
                     break;
 
                 default:
                     var str = comPort.ReadExisting();
-                    DisplayData($"{str}\n");
+                    InputStringProcessing($"{str}\n");
                     break;
             }
         }

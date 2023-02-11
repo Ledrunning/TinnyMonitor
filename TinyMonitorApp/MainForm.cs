@@ -12,6 +12,9 @@ namespace TinyMonitorApp
 {
     public partial class MainForm : MaterialForm
     {
+        private const int ThemeQuantity = 3;
+        private const int ChartDrawingIntervalInMs = 100;
+        private const string NoneMessage = "NONE";
         private readonly Timer graphChangeTimer = new Timer();
 
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
@@ -25,9 +28,6 @@ namespace TinyMonitorApp
         private bool isClicked = true;
         private int lightLevelToChart;
         private int secondTempToChart;
-        private const int ThemeQuantity = 3;
-        private const int ChartDrawingIntervalInMs = 100;
-        private const string NoneMessage = "NONE";
 
         public MainForm()
         {
@@ -51,22 +51,22 @@ namespace TinyMonitorApp
 
         private void OnSerialPortDataReceived(ReceivedDataDto data)
         {
-            Invoke((MethodInvoker) delegate
+            Invoke((MethodInvoker)delegate
             {
-                insideTemp.Text = data.IndorTemperature;
+                insideTemp.Text = data.IndoorTemperature;
                 outsideTemp.Text = data.OutdoorTemperature;
                 huMidity.Text = data.Humidity;
                 lightLevel.Text = data.LightLevel;
                 rtbDisplay.AppendText(data.RawText + Environment.NewLine);
                 try
                 {
-                    if (data.IndorTemperature == NoneMessage || data.OutdoorTemperature == NoneMessage ||
+                    if (data.IndoorTemperature == NoneMessage || data.OutdoorTemperature == NoneMessage ||
                         data.Humidity == NoneMessage || data.LightLevel == NoneMessage)
                     {
                         return;
                     }
 
-                    firstTempToChart = Convert.ToInt32(data.IndorTemperature);
+                    firstTempToChart = Convert.ToInt32(data.IndoorTemperature);
                     secondTempToChart = Convert.ToInt32(data.OutdoorTemperature);
                     humidityToChart = Convert.ToInt32(data.Humidity);
                     lightLevelToChart = Convert.ToInt32(data.LightLevel);
@@ -114,19 +114,19 @@ namespace TinyMonitorApp
         {
             base.WndProc(ref m);
 
-            if (m.Msg == (int) WindowsMessages.WM_DEVICECHANGE)
+            if (m.Msg == (int)WindowsMessages.WM_DEVICECHANGE)
             {
                 try
                 {
                     //New usb-device connection
-                    if (m.WParam.ToInt32() == (int) WindowsMessages.WM_APP)
+                    if (m.WParam.ToInt32() == (int)WindowsMessages.WM_APP)
                     {
                         cboPort.DataSource = serialPort.PortNameValues;
                         SetDefaults();
                     }
 
                     //Usb device disconnect
-                    if (m.WParam.ToInt32() == (int) WindowsMessageParams.DBT_DEVICEREMOVECOMPLETE)
+                    if (m.WParam.ToInt32() == (int)WindowsMessageParams.DBT_DEVICEREMOVECOMPLETE)
                     {
                         MessageBox.Show("Error", "Port unavailable", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -253,12 +253,12 @@ namespace TinyMonitorApp
 
             chartService = new ChartDrawingService(plotView, "Telemetry Data");
         }
-        
+
         private void OnGraphChangeTimerTick(object sender, EventArgs e)
         {
             lock (plotView.Model.SyncRoot)
             {
-                chartService.UpdateChart(firstTempToChart, secondTempToChart);
+                chartService.UpdateChart(firstTempToChart, secondTempToChart, humidityToChart, lightLevelToChart);
                 plotView.Model.InvalidatePlot(true);
             }
         }

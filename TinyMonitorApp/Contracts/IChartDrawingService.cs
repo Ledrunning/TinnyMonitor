@@ -2,6 +2,6 @@
 {
     public interface IChartDrawingService
     {
-        void UpdateChart(double indoorTemperature, double outdoorTemperature);
+        void UpdateChart(int indoorTemperature, int outdoorTemperature, int humidity, int lightLevel);
     }
 }
