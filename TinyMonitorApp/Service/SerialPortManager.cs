@@ -5,47 +5,34 @@ using NLog;
 using TinyMonitorApp.Contracts;
 using TinyMonitorApp.Converters;
 using TinyMonitorApp.Enums;
+using TinyMonitorApp.Extensions;
 using TinyMonitorApp.Helpers;
 using TinyMonitorApp.Models;
 
 namespace TinyMonitorApp.Service
 {
-    internal class SerialPortManager : ISerialPortManager
+    internal class SerialPortManager : SerialPort, ISerialPortManager
     {
-        private readonly SerialPort comPort = new SerialPort();
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly StringParser receivedStrFromComPort = new StringParser();
 
-        public SerialPortManager(string baudRates, string parity, string stopBits, string dataBits, string name)
+        public SerialPortManager(int baudRates, string parity, string stopBits, int dataBits, string name)
         {
-            BaudRatesRate = baudRates;
-            Parity = parity;
-            StopBits = stopBits;
+            BaudRate = baudRates;
+            Parity = parity.ToEnum(Parity);
+            StopBits = stopBits.ToEnum(StopBits);
             DataBits = dataBits;
             PortName = name;
 
-            comPort.DataReceived += SerialPortDataReceived;
+            DataReceived += SerialPortDataReceived;
         }
 
-        public SerialPortManager() : this(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty)
+        public SerialPortManager() : this(default, string.Empty, string.Empty, default, string.Empty)
         {
         }
 
-        public string BaudRatesRate { get; set; }
-
-        public string Parity { get; set; }
-
-        public string StopBits { get; set; }
-
-        public string DataBits { get; set; }
-
-        public string PortName { get; set; }
-
         public TransmissionType CurrentTransmissionType { get; set; }
 
-        public IEnumerable<string> ParityValues => Enum.GetNames(typeof(Parity));
-        public IEnumerable<string> StopBitValues => Enum.GetNames(typeof(StopBits));
-        public IEnumerable<string> PortNameValues => SerialPort.GetPortNames();
 
         public event Action<ReceivedDataDto> OnDataReceived = delegate { };
 
@@ -55,7 +42,7 @@ namespace TinyMonitorApp.Service
             {
                 case TransmissionType.Text:
                     EnsurePortOpened();
-                    comPort.Write(msg);
+                    Write(msg);
                     InputStringProcessing($"{msg}\n");
                     break;
 
@@ -65,7 +52,7 @@ namespace TinyMonitorApp.Service
                         EnsurePortOpened();
                         var newMsg = SubConverter.HexToByte(msg);
 
-                        comPort.Write(newMsg, 0, newMsg.Length);
+                        Write(newMsg, 0, newMsg.Length);
                         InputStringProcessing($"{SubConverter.ByteToHex(newMsg)}\n");
                     }
                     catch (FormatException ex)
@@ -78,7 +65,7 @@ namespace TinyMonitorApp.Service
 
                 default:
                     EnsurePortOpened();
-                    comPort.Write(msg);
+                    Write(msg);
                     InputStringProcessing($"{msg}\n");
                     break;
             }
@@ -88,18 +75,7 @@ namespace TinyMonitorApp.Service
         {
             try
             {
-                if (comPort.IsOpen)
-                {
-                    comPort.Close();
-                }
-
-                comPort.BaudRate = int.Parse(BaudRatesRate);
-                comPort.DataBits = int.Parse(DataBits);
-                comPort.StopBits = (StopBits)Enum.Parse(typeof(StopBits), StopBits);
-                comPort.Parity = (Parity)Enum.Parse(typeof(Parity), Parity);
-                comPort.PortName = PortName;
-
-                comPort.Open();
+                EnsurePortOpened();
 
                 InputStringProcessing($"Port opened at {DateTime.Now}\n");
                 logger.Info($"Port opened at {DateTime.Now}\n");
@@ -113,13 +89,19 @@ namespace TinyMonitorApp.Service
             }
         }
 
-        public bool ClosePort()
+        public void ClosePort()
         {
-            comPort.Close();
+            if (!IsOpen)
+            {
+                return;
+            }
+
+            DiscardInBuffer();
+            Close();
+            
             const string message = "Port closed at ";
             InputStringProcessing($"{message}{DateTime.Now}\n");
             logger.Info($"{message}{DateTime.Now}\n");
-            return true;
         }
 
         private void InputStringProcessing(string msg)
@@ -138,9 +120,9 @@ namespace TinyMonitorApp.Service
 
         private void EnsurePortOpened()
         {
-            if (!comPort.IsOpen)
+            if (!IsOpen)
             {
-                comPort.Open();
+                Open();
             }
         }
 
@@ -150,21 +132,21 @@ namespace TinyMonitorApp.Service
             {
                 case TransmissionType.Text:
 
-                    var msg = comPort.ReadExisting();
-                    InputStringProcessing($"{msg}\n");
+                    var receivedString = ReadExisting();
+                    InputStringProcessing($"{receivedString}\n");
                     break;
 
                 case TransmissionType.Hex:
 
-                    var bytes = comPort.BytesToRead;
+                    var bytes = BytesToRead;
                     var comBuffer = new byte[bytes];
 
-                    comPort.Read(comBuffer, 0, bytes);
+                    Read(comBuffer, 0, bytes);
                     InputStringProcessing($"{SubConverter.ByteToHex(comBuffer)}\n");
                     break;
 
                 default:
-                    var str = comPort.ReadExisting();
+                    var str = ReadExisting();
                     InputStringProcessing($"{str}\n");
                     break;
             }
