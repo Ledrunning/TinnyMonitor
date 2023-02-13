@@ -1,4 +1,6 @@
-﻿using TinyMonitorApp.Presenter;
+﻿using MaterialSkin.Controls;
+using System.Windows.Forms;
+using TinyMonitorApp.Presenter;
 
 namespace TinyMonitorApp.Contracts
 {
@@ -18,11 +20,17 @@ namespace TinyMonitorApp.Contracts
 
         string ConsoleDisplay { get; set; }
 
-        object ComPort { get; set; }
+        MaterialRadioButton HexOrText { get; set; }
 
-        object ComPortParity { get; set; }
+        ComboBox ComPortName { get; set; }
 
-        object ComPortStopBit { get; set; }
+        ComboBox ComPortParity { get; set; }
+
+        ComboBox ComPortStopBit { get; set; }
+
+        ComboBox ComPortBaudRates { get; set; }
+
+        ComboBox ComPortDataBits { get; set; }
 
         void SetPresenter(MainFormPresenter presenter);
     }

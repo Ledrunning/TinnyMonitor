@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO.Ports;
 using NLog;
 using TinyMonitorApp.Contracts;
@@ -76,7 +75,6 @@ namespace TinyMonitorApp.Service
             try
             {
                 EnsurePortOpened();
-
                 InputStringProcessing($"Port opened at {DateTime.Now}\n");
                 logger.Info($"Port opened at {DateTime.Now}\n");
                 return true;
@@ -98,7 +96,7 @@ namespace TinyMonitorApp.Service
 
             DiscardInBuffer();
             Close();
-            
+
             const string message = "Port closed at ";
             InputStringProcessing($"{message}{DateTime.Now}\n");
             logger.Info($"{message}{DateTime.Now}\n");

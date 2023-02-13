@@ -51,13 +51,13 @@ namespace TinyMonitorApp
             this.rtbDisplay = new System.Windows.Forms.RichTextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.portCloseButton = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.clearButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.portSendButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.txtSend = new System.Windows.Forms.RichTextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.drawChart = new MaterialSkin.Controls.MaterialRaisedButton();
             this.plotView = new OxyPlot.WindowsForms.PlotView();
-            this.cboPortName = new System.Windows.Forms.ComboBox();
+            this.ComPortName = new System.Windows.Forms.ComboBox();
             this.cboBaudRates = new System.Windows.Forms.ComboBox();
             this.cboParity = new System.Windows.Forms.ComboBox();
             this.cboStopBits = new System.Windows.Forms.ComboBox();
@@ -68,7 +68,7 @@ namespace TinyMonitorApp
             this.materialLabel16 = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabel17 = new MaterialSkin.Controls.MaterialLabel();
             this.portOpenButton = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.materialRaisedButton2 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.portCloseButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.rdoHex = new MaterialSkin.Controls.MaterialRadioButton();
             this.rdoText = new MaterialSkin.Controls.MaterialRadioButton();
             this.themeButton = new MaterialSkin.Controls.MaterialRaisedButton();
@@ -366,7 +366,7 @@ namespace TinyMonitorApp
             this.tableLayoutPanel3.ColumnCount = 2;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Controls.Add(this.portCloseButton, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.clearButton, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.portSendButton, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(485, 4);
@@ -377,19 +377,19 @@ namespace TinyMonitorApp
             this.tableLayoutPanel3.Size = new System.Drawing.Size(264, 48);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
-            // portCloseButton
+            // clearButton
             // 
-            this.portCloseButton.Depth = 0;
-            this.portCloseButton.Location = new System.Drawing.Point(136, 4);
-            this.portCloseButton.Margin = new System.Windows.Forms.Padding(4);
-            this.portCloseButton.MouseState = MaterialSkin.MouseState.HOVER;
-            this.portCloseButton.Name = "portCloseButton";
-            this.portCloseButton.Primary = true;
-            this.portCloseButton.Size = new System.Drawing.Size(116, 38);
-            this.portCloseButton.TabIndex = 36;
-            this.portCloseButton.Text = "Clear";
-            this.portCloseButton.UseVisualStyleBackColor = true;
-            this.portCloseButton.Click += new System.EventHandler(this.OnConsoleClearClick);
+            this.clearButton.Depth = 0;
+            this.clearButton.Location = new System.Drawing.Point(136, 4);
+            this.clearButton.Margin = new System.Windows.Forms.Padding(4);
+            this.clearButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.clearButton.Name = "clearButton";
+            this.clearButton.Primary = true;
+            this.clearButton.Size = new System.Drawing.Size(116, 38);
+            this.clearButton.TabIndex = 36;
+            this.clearButton.Text = "Clear";
+            this.clearButton.UseVisualStyleBackColor = true;
+            this.clearButton.Click += new System.EventHandler(this.OnConsoleClearClick);
             // 
             // portSendButton
             // 
@@ -455,12 +455,12 @@ namespace TinyMonitorApp
             // 
             // cboPortName
             // 
-            this.cboPortName.FormattingEnabled = true;
-            this.cboPortName.Location = new System.Drawing.Point(807, 170);
-            this.cboPortName.Margin = new System.Windows.Forms.Padding(4);
-            this.cboPortName.Name = "cboPortName";
-            this.cboPortName.Size = new System.Drawing.Size(160, 24);
-            this.cboPortName.TabIndex = 20;
+            this.ComPortName.FormattingEnabled = true;
+            this.ComPortName.Location = new System.Drawing.Point(807, 170);
+            this.ComPortName.Margin = new System.Windows.Forms.Padding(4);
+            this.ComPortName.Name = "ComPortName";
+            this.ComPortName.Size = new System.Drawing.Size(160, 24);
+            this.ComPortName.TabIndex = 20;
             // 
             // cboBaudRates
             // 
@@ -595,19 +595,19 @@ namespace TinyMonitorApp
             this.portOpenButton.UseVisualStyleBackColor = true;
             this.portOpenButton.Click += new System.EventHandler(this.OnOpenPortClick);
             // 
-            // materialRaisedButton2
+            // portCloseButton
             // 
-            this.materialRaisedButton2.Depth = 0;
-            this.materialRaisedButton2.Location = new System.Drawing.Point(833, 494);
-            this.materialRaisedButton2.Margin = new System.Windows.Forms.Padding(4);
-            this.materialRaisedButton2.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton2.Name = "materialRaisedButton2";
-            this.materialRaisedButton2.Primary = true;
-            this.materialRaisedButton2.Size = new System.Drawing.Size(116, 38);
-            this.materialRaisedButton2.TabIndex = 31;
-            this.materialRaisedButton2.Text = "Close Port";
-            this.materialRaisedButton2.UseVisualStyleBackColor = true;
-            this.materialRaisedButton2.Click += new System.EventHandler(this.OnPortCloseClick);
+            this.portCloseButton.Depth = 0;
+            this.portCloseButton.Location = new System.Drawing.Point(833, 494);
+            this.portCloseButton.Margin = new System.Windows.Forms.Padding(4);
+            this.portCloseButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.portCloseButton.Name = "portCloseButton";
+            this.portCloseButton.Primary = true;
+            this.portCloseButton.Size = new System.Drawing.Size(116, 38);
+            this.portCloseButton.TabIndex = 31;
+            this.portCloseButton.Text = "Close Port";
+            this.portCloseButton.UseVisualStyleBackColor = true;
+            this.portCloseButton.Click += new System.EventHandler(this.OnPortCloseClick);
             // 
             // rdoHex
             // 
@@ -683,7 +683,7 @@ namespace TinyMonitorApp
             this.Controls.Add(this.themeButton);
             this.Controls.Add(this.rdoText);
             this.Controls.Add(this.rdoHex);
-            this.Controls.Add(this.materialRaisedButton2);
+            this.Controls.Add(this.portCloseButton);
             this.Controls.Add(this.portOpenButton);
             this.Controls.Add(this.materialLabel17);
             this.Controls.Add(this.materialLabel16);
@@ -694,7 +694,7 @@ namespace TinyMonitorApp
             this.Controls.Add(this.cboStopBits);
             this.Controls.Add(this.cboParity);
             this.Controls.Add(this.cboBaudRates);
-            this.Controls.Add(this.cboPortName);
+            this.Controls.Add(this.ComPortName);
             this.Controls.Add(this.materialTabControl1);
             this.Controls.Add(this.materialTabSelector1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -739,7 +739,6 @@ namespace TinyMonitorApp
         private MaterialSkin.Controls.MaterialLabel dateLabel;
         private MaterialSkin.Controls.MaterialLabel humidity;
         private MaterialSkin.Controls.MaterialLabel insideTemp;
-        private System.Windows.Forms.ComboBox cboPortName;
         private System.Windows.Forms.ComboBox cboBaudRates;
         private System.Windows.Forms.ComboBox cboParity;
         private System.Windows.Forms.ComboBox cboStopBits;
@@ -750,7 +749,7 @@ namespace TinyMonitorApp
         private MaterialSkin.Controls.MaterialLabel materialLabel16;
         private MaterialSkin.Controls.MaterialLabel materialLabel17;
         private MaterialSkin.Controls.MaterialRaisedButton portOpenButton;
-        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton2;
+        private MaterialSkin.Controls.MaterialRaisedButton portCloseButton;
         private MaterialSkin.Controls.MaterialRadioButton rdoHex;
         private MaterialSkin.Controls.MaterialRadioButton rdoText;
         private MaterialSkin.Controls.MaterialRaisedButton themeButton;
@@ -759,7 +758,7 @@ namespace TinyMonitorApp
         private System.Windows.Forms.RichTextBox rtbDisplay;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private MaterialSkin.Controls.MaterialRaisedButton portCloseButton;
+        private MaterialSkin.Controls.MaterialRaisedButton clearButton;
         private MaterialSkin.Controls.MaterialRaisedButton portSendButton;
         private System.Windows.Forms.RichTextBox txtSend;
         private MaterialSkin.Controls.MaterialRaisedButton drawChart;
