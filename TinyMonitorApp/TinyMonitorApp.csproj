@@ -108,15 +108,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\ChartConstants.cs" />
+    <Compile Include="Contracts\IMainFormPresenter.cs" />
+    <Compile Include="Contracts\IMainFormView.cs" />
     <Compile Include="Contracts\ISerialPortManager.cs" />
     <Compile Include="Enums\MessageType.cs" />
     <Compile Include="Enums\TransmissionType.cs" />
     <Compile Include="Enums\WindowsMessageParams.cs" />
     <Compile Include="Enums\WindowsMessages.cs" />
+    <Compile Include="Extensions\EnumExtension.cs" />
+    <Compile Include="Presenter\MainFormPresenter.cs" />
     <Compile Include="Service\ChartDrawingService.cs" />
     <Compile Include="Contracts\IChartDrawingService.cs" />
     <Compile Include="Converters\SubConverter.cs" />
-    <Compile Include="Service\SerialPortManager.cs" />
+    <Compile Include="Service\SerialPortManager.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,7 +133,6 @@
     <Compile Include="Helpers\StringParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -178,7 +183,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="View\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- 
   <Target Name="BeforeResolveReferences">
