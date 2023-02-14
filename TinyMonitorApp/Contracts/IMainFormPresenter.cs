@@ -19,5 +19,9 @@ namespace TinyMonitorApp.Contracts
         void WriteData(string data);
 
         void CloseSerialPort();
+
+        void SetupChartModel();
+
+        void UpdateChart(int firstTempToChart, int secondTempToChart, int humidityToChart, int lightLevelToChart);
     }
 }

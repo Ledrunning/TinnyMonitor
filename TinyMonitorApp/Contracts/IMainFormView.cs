@@ -1,11 +1,14 @@
-﻿using MaterialSkin.Controls;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
+using MaterialSkin.Controls;
+using OxyPlot.WindowsForms;
 using TinyMonitorApp.Presenter;
 
 namespace TinyMonitorApp.Contracts
 {
     public interface IMainFormView
     {
+        PlotView Plot { get; set; }
+
         string DateLabel { get; set; }
 
         string TimeLabel { get; set; }

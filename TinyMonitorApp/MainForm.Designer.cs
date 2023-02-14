@@ -55,7 +55,7 @@ namespace TinyMonitorApp
             this.portSendButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.txtSend = new System.Windows.Forms.RichTextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.drawChart = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.drawChartButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.plotView = new OxyPlot.WindowsForms.PlotView();
             this.ComPortName = new System.Windows.Forms.ComboBox();
             this.cboBaudRates = new System.Windows.Forms.ComboBox();
@@ -416,7 +416,7 @@ namespace TinyMonitorApp
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.drawChart);
+            this.tabPage3.Controls.Add(this.drawChartButton);
             this.tabPage3.Controls.Add(this.plotView);
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Margin = new System.Windows.Forms.Padding(4);
@@ -426,19 +426,19 @@ namespace TinyMonitorApp
             this.tabPage3.Text = "Charts";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // drawChart
+            // drawChartButton
             // 
-            this.drawChart.Depth = 0;
-            this.drawChart.Location = new System.Drawing.Point(343, 386);
-            this.drawChart.Margin = new System.Windows.Forms.Padding(4);
-            this.drawChart.MouseState = MaterialSkin.MouseState.HOVER;
-            this.drawChart.Name = "drawChart";
-            this.drawChart.Primary = true;
-            this.drawChart.Size = new System.Drawing.Size(116, 38);
-            this.drawChart.TabIndex = 36;
-            this.drawChart.Text = "Draw";
-            this.drawChart.UseVisualStyleBackColor = true;
-            this.drawChart.Click += new System.EventHandler(this.OnDrawChartClick);
+            this.drawChartButton.Depth = 0;
+            this.drawChartButton.Location = new System.Drawing.Point(343, 386);
+            this.drawChartButton.Margin = new System.Windows.Forms.Padding(4);
+            this.drawChartButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.drawChartButton.Name = "drawChartButton";
+            this.drawChartButton.Primary = true;
+            this.drawChartButton.Size = new System.Drawing.Size(116, 38);
+            this.drawChartButton.TabIndex = 36;
+            this.drawChartButton.Text = "Draw";
+            this.drawChartButton.UseVisualStyleBackColor = true;
+            this.drawChartButton.Click += new System.EventHandler(this.OnDrawChartClick);
             // 
             // plotView
             // 
@@ -761,7 +761,7 @@ namespace TinyMonitorApp
         private MaterialSkin.Controls.MaterialRaisedButton clearButton;
         private MaterialSkin.Controls.MaterialRaisedButton portSendButton;
         private System.Windows.Forms.RichTextBox txtSend;
-        private MaterialSkin.Controls.MaterialRaisedButton drawChart;
+        private MaterialSkin.Controls.MaterialRaisedButton drawChartButton;
         private OxyPlot.WindowsForms.PlotView plotView;
     }
 }

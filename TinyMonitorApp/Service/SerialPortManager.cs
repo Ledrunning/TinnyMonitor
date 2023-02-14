@@ -22,8 +22,6 @@ namespace TinyMonitorApp.Service
             StopBits = stopBits.ToEnum(StopBits);
             DataBits = dataBits;
             PortName = name;
-
-            DataReceived += SerialPortDataReceived;
         }
 
         public SerialPortManager() : this(default, string.Empty, string.Empty, default, string.Empty)
@@ -75,6 +73,7 @@ namespace TinyMonitorApp.Service
             try
             {
                 EnsurePortOpened();
+                DataReceived += SerialPortDataReceived;
                 InputStringProcessing($"Port opened at {DateTime.Now}\n");
                 logger.Info($"Port opened at {DateTime.Now}\n");
                 return true;
@@ -94,6 +93,7 @@ namespace TinyMonitorApp.Service
                 return;
             }
 
+            DataReceived -= SerialPortDataReceived;
             DiscardInBuffer();
             Close();
 
@@ -113,7 +113,7 @@ namespace TinyMonitorApp.Service
                 RawText = msg
             };
 
-            OnDataReceived?.Invoke(dto);
+            OnDataReceived(dto);
         }
 
         private void EnsurePortOpened()

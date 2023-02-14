@@ -1,15 +1,13 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using NLog;
-using OxyPlot;
+using OxyPlot.WindowsForms;
 using TinyMonitorApp.Contracts;
 using TinyMonitorApp.Enums;
 using TinyMonitorApp.Models;
 using TinyMonitorApp.Presenter;
-using TinyMonitorApp.Service;
 
 namespace TinyMonitorApp
 {
@@ -22,7 +20,6 @@ namespace TinyMonitorApp
 
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly MaterialSkinManager materialSkinManager;
-        private ChartDrawingService chartService;
         private int colorSchemeIndex;
         private int firstTempToChart;
         private int humidityToChart;
@@ -39,8 +36,6 @@ namespace TinyMonitorApp
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900,
                 Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
-
-            SetupChartModel();
         }
 
         public IMainFormPresenter Presenter { get; private set; }
@@ -88,9 +83,19 @@ namespace TinyMonitorApp
             set => Invoke((MethodInvoker)delegate { rtbDisplay.Text = value; });
         }
 
-        public MaterialRadioButton HexOrText { get; set; }
+        public MaterialRadioButton HexOrText
+        {
+            get => rdoHex;
+            set => rdoHex = value;
+        }
 
         public ComboBox ComPortName { get; set; }
+
+        public PlotView Plot
+        {
+            get => plotView;
+            set => plotView = value;
+        }
 
         public ComboBox ComPortParity
         {
@@ -125,10 +130,11 @@ namespace TinyMonitorApp
         {
             LoadValues();
             SetControlState();
+            SetupChartModel();
             logger.Info("Application started!");
         }
 
-        private void OnSerialPortDataReceived(ReceivedDataDto data)
+        private void OnDataReceived(ReceivedDataDto data)
         {
             Invoke((MethodInvoker)delegate
             {
@@ -232,8 +238,8 @@ namespace TinyMonitorApp
         {
             try
             {
+                Presenter.OnSerialPortDataReceived += OnDataReceived;
                 Presenter.StartSerialPort();
-                Presenter.OnSerialPortDataReceived += OnSerialPortDataReceived;
                 portOpenButton.Enabled = false;
                 portCloseButton.Enabled = true;
                 portSendButton.Enabled = true;
@@ -254,7 +260,7 @@ namespace TinyMonitorApp
                 portSendButton.Enabled = false;
 
                 Presenter.CloseSerialPort();
-                Presenter.OnSerialPortDataReceived -= OnSerialPortDataReceived;
+                Presenter.OnSerialPortDataReceived -= OnDataReceived;
             }
             catch (Exception ex)
             {
@@ -343,35 +349,26 @@ namespace TinyMonitorApp
 
         private void SetupChartModel()
         {
-            if (plotView.Model == null)
-            {
-                plotView.Model = new PlotModel();
-            }
-
-            chartService = new ChartDrawingService(plotView, "Telemetry Data");
+            Presenter.SetupChartModel();
         }
 
         private void OnGraphChangeTimerTick(object sender, EventArgs e)
         {
-            lock (plotView.Model.SyncRoot)
-            {
-                chartService.UpdateChart(firstTempToChart, secondTempToChart, humidityToChart, lightLevelToChart);
-                plotView.Model.InvalidatePlot(true);
-            }
+            Presenter.UpdateChart(firstTempToChart, secondTempToChart, humidityToChart, lightLevelToChart);
         }
 
         private void OnDrawChartClick(object sender, EventArgs e)
         {
             if (isClicked)
             {
-                drawChart.Text = "Stop Drawing";
+                drawChartButton.Text = "Stop Drawing";
                 InitializeGraphTimer();
                 graphChangeTimer.Start();
                 isClicked = false;
             }
             else
             {
-                drawChart.Text = "Draw";
+                drawChartButton.Text = "Draw";
                 graphChangeTimer.Enabled = false;
                 graphChangeTimer.Stop();
                 isClicked = true;
