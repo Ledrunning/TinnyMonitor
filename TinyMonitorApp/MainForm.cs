@@ -3,21 +3,23 @@ using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using NLog;
-using OxyPlot;
+using OxyPlot.WindowsForms;
+using TinyMonitorApp.Contracts;
 using TinyMonitorApp.Enums;
 using TinyMonitorApp.Models;
-using TinyMonitorApp.Service;
+using TinyMonitorApp.Presenter;
 
 namespace TinyMonitorApp
 {
-    public partial class MainForm : MaterialForm
+    public partial class MainForm : MaterialForm, IMainFormView
     {
+        private const int ThemeQuantity = 3;
+        private const int ChartDrawingIntervalInMs = 100;
+        private const string NoneMessage = "NONE";
         private readonly Timer graphChangeTimer = new Timer();
 
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly MaterialSkinManager materialSkinManager;
-        private readonly SerialPortManager serialPort = new SerialPortManager();
-        private ChartDrawingService chartService;
         private int colorSchemeIndex;
         private int firstTempToChart;
         private int humidityToChart;
@@ -25,9 +27,6 @@ namespace TinyMonitorApp
         private bool isClicked = true;
         private int lightLevelToChart;
         private int secondTempToChart;
-        private const int ThemeQuantity = 3;
-        private const int ChartDrawingIntervalInMs = 100;
-        private const string NoneMessage = "NONE";
 
         public MainForm()
         {
@@ -37,36 +36,122 @@ namespace TinyMonitorApp
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900,
                 Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
-            serialPort.OnDataReceived += OnSerialPortDataReceived;
+        }
 
-            SetupChartModel();
+        public IMainFormPresenter Presenter { get; private set; }
+
+
+        public string DateLabel
+        {
+            get => dateLabel.Text;
+            set => dateLabel.Text = value;
+        }
+
+        public string TimeLabel
+        {
+            get => timeLabel.Text;
+            set => timeLabel.Text = value;
+        }
+
+        public string InsideTemperature
+        {
+            get => insideTemp.Text;
+            set => insideTemp.Text = value;
+        }
+
+        public string OutsideTemperature
+        {
+            get => outsideTemp.Text;
+            set => outsideTemp.Text = value;
+        }
+
+        public string Humidity
+        {
+            get => humidity.Text;
+            set => humidity.Text = value;
+        }
+
+        public string LightLevel
+        {
+            get => lightLevel.Text;
+            set => lightLevel.Text = value;
+        }
+
+        public string ConsoleDisplay
+        {
+            get => rtbDisplay.Text;
+            set => Invoke((MethodInvoker)delegate { rtbDisplay.Text = value; });
+        }
+
+        public MaterialRadioButton HexOrText
+        {
+            get => rdoHex;
+            set => rdoHex = value;
+        }
+
+        public ComboBox ComPortName { get; set; }
+
+        public PlotView Plot
+        {
+            get => plotView;
+            set => plotView = value;
+        }
+
+        public ComboBox ComPortParity
+        {
+            get => cboParity;
+            set => cboParity = value;
+        }
+
+        public ComboBox ComPortStopBit
+        {
+            get => cboStopBits;
+            set => cboStopBits = value;
+        }
+
+        public ComboBox ComPortBaudRates
+        {
+            get => cboBaudRates;
+            set => cboBaudRates = value;
+        }
+
+        public ComboBox ComPortDataBits
+        {
+            get => cboDataBits;
+            set => cboDataBits = value;
+        }
+
+        public void SetPresenter(MainFormPresenter presenter)
+        {
+            Presenter = presenter;
         }
 
         private void OnMainFormLoad(object sender, EventArgs e)
         {
             LoadValues();
             SetControlState();
+            SetupChartModel();
             logger.Info("Application started!");
         }
 
-        private void OnSerialPortDataReceived(ReceivedDataDto data)
+        private void OnDataReceived(ReceivedDataDto data)
         {
-            Invoke((MethodInvoker) delegate
+            Invoke((MethodInvoker)delegate
             {
-                insideTemp.Text = data.IndorTemperature;
+                InsideTemperature = data.IndoorTemperature;
                 outsideTemp.Text = data.OutdoorTemperature;
-                huMidity.Text = data.Humidity;
+                humidity.Text = data.Humidity;
                 lightLevel.Text = data.LightLevel;
                 rtbDisplay.AppendText(data.RawText + Environment.NewLine);
                 try
                 {
-                    if (data.IndorTemperature == NoneMessage || data.OutdoorTemperature == NoneMessage ||
+                    if (data.IndoorTemperature == NoneMessage || data.OutdoorTemperature == NoneMessage ||
                         data.Humidity == NoneMessage || data.LightLevel == NoneMessage)
                     {
                         return;
                     }
 
-                    firstTempToChart = Convert.ToInt32(data.IndorTemperature);
+                    firstTempToChart = Convert.ToInt32(data.IndoorTemperature);
                     secondTempToChart = Convert.ToInt32(data.OutdoorTemperature);
                     humidityToChart = Convert.ToInt32(data.Humidity);
                     lightLevelToChart = Convert.ToInt32(data.LightLevel);
@@ -87,11 +172,11 @@ namespace TinyMonitorApp
         /// </summary>
         private void SetDefaults()
         {
-            cboPort.SelectedIndex = 0;
-            cboBaud.SelectedText = "9600";
-            cboParity.SelectedIndex = 0;
-            cboStop.SelectedIndex = 1;
-            cboData.SelectedIndex = 3;
+            ComPortName.SelectedIndex = 0;
+            ComPortBaudRates.SelectedText = "9600";
+            ComPortParity.SelectedIndex = 0;
+            ComPortStopBit.SelectedIndex = 1;
+            ComPortDataBits.SelectedIndex = 3;
         }
 
         /// <summary>
@@ -100,9 +185,9 @@ namespace TinyMonitorApp
         /// </summary>
         private void LoadValues()
         {
-            cboPort.DataSource = serialPort.PortNameValues;
-            cboParity.DataSource = serialPort.ParityValues;
-            cboStop.DataSource = serialPort.StopBitValues;
+            ComPortName.DataSource = Presenter.PortNameValues;
+            ComPortParity.DataSource = Presenter.ParityValues;
+            ComPortStopBit.DataSource = Presenter.StopBitValues;
         }
 
         /// <summary>
@@ -114,19 +199,19 @@ namespace TinyMonitorApp
         {
             base.WndProc(ref m);
 
-            if (m.Msg == (int) WindowsMessages.WM_DEVICECHANGE)
+            if (m.Msg == (int)WindowsMessages.WM_DEVICECHANGE)
             {
                 try
                 {
                     //New usb-device connection
-                    if (m.WParam.ToInt32() == (int) WindowsMessages.WM_APP)
+                    if (m.WParam.ToInt32() == (int)WindowsMessages.WM_APP)
                     {
-                        cboPort.DataSource = serialPort.PortNameValues;
+                        ComPortName.DataSource = Presenter.PortNameValues;
                         SetDefaults();
                     }
 
                     //Usb device disconnect
-                    if (m.WParam.ToInt32() == (int) WindowsMessageParams.DBT_DEVICEREMOVECOMPLETE)
+                    if (m.WParam.ToInt32() == (int)WindowsMessageParams.DBT_DEVICEREMOVECOMPLETE)
                     {
                         MessageBox.Show("Error", "Port unavailable", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -145,59 +230,77 @@ namespace TinyMonitorApp
         private void SetControlState()
         {
             rdoText.Checked = true;
-            cmdSend.Enabled = false;
-            cmdClose.Enabled = false;
+            portSendButton.Enabled = false;
+            portCloseButton.Enabled = false;
         }
 
-        private void ComPortOpenClick(object sender, EventArgs e)
-        {
-            serialPort.Parity = cboParity.Text;
-            serialPort.StopBits = cboStop.Text;
-            serialPort.DataBits = cboData.Text;
-            serialPort.BaudRatesRate = cboBaud.Text;
-            serialPort.PortName = cboPort.Text;
-            serialPort.OpenPort();
-            cmdOpen.Enabled = false;
-            cmdClose.Enabled = true;
-            cmdSend.Enabled = true;
-        }
-
-        private void ComPortCloseClick(object sender, EventArgs e)
-        {
-            cmdOpen.Enabled = true;
-            cmdClose.Enabled = false;
-            cmdSend.Enabled = false;
-            serialPort.ClosePort();
-        }
-
-        private void SendToComPortClick(object sender, EventArgs e)
+        private void OnOpenPortClick(object sender, EventArgs e)
         {
             try
             {
-                serialPort.WriteData(txtSend.Text);
+                Presenter.OnSerialPortDataReceived += OnDataReceived;
+                Presenter.StartSerialPort();
+                portOpenButton.Enabled = false;
+                portCloseButton.Enabled = true;
+                portSendButton.Enabled = true;
             }
             catch (Exception ex)
             {
+                ConsoleDisplay = ex.Message;
                 MessageBox.Show("Error", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void CheckedChanged(object sender, EventArgs e)
+        private void OnPortCloseClick(object sender, EventArgs e)
         {
-            serialPort.CurrentTransmissionType = rdoHex.Checked ? TransmissionType.Hex : TransmissionType.Text;
+            try
+            {
+                portOpenButton.Enabled = true;
+                portCloseButton.Enabled = false;
+                portSendButton.Enabled = false;
+
+                Presenter.CloseSerialPort();
+                Presenter.OnSerialPortDataReceived -= OnDataReceived;
+            }
+            catch (Exception ex)
+            {
+                ConsoleDisplay = ex.Message;
+                MessageBox.Show("Error", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void OnPortCommandSendClick(object sender, EventArgs e)
+        {
+            try
+            {
+                Presenter.WriteData(txtSend.Text);
+                ConsoleDisplay = txtSend.Text;
+            }
+            catch (Exception ex)
+            {
+                ConsoleDisplay = ex.Message;
+                MessageBox.Show("Error", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void OnCheckedChanged(object sender, EventArgs e)
+        {
+            Presenter.SetCurrentTransmissionType();
         }
 
         // Clear Console;
-        private void ConsoleClearClick(object sender, EventArgs e)
+        private void OnConsoleClearClick(object sender, EventArgs e)
         {
             rtbDisplay.Clear();
         }
 
-        // Time and date;
         private void OnTimerTick(object sender, EventArgs e)
         {
-            dateLabel.Text = DateTime.Now.ToString("MM/dd/yyyy");
-            timeLabel.Text = DateTime.Now.ToString("HH:mm:ss");
+            Invoke((MethodInvoker)delegate
+            {
+                DateLabel = DateTime.Now.ToString("MM/dd/yyyy");
+                TimeLabel = DateTime.Now.ToString("HH:mm:ss");
+            });
         }
 
         private void OnThemeClick(object sender, EventArgs e)
@@ -246,35 +349,26 @@ namespace TinyMonitorApp
 
         private void SetupChartModel()
         {
-            if (plotView.Model == null)
-            {
-                plotView.Model = new PlotModel();
-            }
-
-            chartService = new ChartDrawingService(plotView, "Telemetry Data");
+            Presenter.SetupChartModel();
         }
-        
+
         private void OnGraphChangeTimerTick(object sender, EventArgs e)
         {
-            lock (plotView.Model.SyncRoot)
-            {
-                chartService.UpdateChart(firstTempToChart, secondTempToChart);
-                plotView.Model.InvalidatePlot(true);
-            }
+            Presenter.UpdateChart(firstTempToChart, secondTempToChart, humidityToChart, lightLevelToChart);
         }
 
         private void OnDrawChartClick(object sender, EventArgs e)
         {
             if (isClicked)
             {
-                drawChart.Text = "Stop Drawing";
+                drawChartButton.Text = "Stop Drawing";
                 InitializeGraphTimer();
                 graphChangeTimer.Start();
                 isClicked = false;
             }
             else
             {
-                drawChart.Text = "Draw";
+                drawChartButton.Text = "Draw";
                 graphChangeTimer.Enabled = false;
                 graphChangeTimer.Stop();
                 isClicked = true;

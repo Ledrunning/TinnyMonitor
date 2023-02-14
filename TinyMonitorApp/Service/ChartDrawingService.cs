@@ -12,7 +12,7 @@ namespace TinyMonitorApp.Service
     {
         private readonly PlotView plotModel;
         private string chartName;
-
+        
         public ChartDrawingService(PlotView plotModel, string chartName)
         {
             this.chartName = chartName;
@@ -20,32 +20,29 @@ namespace TinyMonitorApp.Service
             InitializeCharts(chartName);
         }
 
-        public void UpdateChart(double indoorTemperature, double outdoorTemperature)
+        public void UpdateChart(int indoorTemperature, int outdoorTemperature, int humidity, int lightLevel)
         {
-            PrintTemperatureChart(indoorTemperature, outdoorTemperature);
+            var indoorSeries = (LineSeries) plotModel.Model.Series[ChartConstants.IndoorTemperatureIndex];
+            var outdoorSeries = (LineSeries) plotModel.Model.Series[ChartConstants.OutdoorTemperatureIndex];
+            var humiditySeries = (LineSeries) plotModel.Model.Series[ChartConstants.HumidityIndex];
+            var lightLevelSeries = (LineSeries) plotModel.Model.Series[ChartConstants.LightLevelIndex];
+            
+            indoorSeries.Points.Add(new DataPoint(FormatPoints(indoorSeries), indoorTemperature));
+            outdoorSeries.Points.Add(new DataPoint(FormatPoints(outdoorSeries), outdoorTemperature));
+            humiditySeries.Points.Add(new DataPoint(FormatPoints(humiditySeries), humidity));
+            lightLevelSeries.Points.Add(new DataPoint(FormatPoints(lightLevelSeries), lightLevel));
         }
 
-        private void PrintTemperatureChart(double inputTemperature, double outdoorTemperature)
+        private static double FormatPoints(DataPointSeries series)
         {
-            var indoorSeries = (LineSeries) plotModel.Model.Series[0];
-            var outdoorSeries = (LineSeries) plotModel.Model.Series[1];
+            var x = series.Points.Count > 0 ? series.Points[series.Points.Count - 1].X + 1 : 0;
 
-            var x = indoorSeries.Points.Count > 0 ? indoorSeries.Points[indoorSeries.Points.Count - 1].X + 1 : 0;
-            
-            if (indoorSeries.Points.Count >= 200)
+            if (series.Points.Count >= ChartConstants.MaxPoints)
             {
-                indoorSeries.Points.RemoveAt(0);
+                series.Points.RemoveAt(0);
             }
 
-            var x1 = outdoorSeries.Points.Count > 0 ? outdoorSeries.Points[outdoorSeries.Points.Count - 1].X + 1 : 0;
-
-            if (outdoorSeries.Points.Count >= 200)
-            {
-                outdoorSeries.Points.RemoveAt(0);
-            }
-
-            indoorSeries.Points.Add(new DataPoint(x, inputTemperature));
-            outdoorSeries.Points.Add(new DataPoint(x1, outdoorTemperature));
+            return x;
         }
 
         private void InitializeCharts(string title)
@@ -89,16 +86,37 @@ namespace TinyMonitorApp.Service
                 TicklineColor = ChartConstants.Black
             });
 
+            AddSeries();
+        }
+
+        private void AddSeries()
+        {
+            //Indoor temperature
             plotModel.Model.Series.Add(new LineSeries
             {
                 LineStyle = LineStyle.Solid,
                 Color = ChartConstants.Blue
-            }); 
+            });
 
+            //Outdoor temperature
             plotModel.Model.Series.Add(new LineSeries
             {
                 LineStyle = LineStyle.Solid,
                 Color = ChartConstants.Red
+            });
+
+            //Humidity
+            plotModel.Model.Series.Add(new LineSeries
+            {
+                LineStyle = LineStyle.Solid,
+                Color = ChartConstants.Green
+            });
+
+            //LightLevel
+            plotModel.Model.Series.Add(new LineSeries
+            {
+                LineStyle = LineStyle.Solid,
+                Color = ChartConstants.Purple
             });
         }
     }

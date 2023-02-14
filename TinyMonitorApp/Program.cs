@@ -9,6 +9,7 @@
 
 using System;
 using System.Windows.Forms;
+using TinyMonitorApp.Presenter;
 
 namespace TinyMonitorApp
 {
@@ -23,7 +24,11 @@ namespace TinyMonitorApp
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new MainForm());
+
+            var mainForm = new MainForm();
+            var mainFormPresenter = new MainFormPresenter(mainForm);
+
+            Application.Run(mainForm);
 		}
 
 		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
