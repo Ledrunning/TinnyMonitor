@@ -14,7 +14,7 @@ namespace TinyMonitorApp
     public partial class MainForm : MaterialForm, IMainFormView
     {
         private const int ThemeQuantity = 3;
-        private const int ChartDrawingIntervalInMs = 100;
+        private const int ChartDrawingIntervalInMs = 1000;
         private const string NoneMessage = "NONE";
         private readonly Timer graphChangeTimer = new Timer();
 
