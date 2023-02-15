@@ -2,7 +2,7 @@
 
 namespace TinyMonitorApp.Helpers
 {
-    internal class StringParser
+    public class StringParser
     {
         // Incoming string to port
         // temp1 = 25, temp2 = 33, humidity = 85, lightlevel = 57 \r
