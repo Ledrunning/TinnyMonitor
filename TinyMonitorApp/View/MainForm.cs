@@ -9,7 +9,7 @@ using TinyMonitorApp.Enums;
 using TinyMonitorApp.Models;
 using TinyMonitorApp.Presenter;
 
-namespace TinyMonitorApp
+namespace TinyMonitorApp.View
 {
     public partial class MainForm : MaterialForm, IMainFormView
     {
