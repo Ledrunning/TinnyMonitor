@@ -10,6 +10,7 @@
 using System;
 using System.Windows.Forms;
 using TinyMonitorApp.Presenter;
+using TinyMonitorApp.View;
 
 namespace TinyMonitorApp
 {

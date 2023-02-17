@@ -9,7 +9,7 @@ namespace TinyMonitorApp.Helpers
         //temp1=52,temp2=20,humidity=80,lightlevel=75
 
         private const string IndoorTemperature = "temp1[\\s]?=[\\s]?([\\d]+)";
-        private const string OutdoorTemperature = "temp2[\\s]?=[\\s]?([\\d]+)";
+        private const string OutdoorTemperature = "temp2[\\s]?=[\\s]?([-\\d]+)"; 
         private const string Humidity = "humidity[\\s]?=[\\s]?([\\d]+)";
         private const string Lightlevel = "lightlevel[\\s]?=[\\s]?([\\d]+)";
 
