@@ -1,4 +1,4 @@
-namespace TinyMonitorApp
+namespace TinyMonitorApp.View
 {
     partial class MainForm
     {
