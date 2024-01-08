@@ -48,7 +48,6 @@ namespace TinyMonitorApp.Presenter
             }
         }
 
-        //txtSend.Text
         public void WriteData(string data)
         {
             serialPortManager.WriteData(data);
