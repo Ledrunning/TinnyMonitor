@@ -52,11 +52,11 @@ namespace TinyMonitorApp.Service
             plotModel.Model.TitleColor = ChartConstants.Black;
 
             plotModel.Model.LegendPosition = LegendPosition.RightBottom;
-            //Y
+            //Y Axis
             plotModel.Model.Axes.Add(new LinearAxis
             {
-                IsPanEnabled = true, // отключение скролинга
-                IsZoomEnabled = true, // отключение зума 
+                IsPanEnabled = true, 
+                IsZoomEnabled = true, 
                 AbsoluteMaximum = ChartConstants.AbsoluteMaximum,
                 AbsoluteMinimum = ChartConstants.AbsoluteMinimum,
                 Position = AxisPosition.Left,
@@ -71,11 +71,11 @@ namespace TinyMonitorApp.Service
                 TicklineColor = ChartConstants.Black
             });
 
-            //X
+            //X Axis
             plotModel.Model.Axes.Add(new LinearAxis
             {
-                IsPanEnabled = false, // отключение скролинга
-                IsZoomEnabled = false, // отключение зума
+                IsPanEnabled = false, 
+                IsZoomEnabled = false, 
                 Position = AxisPosition.Bottom,
                 TextColor = ChartConstants.TextColor,
                 AxislineColor = ChartConstants.Black,

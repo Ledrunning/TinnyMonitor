@@ -6,7 +6,7 @@ namespace TinyMonitorApp.Helpers
     {
         // Incoming string to port
         // temp1 = 25, temp2 = 33, humidity = 85, lightlevel = 57 \r
-        //temp1=52,temp2=20,humidity=80,lightlevel=75
+        // temp1=52,temp2=20,humidity=80,lightlevel=75
 
         private const string IndoorTemperature = "temp1[\\s]?=[\\s]?([\\d]+)";
         private const string OutdoorTemperature = "temp2[\\s]?=[\\s]?([-\\d]+)"; 
